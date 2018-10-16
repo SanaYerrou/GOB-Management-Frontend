@@ -1,0 +1,14 @@
+{
+    "name": "GOB",
+    "short_name": "GOB",
+    "icons": [
+        {
+            "src": "<%= BASE_URL %>img/icons/android-chrome-96x96.png?v=ng9MOn8R5A",
+            "sizes": "96x96",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff",
+    "display": "standalone"
+}
