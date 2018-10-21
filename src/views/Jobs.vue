@@ -1,14 +1,16 @@
 <template>
     <div>
         <h1>Jobs</h1>
-        <div class="row">
-            <div class="col col-md-auto mb-2">
-                <job-calendar :jobs="allJobs"
-                              :onDay="onDay"
-                              :date="date"
-                ></job-calendar>
+        <div class="row justify-content-center">
+            <div class="col col-xs-12 col-lg-auto mb-2">
+                <div class="align-center">
+                    <job-calendar :jobs="allJobs"
+                                  :onDay="onDay"
+                                  :date="date"
+                    ></job-calendar>
+                </div>
             </div>
-            <div class="col col-md">
+            <div class="col">
                 <div v-for="job in jobs" :key="job.processId"
                      class="mb-2">
 
