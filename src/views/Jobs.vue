@@ -1,6 +1,13 @@
 <template>
     <div>
-        <h1>Jobs</h1>
+        <h1>
+            Jobs
+            <span class="float-right">
+                <b-btn title="Ververs" variant="outline-secondary" @click="loadData()">
+                    <font-awesome-icon icon="sync" class="fa-xs" />
+                </b-btn>
+            </span>
+        </h1>
         <div class="row justify-content-center">
             <div class="col col-xs-12 col-lg-auto mb-2">
                 <div class="align-center">
@@ -66,7 +73,10 @@ export default {
       this.logs = await logs(this.source, this.entity);
       this.allJobs = jobs(this.logs).reverse(); // Most recent job first
 
-      this.getJobs();
+      var date = this.date; // save any current set date
+      this.date = null; // set this.date to null
+
+      this.getJobs(date); // load jobs for data (sets this.date)
     },
     onDay(data) {
       this.getJobs(data.date);
@@ -79,7 +89,7 @@ export default {
         this.date = date;
       }
       if (this.date) {
-        this.jobs = this.jobs.filter(job => jobRunsOnDate(job, date));
+        this.jobs = this.jobs.filter(job => jobRunsOnDate(job, this.date));
       }
     }
   },
