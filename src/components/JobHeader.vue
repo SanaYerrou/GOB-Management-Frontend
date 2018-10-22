@@ -8,7 +8,7 @@
             {{level}} {{job.jobLogs.filter(log => log.level === level).length}}
         </b-badge>
         <div>
-            {{job.startLog.timestamp | moment("dddd, DD MMMM YYYY, hh:mm:ss")}}
+            {{job.startLog.timestamp | moment("dddd, DD MMMM YYYY, HH:mm:ss")}}
         </div>
     </div>
 </template>
