@@ -11,6 +11,10 @@ import BootstrapVue from "bootstrap-vue";
 import VCalendar from "v-calendar";
 import "v-calendar/lib/v-calendar.min.css";
 
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faSync } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
 Vue.config.productionTip = false;
 
 Vue.use(VueLodash);
@@ -27,6 +31,9 @@ require("moment/locale/nl");
 Vue.use(require("vue-moment"), {
   moment
 });
+
+library.add(faSync);
+Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 new Vue({
   router,

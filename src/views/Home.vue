@@ -21,6 +21,11 @@
 
 <script>
 export default {
-  name: "home"
+  name: "home",
+  mounted() {
+    if (this.$route.query.p) {
+      this.$router.push(this.$route.query.p);
+    }
+  }
 };
 </script>

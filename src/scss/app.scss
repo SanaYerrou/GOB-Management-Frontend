@@ -1,0 +1,11 @@
+@import "custom";
+
+.INFO {
+  background-color: $info;
+}
+.WARNING {
+  background-color: $warning;
+}
+.ERROR {
+  background-color: $danger;
+}

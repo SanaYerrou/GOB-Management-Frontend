@@ -2,7 +2,7 @@
     <div>
         <div>Jobs: {{jobs.length}}</div>
         <div v-for="[level, logs] in Object.entries(logLevels)" :key="level">
-            {{level}}: {{logs.length}}
+            <span :class="level">{{level}}</span> {{logs.length}}
         </div>
     </div>
 </template>
