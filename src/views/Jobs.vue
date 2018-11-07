@@ -4,7 +4,7 @@
             Jobs
             <span class="float-right">
                 <b-btn title="Ververs" variant="outline-secondary" @click="loadData()">
-                    <font-awesome-icon icon="sync" class="fa-xs" />
+                    <font-awesome-icon icon="sync" class="fa-xs" :class="{'fa-spin': loading}"/>
                 </b-btn>
             </span>
         </h1>
@@ -17,7 +17,7 @@
                     ></job-calendar>
                 </div>
             </div>
-            <div class="col">
+            <div class="col" v-if="jobs.length">
                 <div v-for="job in jobs" :key="job.processId"
                      class="mb-2">
 
@@ -57,7 +57,8 @@ export default {
       logs: [],
       allJobs: [],
       jobs: [],
-      date: null
+      date: null,
+      loading: false
     };
   },
   components: {
@@ -67,17 +68,23 @@ export default {
   },
   methods: {
     async loadData() {
+      this.loading = true
+
+      this.jobs = []
       this.source = this.$route.query.source;
       this.catalogue = this.$route.query.catalogue;
       this.entity = this.$route.query.entity;
 
       this.logs = await logs(this.source, this.catalogue, this.entity);
+
       this.allJobs = jobs(this.logs).reverse(); // Most recent job first
 
       var date = this.date; // save any current set date
       this.date = null; // set this.date to null
 
       this.getJobs(date); // load jobs for data (sets this.date)
+
+      this.loading = false
     },
     onDay(data) {
       this.getJobs(data.date);
