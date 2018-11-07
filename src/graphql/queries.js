@@ -7,7 +7,7 @@ async function graphql(query) {
 }
 
 export async function querySourceEntities() {
-  var query = `
+  const query = `
   {
     sourceEntities {
       id
@@ -20,7 +20,7 @@ export async function querySourceEntities() {
   return graphql(query);
 }
 
-export async function queryLogs(source, catalogue, entity) {
+function getLogsSelect(source, catalogue, entity) {
   var select = "";
   if (source || catalogue || entity) {
     var selectSource = source ? `source: "${source}"` : "";
@@ -28,8 +28,26 @@ export async function queryLogs(source, catalogue, entity) {
     var selectEntity = entity ? `entity: "${entity}"` : "";
     select = `(${selectSource} ${selectCatalogue} ${selectEntity})`;
   }
+  return select
+}
 
-  var query = `
+export async function queryLogDays(source, catalogue, entity) {
+  const select = getLogsSelect(source, catalogue, entity);
+  const query = `
+  {
+    logDays ${select} {
+      date
+      level
+      count
+    }
+  }
+  `;
+  return graphql(query);
+}
+
+export async function queryLogs(source, catalogue, entity) {
+  const select = getLogsSelect(source, catalogue, entity);
+  const query = `
   query {
     logs ${select} {
       edges {
