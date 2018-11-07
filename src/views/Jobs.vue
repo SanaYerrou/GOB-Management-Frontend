@@ -68,9 +68,10 @@ export default {
   methods: {
     async loadData() {
       this.source = this.$route.query.source;
+      this.catalogue = this.$route.query.catalogue;
       this.entity = this.$route.query.entity;
 
-      this.logs = await logs(this.source, this.entity);
+      this.logs = await logs(this.source, this.catalogue, this.entity);
       this.allJobs = jobs(this.logs).reverse(); // Most recent job first
 
       var date = this.date; // save any current set date
@@ -98,6 +99,9 @@ export default {
   },
   watch: {
     "$route.query.source"() {
+      this.loadData();
+    },
+    "$route.query.catalogue"() {
       this.loadData();
     },
     "$route.query.entity"() {

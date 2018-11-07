@@ -20,12 +20,13 @@ export async function querySourceEntities() {
   return graphql(query);
 }
 
-export async function queryLogs(source, entity) {
+export async function queryLogs(source, catalogue, entity) {
   var select = "";
-  if (source || entity) {
+  if (source || catalogue || entity) {
     var selectSource = source ? `source: "${source}"` : "";
+    var selectCatalogue = catalogue ? `catalogue: "${catalogue}"` : "";
     var selectEntity = entity ? `entity: "${entity}"` : "";
-    select = `(${selectSource} ${selectEntity})`;
+    select = `(${selectSource} ${selectCatalogue} ${selectEntity})`;
   }
 
   var query = `
@@ -34,12 +35,15 @@ export async function queryLogs(source, entity) {
       edges {
         node {
           source
+          destination
+          catalogue
           entity
           processId
           logid
           timestamp
           name
           level
+          msgid
           msg
           data
         }

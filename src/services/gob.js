@@ -13,17 +13,20 @@ export async function catalogues() {
   return _.uniq(data.sourceEntities.map(item => item.catalogue));
 }
 
-export async function entities(source) {
+export async function entities(source, catalogue) {
   var data = await querySourceEntities();
   data = data.sourceEntities;
   if (source) {
     data = data.filter(item => item.source === source);
   }
+  if (catalogue) {
+    data = data.filter(item => item.catalogue === catalogue);
+  }
   return _.uniqBy(data, item => item.entity);
 }
 
-export async function logs(source, entity) {
-  var data = await queryLogs(source, entity);
+export async function logs(source, catalogue, entity) {
+  var data = await queryLogs(source, catalogue, entity);
 
   var logs = data.logs.edges.map(edge => edge.node);
   logs.forEach(log => {
