@@ -12,6 +12,7 @@ export async function querySourceEntities() {
     sourceEntities {
       id
       source
+      catalogue
       entity
     }
   }

@@ -8,6 +8,11 @@ export async function sources() {
   return _.uniq(data.sourceEntities.map(item => item.source));
 }
 
+export async function catalogues() {
+  var data = await querySourceEntities();
+  return _.uniq(data.sourceEntities.map(item => item.catalogue));
+}
+
 export async function entities(source) {
   var data = await querySourceEntities();
   data = data.sourceEntities;

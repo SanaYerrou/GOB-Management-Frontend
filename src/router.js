@@ -1,7 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Home.vue";
-import Sources from "./views/Sources.vue";
+import Home from "./views/Home";
+import Sources from "./views/Sources";
+import Catalogues from "./views/Catalogues";
 import Entities from "./views/Entities";
 import Jobs from "./views/Jobs";
 
@@ -20,6 +21,11 @@ export default new Router({
       path: "/sources",
       name: "sources",
       component: Sources
+    },
+    {
+      path: "/catalogues",
+      name: "catalogues",
+      component: Catalogues
     },
     {
       path: "/entities",
