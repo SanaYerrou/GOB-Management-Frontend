@@ -1,7 +1,12 @@
 import _ from "lodash";
 import moment from "moment";
 
-import { querySourceEntities, queryLogs } from "../graphql/queries";
+import {
+  querySourceEntities,
+  queryLogDays,
+  queryLogs,
+  queryLogsForJob
+} from "../graphql/queries";
 
 export async function sources() {
   var data = await querySourceEntities();
@@ -25,15 +30,28 @@ export async function entities(source, catalogue) {
   return _.uniqBy(data, item => item.entity);
 }
 
-export async function logs(source, catalogue, entity) {
-  var data = await queryLogs(source, catalogue, entity);
+export async function logDays(source, catalogue, entity) {
+  var logDays = await queryLogDays(source, catalogue, entity);
+  return logDays.logDays;
+}
 
+function _logs(data) {
   var logs = data.logs.edges.map(edge => edge.node);
   logs.forEach(log => {
     log.data = JSON.parse(JSON.parse(log.data));
   });
 
   return logs;
+}
+
+export async function logs(source, catalogue, entity) {
+  var data = await queryLogs(source, catalogue, entity);
+  return _logs(data);
+}
+
+export async function logsForJob(process_id) {
+  var data = await queryLogsForJob(process_id);
+  return _logs(data);
 }
 
 export function jobs(logs) {
@@ -61,16 +79,14 @@ export function jobRunsOnDate(job, date) {
   return startDate <= onDate && onDate <= endDate;
 }
 
-export function logLevels(jobs) {
-  return _.groupBy(
-    jobs.reduce((logs, job) => logs.concat(job.jobLogs), []),
-    log => log.level
-  );
+export function logJobs(logDays) {
+  return _.groupBy(logDays, "job");
 }
 
-export function jobsPerDate(jobs) {
-  return _.groupBy(
-    jobs,
-    job => new Date(moment(job.startLog.timestamp).startOf("day"))
-  );
+export function logLevels(logDays) {
+  return _.groupBy(logDays, "level");
+}
+
+export function logDates(logDays) {
+  return _.groupBy(logDays, "date");
 }

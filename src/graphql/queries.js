@@ -28,7 +28,7 @@ function getLogsSelect(source, catalogue, entity) {
     var selectEntity = entity ? `entity: "${entity}"` : "";
     select = `(${selectSource} ${selectCatalogue} ${selectEntity})`;
   }
-  return select
+  return select;
 }
 
 export async function queryLogDays(source, catalogue, entity) {
@@ -37,6 +37,7 @@ export async function queryLogDays(source, catalogue, entity) {
   {
     logDays ${select} {
       date
+      job
       level
       count
     }
@@ -45,8 +46,7 @@ export async function queryLogDays(source, catalogue, entity) {
   return graphql(query);
 }
 
-export async function queryLogs(source, catalogue, entity) {
-  const select = getLogsSelect(source, catalogue, entity);
+async function _queryLogs(select) {
   const query = `
   query {
     logs ${select} {
@@ -70,4 +70,14 @@ export async function queryLogs(source, catalogue, entity) {
   }
   `;
   return graphql(query);
+}
+
+export async function queryLogsForJob(process_id) {
+  const select = `(processId: "${process_id}")`;
+  return _queryLogs(select);
+}
+
+export async function queryLogs(source, catalogue, entity) {
+  const select = getLogsSelect(source, catalogue, entity);
+  return _queryLogs(select);
 }

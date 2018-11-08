@@ -6,7 +6,7 @@
 
 <script>
 import { amsmiddengrijs, amslichtgrijs } from "../services/colors";
-import { jobsPerDate } from "../services/gob";
+import { logDates } from "../services/gob";
 
 import CalendarDay from "./CalendarDay";
 
@@ -18,13 +18,13 @@ const COLORS = {
 export default {
   name: "JobCalendar",
   props: {
-    jobs: Array,
+    logDays: Array,
     onDay: Function,
     date: Date
   },
   computed: {
     attrs: function() {
-      return Object.entries(jobsPerDate(this.jobs)).map(([date, jobs]) => ({
+      return Object.entries(logDates(this.logDays)).map(([date, logDays]) => ({
         key: date,
         highlight: {
           backgroundColor:
@@ -33,7 +33,7 @@ export default {
               : COLORS.unselected
         },
         dates: new Date(date),
-        customData: jobs,
+        customData: logDays,
         popover: {
           component: CalendarDay
         }
