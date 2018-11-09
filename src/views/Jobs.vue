@@ -8,6 +8,11 @@
                 </b-btn>
             </span>
         </h1>
+        <div>
+            <b-badge v-if="source">Bron: {{source}}</b-badge>
+            <b-badge v-if="catalogue">Catalogus: {{catalogue}}</b-badge>
+            <b-badge v-if="entity">Entiteit: {{entity}}</b-badge>
+        </div>
         <div class="row justify-content-center">
             <div class="col col-xs-12 col-lg-auto mb-2">
                 <div class="align-center">
@@ -87,6 +92,9 @@ export default {
       this.catalogue = this.$route.query.catalogue;
       this.entity = this.$route.query.entity;
 
+      this.allJobs = [];
+      this.jobs = [];
+
       this.allJobs = await getJobs(this.source, this.catalogue, this.entity);
 
       const date = this.date; // save any current set date
@@ -135,4 +143,8 @@ export default {
 </script>
 
 <style scoped>
+.badge {
+  margin-left: 5px;
+  margin-bottom: 10px;
+}
 </style>
