@@ -1,29 +1,32 @@
 <template>
     <div>
-        <div>Jobs: {{Object.entries(logJobs).length}}</div>
-        <div v-for="[level, logs] in Object.entries(logLevels)" :key="level">
-            <span :class="level">{{level}}</span> {{logs[0].count}}
+        <div>Jobs: {{jobs.length}}</div>
+        <div v-for="[level, count] in Object.entries(levels)" :key="level">
+            <span :class="level">{{level}}</span> {{count}}
         </div>
     </div>
 </template>
 
 <script>
-import { logLevels, logJobs } from "../services/gob";
-
 export default {
   name: "CalendarDay",
   props: {
     attribute: Object
   },
   computed: {
-    logDays() {
+    jobs() {
       return this.attribute.customData;
     },
-    logJobs() {
-      return logJobs(this.logDays);
-    },
-    logLevels() {
-      return logLevels(this.logDays);
+    levels() {
+      return this.jobs.reduce((level, job) => {
+        job.levels.forEach(l => {
+          if (!level[l.level]) {
+            level[l.level] = 0;
+          }
+          level[l.level] += l.count;
+        });
+        return level;
+      }, {});
     }
   }
 };

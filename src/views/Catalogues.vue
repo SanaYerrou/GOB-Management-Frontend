@@ -15,24 +15,24 @@
 </template>
 
 <script>
-  import { catalogues } from "../services/gob";
+import { catalogues } from "../services/gob";
 
-  export default {
-    name: "Catalogues",
-    data() {
-      return {
-        catalogues: []
-      };
-    },
-    methods: {
-      async loadData() {
-        this.catalogues = await catalogues();
-      }
-    },
-    async mounted() {
-      this.loadData();
+export default {
+  name: "Catalogues",
+  data() {
+    return {
+      catalogues: []
+    };
+  },
+  methods: {
+    async loadData() {
+      this.catalogues = await catalogues();
     }
-  };
+  },
+  async mounted() {
+    this.loadData();
+  }
+};
 </script>
 
 <style scoped>

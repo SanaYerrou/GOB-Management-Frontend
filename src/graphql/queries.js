@@ -46,6 +46,27 @@ export async function queryLogDays(source, catalogue, entity) {
   return graphql(query);
 }
 
+export async function queryJobs(source, catalogue, entity) {
+  const select = getLogsSelect(source, catalogue, entity);
+  const query = `
+  {
+    jobs ${select} {
+      processId,
+      day,
+      name,
+      source,
+      catalogue,
+      entity,
+      starttime,
+      endtime,
+      level,
+      count
+    }
+  }
+  `;
+  return graphql(query);
+}
+
 async function _queryLogs(select) {
   const query = `
   query {

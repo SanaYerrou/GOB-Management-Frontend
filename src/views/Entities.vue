@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import _ from "lodash";
 import { entities } from "../services/gob";
 
 export default {
@@ -49,13 +50,17 @@ export default {
       this.entities = await entities(this.source, this.catalogue);
     },
     catalogues() {
-      return _.uniqBy(this.entities.map(e => e.catalogue))
+      return _.uniqBy(this.entities.map(e => e.catalogue));
     },
     catalogueSources(catalogue) {
-      return _.uniqBy(this.entities.filter(e => e.catalogue === catalogue).map(e => e.source))
+      return _.uniqBy(
+        this.entities.filter(e => e.catalogue === catalogue).map(e => e.source)
+      );
     },
     catalogueSourceEntities(catalogue, source) {
-      return this.entities.filter(e => e.catalogue === catalogue && e.source === source)
+      return this.entities.filter(
+        e => e.catalogue === catalogue && e.source === source
+      );
     }
   },
   async mounted() {
@@ -74,6 +79,6 @@ export default {
 
 <style scoped>
 .name {
-    font-weight: bolder;
+  font-weight: bolder;
 }
 </style>

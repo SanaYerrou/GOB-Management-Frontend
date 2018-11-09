@@ -1,14 +1,14 @@
 <template>
     <div>
-        {{job.startLog.name}}
-        {{job.startLog.source}} {{job.startLog.entity}}
-        <b-badge v-for="level in job.logLevels" :key="level"
-                 class="ml-2" :class="level"
+        {{job.name}}
+        {{job.source}} {{job.entity}}
+        <b-badge v-for="level in job.levels" :key="level.level"
+                 class="ml-2" :class="level.level"
                  variant="light">
-            {{level}} {{job.jobLogs.filter(log => log.level === level).length}}
+            {{level.level}} {{level.count}}
         </b-badge>
         <div>
-            {{job.startLog.timestamp | moment("dddd, DD MMMM YYYY, HH:mm:ss")}}
+            {{job.starttime | moment("dddd, DD MMMM YYYY, HH:mm:ss")}}
         </div>
     </div>
 </template>

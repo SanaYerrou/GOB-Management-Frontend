@@ -5,6 +5,7 @@ import {
   querySourceEntities,
   queryLogDays,
   queryLogs,
+  queryJobs,
   queryLogsForJob
 } from "../graphql/queries";
 
@@ -54,39 +55,37 @@ export async function logsForJob(process_id) {
   return _logs(data);
 }
 
-export function jobs(logs) {
-  var processIds = _.uniq(logs.map(log => log.processId));
+export async function getJobs(source, catalogue, entity) {
+  var data = await queryJobs(source, catalogue, entity);
 
-  // Sort logs, oldest first
-  logs = _.orderBy(logs, ["logid"]);
+  // Jobs have an entry per level and count
+  // Group the jobs on processId to get the list of jobs (processIds)
+  var processIds = _.groupBy(data.jobs, "processId");
 
-  return processIds.map(processId => {
-    var jobLogs = logs.filter(log => log.processId === processId);
+  // Determine the levels per processId
+  var jobs = Object.entries(processIds).map(([, jobs]) => {
+    // Take the information from the first job
+    const job = jobs[0];
+    // And compute the levels from the complete list of jobs
     return {
-      startLog: jobLogs[0],
-      endLog: jobLogs[jobLogs.length - 1],
-      logLevels: _.uniq(jobLogs.map(log => log.level)),
-      processId: jobLogs[0].processId,
-      jobLogs
+      ...job,
+      date: new Date(moment(job.day).startOf("day")),
+      levels: jobs.map(job => ({ level: job.level, count: job.count }))
     };
   });
+
+  // Delete the level and count, they are replaced by levels
+  jobs.forEach(job => {
+    delete job.level;
+    delete job.count;
+  });
+
+  return jobs;
 }
 
 export function jobRunsOnDate(job, date) {
-  var startDate = moment(job.startLog.timestamp).startOf("day");
-  var endDate = moment(job.endLog.timestamp).endOf("day");
+  var startDate = moment(job.starttime).startOf("day");
+  var endDate = moment(job.endtime).endOf("day");
   var onDate = new Date(date);
   return startDate <= onDate && onDate <= endDate;
-}
-
-export function logJobs(logDays) {
-  return _.groupBy(logDays, "job");
-}
-
-export function logLevels(logDays) {
-  return _.groupBy(logDays, "level");
-}
-
-export function logDates(logDays) {
-  return _.groupBy(logDays, "date");
 }

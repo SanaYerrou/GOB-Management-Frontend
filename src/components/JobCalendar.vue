@@ -5,8 +5,9 @@
 </template>
 
 <script>
+import _ from "lodash";
+
 import { amsmiddengrijs, amslichtgrijs } from "../services/colors";
-import { logDates } from "../services/gob";
 
 import CalendarDay from "./CalendarDay";
 
@@ -18,13 +19,14 @@ const COLORS = {
 export default {
   name: "JobCalendar",
   props: {
-    logDays: Array,
+    jobs: Array,
     onDay: Function,
     date: Date
   },
   computed: {
     attrs: function() {
-      return Object.entries(logDates(this.logDays)).map(([date, logDays]) => ({
+      var logDays = _.groupBy(this.jobs, "date");
+      return Object.entries(logDays).map(([date, logDays]) => ({
         key: date,
         highlight: {
           backgroundColor:
