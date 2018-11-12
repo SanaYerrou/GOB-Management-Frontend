@@ -21,6 +21,7 @@ describe("queries service", () => {
     sourceEntities {
       id
       source
+      catalogue
       entity
     }
   }
@@ -38,12 +39,15 @@ describe("queries service", () => {
       edges {
         node {
           source
+          destination
+          catalogue
           entity
           processId
           logid
           timestamp
           name
           level
+          msgid
           msg
           data
         }
@@ -56,16 +60,19 @@ describe("queries service", () => {
     result = await queryLogs("x", "y");
     expect(query).toBe(`
   query {
-    logs (source: "x" entity: "y") {
+    logs (source: "x" catalogue: "y" ) {
       edges {
         node {
           source
+          destination
+          catalogue
           entity
           processId
           logid
           timestamp
           name
           level
+          msgid
           msg
           data
         }

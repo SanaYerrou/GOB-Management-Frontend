@@ -3,11 +3,16 @@
         <h1>
             Jobs
             <span class="float-right">
-                <b-btn title="Ververs" variant="outline-secondary" @click="loadData()">
-                    <font-awesome-icon icon="sync" class="fa-xs" />
+                <b-btn title="Ververs" variant="outline-secondary" @click="loadDays()">
+                    <font-awesome-icon icon="sync" class="fa-xs" :class="{'fa-spin': loading}"/>
                 </b-btn>
             </span>
         </h1>
+        <div>
+            <b-badge v-if="source">Bron: {{source}}</b-badge>
+            <b-badge v-if="catalogue">Catalogus: {{catalogue}}</b-badge>
+            <b-badge v-if="entity">Entiteit: {{entity}}</b-badge>
+        </div>
         <div class="row justify-content-center">
             <div class="col col-xs-12 col-lg-auto mb-2">
                 <div class="align-center">
@@ -15,14 +20,20 @@
                                   :onDay="onDay"
                                   :date="date"
                     ></job-calendar>
+                    <div v-if="loading">
+                        Laden van jobs
+                        <font-awesome-icon icon="sync" class="fa-xs fa-spin"/>
+                    </div>
                 </div>
             </div>
-            <div class="col">
+
+            <div class="col" v-if="jobs.length">
                 <div v-for="job in jobs" :key="job.processId"
                      class="mb-2">
 
                     <div>
                         <b-btn v-b-toggle="job.processId"
+                               @click="getLogs(job)"
                                block
                                variant="outline-secondary">
                             <job-header :job="job"></job-header>
@@ -30,13 +41,18 @@
 
                         <b-collapse :id="job.processId"
                                     class="mt-2">
-                            <b-card>
-                                <logs :logs="job.jobLogs"></logs>
+                            <div v-if="!job.logs">
+                                Laden van logs
+                                <font-awesome-icon icon="sync" class="fa-xs fa-spin"/>
+                            </div>
+                            <b-card v-if="job.logs">
+                                <logs :logs="job.logs"></logs>
                             </b-card>
                         </b-collapse>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </template>
@@ -46,18 +62,21 @@ import JobCalendar from "../components/JobCalendar";
 import JobHeader from "../components/JobHeader";
 import Logs from "../components/Logs";
 
-import { logs, jobs, jobRunsOnDate } from "../services/gob";
+import { getJobs, logsForJob, jobRunsOnDate } from "../services/gob";
 
 export default {
   name: "entities",
   data() {
     return {
       source: null,
+      catalogue: null,
       entity: null,
-      logs: [],
+
       allJobs: [],
       jobs: [],
-      date: null
+
+      date: null,
+      loading: false
     };
   },
   components: {
@@ -66,20 +85,33 @@ export default {
     Logs
   },
   methods: {
-    async loadData() {
+    async loadDays() {
+      this.loading = true;
+
       this.source = this.$route.query.source;
+      this.catalogue = this.$route.query.catalogue;
       this.entity = this.$route.query.entity;
 
-      this.logs = await logs(this.source, this.entity);
-      this.allJobs = jobs(this.logs).reverse(); // Most recent job first
+      this.allJobs = [];
+      this.jobs = [];
 
-      var date = this.date; // save any current set date
-      this.date = null; // set this.date to null
+      this.allJobs = await getJobs(this.source, this.catalogue, this.entity);
 
-      this.getJobs(date); // load jobs for data (sets this.date)
+      const date = this.date; // save any current set date
+      this.date = null; // set this.date to null => select all dates
+      this.getJobs(date);
+
+      this.loading = false;
     },
-    onDay(data) {
+    async onDay(data) {
       this.getJobs(data.date);
+    },
+    async getLogs(job) {
+      // Load logs on demand
+      if (!job.logs) {
+        job.logs = await logsForJob(job.processId);
+        this.$forceUpdate();
+      }
     },
     getJobs(date = null) {
       this.jobs = this.allJobs;
@@ -94,18 +126,25 @@ export default {
     }
   },
   async mounted() {
-    this.loadData();
+    this.loadDays();
   },
   watch: {
     "$route.query.source"() {
-      this.loadData();
+      this.loadDays();
+    },
+    "$route.query.catalogue"() {
+      this.loadDays();
     },
     "$route.query.entity"() {
-      this.loadData();
+      this.loadDays();
     }
   }
 };
 </script>
 
 <style scoped>
+.badge {
+  margin-left: 5px;
+  margin-bottom: 10px;
+}
 </style>

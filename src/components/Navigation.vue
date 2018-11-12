@@ -12,7 +12,7 @@
 
             <b-navbar-nav>
                 <b-nav-item to="/sources">Bronnen</b-nav-item>
-                <b-nav-item to="/catalogues" disabled>Catalogi</b-nav-item>
+                <b-nav-item to="/catalogues">Catalogi</b-nav-item>
                 <b-nav-item to="/entities">Entiteiten</b-nav-item>
                 <b-nav-item to="/jobs">Jobs</b-nav-item>
             </b-navbar-nav>

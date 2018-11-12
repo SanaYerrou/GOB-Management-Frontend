@@ -1,12 +1,4 @@
-import {
-  sources,
-  entities,
-  logs,
-  jobs,
-  jobRunsOnDate,
-  logLevels,
-  jobsPerDate
-} from "../../src/services/gob";
+import { sources, entities, logs, jobRunsOnDate } from "../../src/services/gob";
 
 const SOURCES = {
   EMPTY: [],
@@ -180,46 +172,12 @@ describe("gob service", () => {
     expect(l.length).toBe(5);
   });
 
-  it("retrieves all jobs", async () => {
-    var l;
-    var j;
-
-    mockLogs = LOGS.EMPTY;
-    l = await logs();
-    j = jobs(l);
-    expect(j.length).toBe(0);
-
-    mockLogs = LOGS.ONE;
-    l = await logs();
-    j = jobs(l);
-    expect(j.length).toBe(1);
-
-    mockLogs = LOGS.MULTIPLE;
-    l = await logs();
-    j = jobs(l);
-    expect(j.length).toBe(3);
-    expect(j[0]).toEqual({
-      startLog: { logid: 0, processId: 1, level: "level1", data: null },
-      endLog: { logid: 1, processId: 1, level: "level2", data: null },
-      logLevels: ["level1", "level2"],
-      processId: 1,
-      jobLogs: [
-        { logid: 0, processId: 1, level: "level1", data: null },
-        { logid: 1, processId: 1, level: "level2", data: null }
-      ]
-    });
-  });
-
   it("tells if a job runs on a date", () => {
     var job;
 
     job = {
-      startLog: {
-        timestamp: new Date(2020, 2, 15)
-      },
-      endLog: {
-        timestamp: new Date(2020, 2, 16)
-      }
+      starttime: new Date(2020, 2, 15),
+      endtime: new Date(2020, 2, 16)
     };
     expect(jobRunsOnDate(job, new Date(2020, 2, 14))).toBe(false);
     expect(jobRunsOnDate(job, new Date(2020, 2, 15))).toBe(true);
@@ -227,36 +185,11 @@ describe("gob service", () => {
     expect(jobRunsOnDate(job, new Date(2020, 2, 17))).toBe(false);
 
     job = {
-      startLog: {
-        timestamp: new Date(2020, 2, 15)
-      },
-      endLog: {
-        timestamp: new Date(2020, 2, 15)
-      }
+      starttime: new Date(2020, 2, 15),
+      endtime: new Date(2020, 2, 15)
     };
     expect(jobRunsOnDate(job, new Date(2020, 2, 14))).toBe(false);
     expect(jobRunsOnDate(job, new Date(2020, 2, 15))).toBe(true);
     expect(jobRunsOnDate(job, new Date(2020, 2, 16))).toBe(false);
-  });
-
-  it("groups job logs on level", async () => {
-    mockLogs = LOGS.MULTIPLE;
-    var l = await logs();
-    var j = jobs(l);
-
-    var levels = logLevels(j);
-    expect(Object.keys(levels)).toEqual(["level1", "level2", "level"]);
-  });
-
-  it("groups jobs on start date", async () => {
-    mockLogs = LOGS.MULTIPLE.map((log, i) => ({
-      ...log,
-      timestamp: new Date(2020, 5, 20 + i)
-    }));
-    var l = await logs();
-    var j = jobs(l);
-
-    var dates = jobsPerDate(j);
-    expect(Object.keys(dates).length).toBe(j.length);
   });
 });

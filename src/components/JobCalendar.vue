@@ -5,8 +5,9 @@
 </template>
 
 <script>
+import _ from "lodash";
+
 import { amsmiddengrijs, amslichtgrijs } from "../services/colors";
-import { jobsPerDate } from "../services/gob";
 
 import CalendarDay from "./CalendarDay";
 
@@ -24,7 +25,8 @@ export default {
   },
   computed: {
     attrs: function() {
-      return Object.entries(jobsPerDate(this.jobs)).map(([date, jobs]) => ({
+      var logDays = _.groupBy(this.jobs, "date");
+      return Object.entries(logDays).map(([date, logDays]) => ({
         key: date,
         highlight: {
           backgroundColor:
@@ -33,7 +35,7 @@ export default {
               : COLORS.unselected
         },
         dates: new Date(date),
-        customData: jobs,
+        customData: logDays,
         popover: {
           component: CalendarDay
         }

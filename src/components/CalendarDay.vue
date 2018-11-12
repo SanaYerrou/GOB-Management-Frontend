@@ -1,15 +1,13 @@
 <template>
     <div>
         <div>Jobs: {{jobs.length}}</div>
-        <div v-for="[level, logs] in Object.entries(logLevels)" :key="level">
-            <span :class="level">{{level}}</span> {{logs.length}}
+        <div v-for="[level, count] in Object.entries(levels)" :key="level">
+            <span :class="level">{{level}}</span> {{count}}
         </div>
     </div>
 </template>
 
 <script>
-import { logLevels } from "../services/gob";
-
 export default {
   name: "CalendarDay",
   props: {
@@ -19,8 +17,16 @@ export default {
     jobs() {
       return this.attribute.customData;
     },
-    logLevels() {
-      return logLevels(this.jobs);
+    levels() {
+      return this.jobs.reduce((level, job) => {
+        job.levels.forEach(l => {
+          if (!level[l.level]) {
+            level[l.level] = 0;
+          }
+          level[l.level] += l.count;
+        });
+        return level;
+      }, {});
     }
   }
 };
