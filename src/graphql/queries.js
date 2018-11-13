@@ -51,7 +51,7 @@ export async function queryJobs(filter = {}) {
 
   var filterExpression = "";
   if (filters.length) {
-    const expr =  filters.reduce((s, [k, v]) => s + `${k}:${v} `, "");
+    const expr =  filters.reduce((s, [k, v]) => s + `${k}:"${v}" `, "");
     filterExpression = `(${expr})`;
   }
 

@@ -89,6 +89,12 @@ export default {
     Logs
   },
   methods: {
+    getFilter() {
+      return ['source', 'catalogue', 'entity', 'startyear', 'startmonth'].reduce((q, attr) => {
+        q[attr] = this[attr];
+        return q;
+      }, {});
+    },
     async loadDays() {
       this.loading = true;
 
@@ -101,10 +107,7 @@ export default {
       this.allJobs = [];
       this.jobs = [];
 
-      const filter = ['source', 'catalogue', 'entity', 'startyear', 'startmonth'].reduce((q, attr) => {
-        q[attr] = this[attr];
-        return q;
-      }, {});
+      const filter = this.getFilter();
       this.allJobs = await getJobs(filter);
 
       const date = this.date; // save any current set date
@@ -119,7 +122,7 @@ export default {
     async onMonthYear(month, year) {
       this.startyear = year;
       this.startmonth = month;
-      this.loadDays();
+      this.$router.push({name: this.$route.name, query: this.getFilter()});
     },
     async getLogs(job) {
       // Load logs on demand
@@ -144,6 +147,12 @@ export default {
     this.loadDays();
   },
   watch: {
+    "$route.query.startyear"() {
+      this.loadDays();
+    },
+    "$route.query.startmonth"() {
+      this.loadDays();
+    },
     "$route.query.source"() {
       this.loadDays();
     },
