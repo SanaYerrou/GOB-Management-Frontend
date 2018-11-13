@@ -18,6 +18,7 @@
                 <div class="align-center">
                     <job-calendar :jobs="allJobs"
                                   :onDay="onDay"
+                                  :onMonthYear="onMonthYear"
                                   :date="date"
                     ></job-calendar>
                     <div v-if="loading">
@@ -76,6 +77,9 @@ export default {
       jobs: [],
 
       date: null,
+      startyear: null,
+      startmonth: null,
+
       loading: false
     };
   },
@@ -91,11 +95,17 @@ export default {
       this.source = this.$route.query.source;
       this.catalogue = this.$route.query.catalogue;
       this.entity = this.$route.query.entity;
+      this.startyear = this.startyear || new Date().getFullYear();
+      this.startmonth = this.startmonth || new Date().getMonth() + 1;
 
       this.allJobs = [];
       this.jobs = [];
 
-      this.allJobs = await getJobs(this.source, this.catalogue, this.entity);
+      const filter = ['source', 'catalogue', 'entity', 'startyear', 'startmonth'].reduce((q, attr) => {
+        q[attr] = this[attr];
+        return q;
+      }, {});
+      this.allJobs = await getJobs(filter);
 
       const date = this.date; // save any current set date
       this.date = null; // set this.date to null => select all dates
@@ -105,6 +115,11 @@ export default {
     },
     async onDay(data) {
       this.getJobs(data.date);
+    },
+    async onMonthYear(month, year) {
+      this.startyear = year;
+      this.startmonth = month;
+      this.loadDays();
     },
     async getLogs(job) {
       // Load logs on demand

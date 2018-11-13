@@ -46,11 +46,18 @@ export async function queryLogDays(source, catalogue, entity) {
   return graphql(query);
 }
 
-export async function queryJobs(source, catalogue, entity) {
-  const select = getLogsSelect(source, catalogue, entity);
+export async function queryJobs(filter = {}) {
+  var filters = Object.entries(filter).filter(([k, v]) => v);
+
+  var filterExpression = "";
+  if (filters.length) {
+    const expr =  filters.reduce((s, [k, v]) => s + `${k}:${v} `, "");
+    filterExpression = `(${expr})`;
+  }
+
   const query = `
   {
-    jobs ${select} {
+    jobs ${filterExpression} {
       processId,
       day,
       name,
