@@ -11,17 +11,17 @@ import {
 
 export async function sources() {
   var data = await querySourceEntities();
-  return _.uniq(data.sourceEntities.map(item => item.source));
+  return _.uniq(data.sourceEntities.map(item => item.source).filter(source => source));
 }
 
 export async function catalogues() {
   var data = await querySourceEntities();
-  return _.uniq(data.sourceEntities.map(item => item.catalogue));
+  return _.uniq(data.sourceEntities.map(item => item.catalogue).filter(catalogue => catalogue));
 }
 
 export async function entities(source, catalogue) {
   var data = await querySourceEntities();
-  data = data.sourceEntities;
+  data = data.sourceEntities.filter(item => item.source && item.catalogue);
   if (source) {
     data = data.filter(item => item.source === source);
   }
@@ -55,8 +55,8 @@ export async function logsForJob(process_id) {
   return _logs(data);
 }
 
-export async function getJobs(source, catalogue, entity) {
-  var data = await queryJobs(source, catalogue, entity);
+export async function getJobs(filter) {
+  var data = await queryJobs(filter);
 
   // Jobs have an entry per level and count
   // Group the jobs on processId to get the list of jobs (processIds)

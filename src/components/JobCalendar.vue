@@ -1,6 +1,7 @@
 <template>
     <v-calendar :attributes='attrs'
-                @dayclick="onDay">
+                @dayclick="onDay"
+                @update:fromPage="onPage">
     </v-calendar>
 </template>
 
@@ -21,7 +22,13 @@ export default {
   props: {
     jobs: Array,
     onDay: Function,
+    onMonthYear: Function,
     date: Date
+  },
+  methods: {
+    onPage(page) {
+      this.onMonthYear(page.month, page.year)
+    }
   },
   computed: {
     attrs: function() {
