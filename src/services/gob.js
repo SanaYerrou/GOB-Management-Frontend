@@ -11,12 +11,18 @@ import {
 
 export async function sources() {
   var data = await querySourceEntities();
-  return _.uniq(data.sourceEntities.map(item => item.source).filter(source => source));
+  return _.uniq(
+    data.sourceEntities.map(item => item.source).filter(source => source)
+  );
 }
 
 export async function catalogues() {
   var data = await querySourceEntities();
-  return _.uniq(data.sourceEntities.map(item => item.catalogue).filter(catalogue => catalogue));
+  return _.uniq(
+    data.sourceEntities
+      .map(item => item.catalogue)
+      .filter(catalogue => catalogue)
+  );
 }
 
 export async function entities(source, catalogue) {
