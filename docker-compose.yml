@@ -1,8 +1,11 @@
 version: '3.0'
 services:
   gob_management_frontend:
+    container_name: gobmanagement_frontend
     build:
       context: .
+      args:
+        NPMSCRIPT: ${NPMSCRIPT}
     ports:
       - "8080:80"
     ipc: host
