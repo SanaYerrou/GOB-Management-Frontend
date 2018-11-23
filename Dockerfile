@@ -1,5 +1,8 @@
 FROM node:8.9
 
+# Use NPMSCRIPT=builddev for local dockers
+ARG NPMSCRIPT=build
+
 MAINTAINER datapunt.ois@amsterdam.nl
 
 EXPOSE 80
@@ -18,8 +21,6 @@ RUN git config --global url."https://".insteadOf git:// && \
 
 COPY . /app
 
-# Use NPMSCRIPT=builddev for local dockers
-ARG NPMSCRIPT=build
 RUN npm run $NPMSCRIPT && cp -r /app/dist/. /var/www/html/
 
 # forward request and error logs to docker log collector
