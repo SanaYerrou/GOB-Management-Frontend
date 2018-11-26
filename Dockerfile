@@ -3,7 +3,7 @@ FROM node:8.9
 # Use NPMSCRIPT=builddev for local dockers
 ARG NPMSCRIPT=build
 
-MAINTAINER datapunt.ois@amsterdam.nl
+MAINTAINER datapunt@amsterdam.nl
 
 EXPOSE 80
 
