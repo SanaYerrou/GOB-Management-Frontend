@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     onPage(page) {
-      this.onMonthYear(page.month, page.year)
+      this.onMonthYear(page.month, page.year);
     }
   },
   computed: {

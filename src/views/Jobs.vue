@@ -89,8 +89,8 @@ export default {
     Logs
   },
   methods: {
-    getFilter() {
-      return ['source', 'catalogue', 'entity', 'startyear', 'startmonth'].reduce((q, attr) => {
+    getFilter () {
+      return ["source", "catalogue", "entity", "startyear", "startmonth"].reduce((q, attr) => {
         q[attr] = this[attr];
         return q;
       }, {});
@@ -119,7 +119,7 @@ export default {
     async onDay(data) {
       this.getJobs(data.date);
     },
-    async onMonthYear(month, year) {
+    async onMonthYear (month, year) {
       this.startyear = year;
       this.startmonth = month;
       this.$router.push({name: this.$route.name, query: this.getFilter()});

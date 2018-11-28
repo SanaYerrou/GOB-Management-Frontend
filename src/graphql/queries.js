@@ -47,11 +47,11 @@ export async function queryLogDays(source, catalogue, entity) {
 }
 
 export async function queryJobs(filter = {}) {
-  var filters = Object.entries(filter).filter(([k, v]) => v);
+  var filters = Object.values(filter).filter(v => v);
 
   var filterExpression = "";
   if (filters.length) {
-    const expr =  filters.reduce((s, [k, v]) => s + `${k}:"${v}" `, "");
+    const expr = filters.reduce((s, [k, v]) => s + `${k}:"${v}" `, "");
     filterExpression = `(${expr})`;
   }
 
