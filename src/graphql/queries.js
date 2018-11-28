@@ -100,6 +100,40 @@ async function _queryLogs(select) {
   return graphql(query);
 }
 
+export async function queryServices() {
+  const query = `
+  query {
+    services {
+      edges {
+        node {
+          name
+          isAlive
+          timestamp
+        }
+      }
+    }
+  }
+  `;
+  return graphql(query);
+}
+
+export async function queryTasks() {
+  const query = `
+  query {
+    tasks {
+      edges {
+        node {
+          serviceName
+          name
+          isAlive
+        }
+      }
+    }
+  }
+  `;
+  return graphql(query);
+}
+
 export async function queryLogsForJob(process_id) {
   const select = `(processId: "${process_id}")`;
   return _queryLogs(select);
