@@ -5,24 +5,29 @@ const SOURCES = {
   ONE: [
     {
       source: "source",
+      catalogue: "catalogue",
       entity: "entity"
     }
   ],
   MULTIPLE: [
     {
       source: "source1",
+      catalogue: "catalogue",
       entity: "entity1"
     },
     {
       source: "source1",
+      catalogue: "catalogue",
       entity: "entity2"
     },
     {
       source: "source2",
+      catalogue: "catalogue",
       entity: "entity2"
     },
     {
       source: "source3",
+      catalogue: "catalogue",
       entity: "entity2"
     }
   ]
@@ -135,12 +140,13 @@ describe("gob service", () => {
     expect(e.length).toBe(0);
 
     source = "source";
+    var catalogue = "catalogue";
 
     e = await entities(source);
     expect(e.length).toBe(0);
 
     mockSources = SOURCES.ONE;
-    e = await entities(source);
+    e = await entities(source, catalogue);
     expect(e.length).toBe(1);
 
     source = "source1";

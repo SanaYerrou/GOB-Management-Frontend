@@ -1,0 +1,179 @@
+<template>
+  <div>
+    <div v-if="size === 'large'">
+      <table align="center">
+        <tr>
+          <td style="width:20%"></td>
+          <td style="width:40%" colspan="2" class="unitborder">
+            <font-awesome-icon icon="database" />
+          </td>
+          <td style="width:40%" colspan="2"></td>
+        </tr>
+        <tr>
+          <td style="width:20%"></td>
+          <td style="width:20%">
+            <font-awesome-icon icon="long-arrow-alt-up" />
+          </td>
+          <td style="width:20%">
+            <font-awesome-icon icon="long-arrow-alt-down" />
+          </td>
+          <td style="width:20%"></td>
+          <td style="width:20%"></td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <status-indicator
+              name="Import"
+              icon="download"
+              :service="services.Import"
+            ></status-indicator>
+          </td>
+          <td style="width:20%">
+            <status-indicator
+              name="Workflow"
+              icon="cogs"
+              :service="services.Workflow"
+            ></status-indicator>
+          </td>
+          <td style="width:20%">
+            <status-indicator name="BeheerAPI" icon="plug"></status-indicator>
+          </td>
+          <td style="width:20%">
+            <status-indicator name="IRIS" icon="tv"></status-indicator>
+          </td>
+          <td style="width:20%"></td>
+        </tr>
+        <tr>
+          <td colspan="5" class="unitborder">
+            <font-awesome-icon icon="envelope" />
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <status-indicator
+              :reversed="true"
+              name="Compare"
+              icon="balance-scale"
+              :service="services.Upload"
+            ></status-indicator>
+          </td>
+          <td style="width:20%">
+            <status-indicator
+              :reversed="true"
+              name="Link"
+              icon="link"
+              :service="services.Upload"
+            ></status-indicator>
+          </td>
+          <td style="width:20%">
+            <status-indicator
+              :reversed="true"
+              :reversedIcon="true"
+              name="Upload"
+              icon="upload"
+              :service="services.Upload"
+            ></status-indicator>
+          </td>
+          <td style="width:20%">
+            <status-indicator
+              :reversed="true"
+              :reversedIcon="true"
+              name="API"
+              icon="plug"
+            ></status-indicator>
+          </td>
+          <td style="width:20%">
+            <status-indicator
+              :reversed="true"
+              name="Export"
+              icon="file-export"
+              :service="services.Export"
+            ></status-indicator>
+          </td>
+        </tr>
+        <tr>
+          <td style="width:20%">
+            <font-awesome-icon icon="long-arrow-alt-up" />
+          </td>
+          <td style="width:20%">
+            <font-awesome-icon icon="long-arrow-alt-up" />
+          </td>
+          <td style="width:20%"><font-awesome-icon icon="arrows-alt-v" /></td>
+          <td style="width:20%">
+            <font-awesome-icon icon="long-arrow-alt-up" />
+          </td>
+          <td style="width:20%"></td>
+        </tr>
+        <tr>
+          <td style="width:80%" colspan="4" class="unitborder">
+            <font-awesome-icon icon="database" />
+          </td>
+          <td style="width:20%"></td>
+        </tr>
+      </table>
+    </div>
+
+    <div v-else>
+      <b-badge class="badge-pill" :variant="variant"> &nbsp; </b-badge>
+    </div>
+  </div>
+</template>
+
+<script>
+import { services, isAlive } from "../services/status";
+import StatusIndicator from "./StatusIndicator";
+
+const REFRESH_INTERVAL = 5000;
+
+export default {
+  name: "StatusReport",
+  components: { StatusIndicator },
+  props: {
+    size: String
+  },
+  data() {
+    return {
+      services: {},
+      interval: null
+    };
+  },
+  computed: {
+    variant() {
+      var allAlive =
+        this.services &&
+        Object.values(this.services).reduce(
+          (alive, service) => alive && isAlive(service),
+          true
+        );
+      return allAlive ? "success" : "danger";
+    }
+  },
+  methods: {
+    async getServices() {
+      const status = await services();
+      this.services = status.reduce((obj, service) => {
+        obj[service.name] = service;
+        return obj;
+      }, {});
+    }
+  },
+  async mounted() {
+    this.getServices();
+    this.interval = window.setInterval(this.getServices, REFRESH_INTERVAL);
+  },
+  destroyed() {
+    if (this.interval) {
+      window.clearInterval(this.interval);
+    }
+    this.interval = null;
+  }
+};
+</script>
+
+<style scoped>
+.unitborder {
+  border-style: solid;
+  border-width: thin;
+  border-color: black;
+}
+</style>
