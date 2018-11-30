@@ -126,7 +126,7 @@ export default {
     async onDay(data) {
       this.getJobs(data.date);
     },
-    async onMonthYear(month, year) {
+    async onMonthYear (month, year) {
       this.startyear = year;
       this.startmonth = month;
       this.$router.push({ name: this.$route.name, query: this.getFilter() });
