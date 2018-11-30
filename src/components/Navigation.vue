@@ -8,9 +8,9 @@
     </b-navbar-brand>
 
     <b-collapse is-nav id="nav_collapse">
-        <router-link to="/status">
-            <status-report size="small" class="mb-1"></status-report>
-        </router-link>
+      <router-link to="/status">
+        <status-report size="small" class="mb-1"></status-report>
+      </router-link>
       <b-navbar-nav>
         <b-nav-item to="/sources">Bronnen</b-nav-item>
         <b-nav-item to="/catalogues">Catalogi</b-nav-item>
