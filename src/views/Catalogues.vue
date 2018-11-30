@@ -1,17 +1,19 @@
 <template>
+  <div>
+    <h1>Catalogi</h1>
     <div>
-        <h1>Catalogi</h1>
-        <div>
-            <div v-for="catalogue in catalogues" :key="catalogue">
-                <b-btn :to="{name: 'entities', query: { catalogue }}"
-                       block
-                       class="mb-2"
-                       variant="outline-secondary">
-                    {{catalogue}}
-                </b-btn>
-            </div>
-        </div>
+      <div v-for="catalogue in catalogues" :key="catalogue">
+        <b-btn
+          :to="{ name: 'entities', query: { catalogue } }"
+          block
+          class="mb-2"
+          variant="outline-secondary"
+        >
+          {{ catalogue }}
+        </b-btn>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -35,5 +37,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -47,7 +47,7 @@ export async function queryLogDays(source, catalogue, entity) {
 }
 
 export async function queryJobs(filter = {}) {
-  var filters = Object.values(filter).filter(v => v);
+  var filters = Object.entries(filter).filter(([, v]) => v);
 
   var filterExpression = "";
   if (filters.length) {
@@ -56,7 +56,7 @@ export async function queryJobs(filter = {}) {
   }
 
   const query = `
-  {
+  query {
     jobs ${filterExpression} {
       processId,
       day,

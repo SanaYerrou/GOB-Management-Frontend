@@ -1,10 +1,10 @@
 <template>
-    <div>
-        <div>Jobs: {{jobs.length}}</div>
-        <div v-for="[level, count] in Object.entries(levels)" :key="level">
-            <span :class="level">{{level}}</span> {{count}}
-        </div>
+  <div>
+    <div>Jobs: {{ jobs.length }}</div>
+    <div v-for="[level, count] in Object.entries(levels)" :key="level">
+      <span :class="level">{{ level }}</span> {{ count }}
     </div>
+  </div>
 </template>
 
 <script>
@@ -32,5 +32,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
