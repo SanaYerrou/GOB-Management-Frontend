@@ -36,10 +36,18 @@
             ></status-indicator>
           </td>
           <td style="width:20%">
-            <status-indicator name="BeheerAPI" icon="plug"></status-indicator>
+            <status-indicator
+              name="BeheerAPI"
+              icon="plug"
+              :service="services.beheerAPI"
+            ></status-indicator>
           </td>
           <td style="width:20%">
-            <status-indicator name="IRIS" icon="tv"></status-indicator>
+            <status-indicator
+              name="IRIS"
+              icon="tv"
+              :service="services.IRIS"
+            ></status-indicator>
           </td>
           <td style="width:20%"></td>
         </tr>
@@ -150,11 +158,7 @@ export default {
   },
   methods: {
     async getServices() {
-      const status = await services();
-      this.services = status.reduce((obj, service) => {
-        obj[service.name] = service;
-        return obj;
-      }, {});
+      this.services = await services();
     }
   },
   async mounted() {

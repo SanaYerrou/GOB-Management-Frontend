@@ -1,61 +1,62 @@
 <template>
+  <div>
+    <h1>
+      Jobs
+      <span class="float-right">
+        <b-btn title="Ververs" variant="outline-secondary" @click="loadDays();">
+          <font-awesome-icon
+            icon="sync"
+            class="fa-xs"
+            :class="{ 'fa-spin': loading }"
+          />
+        </b-btn>
+      </span>
+    </h1>
     <div>
-        <h1>
-            Jobs
-            <span class="float-right">
-                <b-btn title="Ververs" variant="outline-secondary" @click="loadDays()">
-                    <font-awesome-icon icon="sync" class="fa-xs" :class="{'fa-spin': loading}"/>
-                </b-btn>
-            </span>
-        </h1>
-        <div>
-            <b-badge v-if="source">Bron: {{source}}</b-badge>
-            <b-badge v-if="catalogue">Catalogus: {{catalogue}}</b-badge>
-            <b-badge v-if="entity">Entiteit: {{entity}}</b-badge>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col col-xs-12 col-lg-auto mb-2">
-                <div class="align-center">
-                    <job-calendar :jobs="allJobs"
-                                  :onDay="onDay"
-                                  :onMonthYear="onMonthYear"
-                                  :date="date"
-                    ></job-calendar>
-                    <div v-if="loading">
-                        Laden van jobs
-                        <font-awesome-icon icon="sync" class="fa-xs fa-spin"/>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col" v-if="jobs.length">
-                <div v-for="job in jobs" :key="job.processId"
-                     class="mb-2">
-
-                    <div>
-                        <b-btn v-b-toggle="job.processId"
-                               @click="getLogs(job)"
-                               block
-                               variant="outline-secondary">
-                            <job-header :job="job"></job-header>
-                        </b-btn>
-
-                        <b-collapse :id="job.processId"
-                                    class="mt-2">
-                            <div v-if="!job.logs">
-                                Laden van logs
-                                <font-awesome-icon icon="sync" class="fa-xs fa-spin"/>
-                            </div>
-                            <b-card v-if="job.logs">
-                                <logs :logs="job.logs"></logs>
-                            </b-card>
-                        </b-collapse>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+      <b-badge v-if="source">Bron: {{ source }}</b-badge>
+      <b-badge v-if="catalogue">Catalogus: {{ catalogue }}</b-badge>
+      <b-badge v-if="entity">Entiteit: {{ entity }}</b-badge>
     </div>
+    <div class="row justify-content-center">
+      <div class="col col-xs-12 col-lg-auto mb-2">
+        <div class="align-center">
+          <job-calendar
+            :jobs="allJobs"
+            :onDay="onDay"
+            :onMonthYear="onMonthYear"
+            :date="date"
+          ></job-calendar>
+          <div v-if="loading">
+            Laden van jobs
+            <font-awesome-icon icon="sync" class="fa-xs fa-spin" />
+          </div>
+        </div>
+      </div>
+
+      <div class="col" v-if="jobs.length">
+        <div v-for="job in jobs" :key="job.processId" class="mb-2">
+          <div>
+            <b-btn
+              v-b-toggle="job.processId"
+              @click="getLogs(job);"
+              block
+              variant="outline-secondary"
+            >
+              <job-header :job="job"></job-header>
+            </b-btn>
+
+            <b-collapse :id="job.processId" class="mt-2">
+              <div v-if="!job.logs">
+                Laden van logs
+                <font-awesome-icon icon="sync" class="fa-xs fa-spin" />
+              </div>
+              <b-card v-if="job.logs"> <logs :logs="job.logs"></logs> </b-card>
+            </b-collapse>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -89,8 +90,14 @@ export default {
     Logs
   },
   methods: {
-    getFilter () {
-      return ["source", "catalogue", "entity", "startyear", "startmonth"].reduce((q, attr) => {
+    getFilter() {
+      return [
+        "source",
+        "catalogue",
+        "entity",
+        "startyear",
+        "startmonth"
+      ].reduce((q, attr) => {
         q[attr] = this[attr];
         return q;
       }, {});
@@ -119,10 +126,10 @@ export default {
     async onDay(data) {
       this.getJobs(data.date);
     },
-    async onMonthYear (month, year) {
+    async onMonthYear(month, year) {
       this.startyear = year;
       this.startmonth = month;
-      this.$router.push({name: this.$route.name, query: this.getFilter()});
+      this.$router.push({ name: this.$route.name, query: this.getFilter() });
     },
     async getLogs(job) {
       // Load logs on demand

@@ -19,7 +19,10 @@ describe("status service", () => {
     var s;
 
     s = await services();
-    expect(s.length).toBe(0);
+    expect(s.Workflow.name).toBe("Workflow");
+    expect(s.BeheerAPI.name).toBe("BeheerAPI");
+    expect(s.IRIS.name).toBe("IRIS");
+    expect(Object.values(s).length).toBe(3);
   });
 
   it("can tell if a service is alive", async () => {
@@ -47,7 +50,7 @@ describe("status service", () => {
     };
     expect(isAlive(service)).toBe(false);
 
-    service = null
+    service = null;
     expect(isAlive(service)).toBe(null);
   });
 });
