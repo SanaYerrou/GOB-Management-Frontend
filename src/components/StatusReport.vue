@@ -39,7 +39,7 @@
             <status-indicator
               name="BeheerAPI"
               icon="plug"
-              :service="services.beheerAPI"
+              :service="services.BeheerAPI"
             ></status-indicator>
           </td>
           <td style="width:20%">
