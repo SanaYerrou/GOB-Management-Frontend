@@ -1,8 +1,6 @@
 <template>
-    <v-calendar :attributes='attrs'
-                @dayclick="onDay"
-                @update:fromPage="onPage">
-    </v-calendar>
+  <v-calendar :attributes="attrs" @dayclick="onDay" @update:fromPage="onPage">
+  </v-calendar>
 </template>
 
 <script>
@@ -27,7 +25,7 @@ export default {
   },
   methods: {
     onPage(page) {
-      this.onMonthYear(page.month, page.year)
+      this.onMonthYear(page.month, page.year);
     }
   },
   computed: {
@@ -52,5 +50,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

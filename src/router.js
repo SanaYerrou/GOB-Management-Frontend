@@ -5,6 +5,7 @@ import Sources from "./views/Sources";
 import Catalogues from "./views/Catalogues";
 import Entities from "./views/Entities";
 import Jobs from "./views/Jobs";
+import Status from "./views/Status";
 
 Vue.use(Router);
 
@@ -36,6 +37,11 @@ export default new Router({
       path: "/jobs",
       name: "jobs",
       component: Jobs
+    },
+    {
+      path: "/status",
+      name: "status",
+      component: Status
     }
   ]
 });

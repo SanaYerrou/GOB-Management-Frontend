@@ -47,16 +47,16 @@ export async function queryLogDays(source, catalogue, entity) {
 }
 
 export async function queryJobs(filter = {}) {
-  var filters = Object.entries(filter).filter(([k, v]) => v);
+  var filters = Object.entries(filter).filter(([, v]) => v);
 
   var filterExpression = "";
   if (filters.length) {
-    const expr =  filters.reduce((s, [k, v]) => s + `${k}:"${v}" `, "");
+    const expr = filters.reduce((s, [k, v]) => s + `${k}:"${v}" `, "");
     filterExpression = `(${expr})`;
   }
 
   const query = `
-  {
+  query {
     jobs ${filterExpression} {
       processId,
       day,
@@ -92,6 +92,40 @@ async function _queryLogs(select) {
           msgid
           msg
           data
+        }
+      }
+    }
+  }
+  `;
+  return graphql(query);
+}
+
+export async function queryServices() {
+  const query = `
+  query {
+    services {
+      edges {
+        node {
+          name
+          isAlive
+          timestamp
+        }
+      }
+    }
+  }
+  `;
+  return graphql(query);
+}
+
+export async function queryTasks() {
+  const query = `
+  query {
+    tasks {
+      edges {
+        node {
+          serviceName
+          name
+          isAlive
         }
       }
     }

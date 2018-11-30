@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "builddev": "vue-cli-service build --mode development",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit"
   },
@@ -37,6 +38,7 @@
     "babel-jest": "^23.0.1",
     "graphql-tag": "^2.9.0",
     "node-sass": "^4.9.0",
+    "prettier": "^1.15.2",
     "sass-loader": "^7.0.1",
     "vue-template-compiler": "^2.5.17"
   }

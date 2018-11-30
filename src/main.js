@@ -12,7 +12,24 @@ import VCalendar from "v-calendar";
 import "v-calendar/lib/v-calendar.min.css";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faSync } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSync,
+  faDownload,
+  faPlug,
+  faBalanceScale,
+  faUpload,
+  faTv,
+  faFileExport,
+  faEnvelope,
+  faDatabase,
+  faLevelUpAlt,
+  faLongArrowAltDown,
+  faLongArrowAltUp,
+  faArrowsAltV,
+  faCogs,
+  faEye,
+  faLink
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 Vue.config.productionTip = false;
@@ -32,7 +49,24 @@ Vue.use(require("vue-moment"), {
   moment
 });
 
-library.add(faSync);
+library.add([
+  faSync,
+  faDownload,
+  faPlug,
+  faBalanceScale,
+  faUpload,
+  faTv,
+  faFileExport,
+  faEnvelope,
+  faDatabase,
+  faLevelUpAlt,
+  faLongArrowAltDown,
+  faLongArrowAltUp,
+  faArrowsAltV,
+  faCogs,
+  faEye,
+  faLink
+]);
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 new Vue({
