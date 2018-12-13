@@ -62,6 +62,7 @@ export async function queryJobs(filter = {}) {
       day,
       name,
       source,
+      application,
       catalogue,
       entity,
       starttime,

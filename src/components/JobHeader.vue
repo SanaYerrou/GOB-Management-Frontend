@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{ job.name }} {{ job.source }} {{ job.entity }}
+    {{ job.name }} {{ job.application || job.source }} {{ job.entity }}
     <b-badge
       v-for="level in job.levels"
       :key="level.level"
