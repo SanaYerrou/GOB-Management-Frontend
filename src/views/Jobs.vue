@@ -1,17 +1,6 @@
 <template>
   <div>
-    <h1>
-      Jobs
-      <span class="float-right">
-        <b-btn title="Ververs" variant="outline-secondary" @click="loadDays();">
-          <font-awesome-icon
-            icon="sync"
-            class="fa-xs"
-            :class="{ 'fa-spin': loading }"
-          />
-        </b-btn>
-      </span>
-    </h1>
+    <h1>Jobs</h1>
     <div>
       <b-badge v-if="source">Bron: {{ source }}</b-badge>
       <b-badge v-if="catalogue">Catalogus: {{ catalogue }}</b-badge>
@@ -34,6 +23,24 @@
       </div>
 
       <div class="col" v-if="jobs.length">
+        <div v-if="new_logs || loading">
+          <b-btn
+            class="ERROR refresh-button btn-block"
+            title="Ververs"
+            variant="outline-secondary"
+            @click="loadDays();"
+          >
+            <span v-if="new_logs">
+              Let op: Er zijn nieuwe logs beschikbaar. Klik om te verversen
+            </span>
+            <font-awesome-icon
+              v-if="loading"
+              icon="sync"
+              class="fa-xs"
+              :class="{ 'fa-spin': loading }"
+            />
+          </b-btn>
+        </div>
         <div v-for="job in jobs" :key="job.processId" class="mb-2">
           <div>
             <b-btn
@@ -63,6 +70,7 @@
 import JobCalendar from "../components/JobCalendar";
 import JobHeader from "../components/JobHeader";
 import Logs from "../components/Logs";
+import { connect, disconnect, subscribe } from "../services/sockets";
 
 import { getJobs, logsForJob, jobRunsOnDate } from "../services/gob";
 
@@ -81,7 +89,8 @@ export default {
       startyear: null,
       startmonth: null,
 
-      loading: false
+      loading: false,
+      new_logs: false
     };
   },
   components: {
@@ -104,6 +113,7 @@ export default {
     },
     async loadDays() {
       this.loading = true;
+      this.new_logs = false;
 
       this.source = this.$route.query.source;
       this.catalogue = this.$route.query.catalogue;
@@ -111,8 +121,8 @@ export default {
       this.startyear = this.startyear || new Date().getFullYear();
       this.startmonth = this.startmonth || new Date().getMonth() + 1;
 
-      this.allJobs = [];
-      this.jobs = [];
+      // this.allJobs = [];
+      // this.jobs = [];
 
       const filter = this.getFilter();
       this.allJobs = await getJobs(filter);
@@ -126,7 +136,7 @@ export default {
     async onDay(data) {
       this.getJobs(data.date);
     },
-    async onMonthYear (month, year) {
+    async onMonthYear(month, year) {
       this.startyear = year;
       this.startmonth = month;
       this.$router.push({ name: this.$route.name, query: this.getFilter() });
@@ -152,6 +162,11 @@ export default {
   },
   async mounted() {
     this.loadDays();
+    connect();
+    subscribe("new_logs", () => (this.new_logs = true));
+  },
+  async beforeDestroy() {
+    disconnect();
   },
   watch: {
     "$route.query.startyear"() {
@@ -176,6 +191,9 @@ export default {
 <style scoped>
 .badge {
   margin-left: 5px;
+  margin-bottom: 10px;
+}
+.refresh-button {
   margin-bottom: 10px;
 }
 </style>

@@ -17,6 +17,8 @@
     "bootstrap-vue": "^2.0.0-rc.11",
     "graphql-request": "^1.8.2",
     "register-service-worker": "^1.0.0",
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0",
     "v-calendar": "^0.9.7",
     "vue": "^2.5.17",
     "vue-lodash": "^2.0.0",
