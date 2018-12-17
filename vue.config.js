@@ -4,9 +4,9 @@ module.exports = {
   devServer: {
     hot: true,
     disableHostCheck: true,
-    host: "0.0.0.0",
+    host: "localhost",
     headers: {
-      "Access-Control-Allow-Origin": "http://0.0.0.0:8080/",
+      "Access-Control-Allow-Origin": "http://localhost:8080/",
       "Access-Control-Allow-Credentials": "true",
       "Access-Control-Max-Age": "3600",
       "Access-Control-Allow-Headers":
