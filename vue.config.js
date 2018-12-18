@@ -1,6 +1,5 @@
 module.exports = {
-  baseUrl:
-    process.env.NODE_ENV === "production" ? "/GOB-Management-Frontend/" : "/",
+  baseUrl: "/",
   devServer: {
     hot: true,
     disableHostCheck: true,
