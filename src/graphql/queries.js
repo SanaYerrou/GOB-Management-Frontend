@@ -1,6 +1,6 @@
 import { request } from "graphql-request";
 
-const api = process.env.VUE_APP_API;
+const api = process.env.VUE_APP_API + "gob_management/graphql/";
 
 async function graphql(query) {
   return request(api, query);
@@ -62,6 +62,7 @@ export async function queryJobs(filter = {}) {
       day,
       name,
       source,
+      application,
       catalogue,
       entity,
       starttime,

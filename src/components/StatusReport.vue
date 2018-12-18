@@ -142,7 +142,7 @@ export default {
   data() {
     return {
       services: {},
-      interval: null
+      timeout: null
     };
   },
   computed: {
@@ -157,19 +157,19 @@ export default {
     }
   },
   methods: {
-    async getServices() {
+    async monitorServices() {
       this.services = await services();
+      this.timeout = window.setTimeout(this.monitorServices, REFRESH_INTERVAL);
     }
   },
   async mounted() {
-    this.getServices();
-    this.interval = window.setInterval(this.getServices, REFRESH_INTERVAL);
+    this.monitorServices();
   },
   destroyed() {
-    if (this.interval) {
-      window.clearInterval(this.interval);
+    if (this.timeout) {
+      window.clearTimeout(this.timeout);
     }
-    this.interval = null;
+    this.timeout = null;
   }
 };
 </script>

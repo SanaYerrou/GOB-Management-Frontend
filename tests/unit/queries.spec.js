@@ -55,7 +55,7 @@ describe("queries service", () => {
     }
   }
   `);
-    expect(api).toBe(process.env.VUE_APP_API);
+    expect(api).toBe(process.env.VUE_APP_API + "gob_management/graphql/");
 
     result = await queryLogs("x", "y");
     expect(query).toBe(`
