@@ -24,10 +24,10 @@ node {
 
     stage('Test') {
         tryStep "test", {
-            sh "docker-compose -f test/docker-compose.yml build && " +
-               "docker-compose -f test/docker-compose.yml run -u root --rm test"
+            sh "docker-compose -f .jenkins/test/docker-compose.yml build && " +
+               "docker-compose -f .jenkins/test/docker-compose.yml run -u root --rm test"
         }, {
-            sh "docker-compose -f test/docker-compose.yml down"
+            sh "docker-compose -f .jenkins/test/docker-compose.yml down"
         }
     }
 
