@@ -121,8 +121,8 @@ export default {
       this.startyear = this.startyear || new Date().getFullYear();
       this.startmonth = this.startmonth || new Date().getMonth() + 1;
 
-      // this.allJobs = [];
-      // this.jobs = [];
+      this.allJobs = [];
+      this.jobs = [];
 
       const filter = this.getFilter();
       this.allJobs = await getJobs(filter);
