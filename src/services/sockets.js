@@ -1,6 +1,6 @@
 import socketio from "socket.io-client";
 
-const uri = process.env.VUE_APP_API.replace(/^https?/, "ws");
+const uri = process.env.VUE_APP_API.replace(/^http(s?)/, "ws$1");
 
 export const socketInstance = socketio(uri, {
   path: "/gob_management/socket.io"
