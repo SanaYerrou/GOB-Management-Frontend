@@ -4,7 +4,7 @@ const uri = process.env.VUE_APP_API;
 
 export const socketInstance = socketio(uri, {
   path: "/gob_management/socket.io",
-  transports: ['websocket', 'polling']
+  transports: ["websocket", "polling"]
 });
 
 export function connect() {
@@ -20,6 +20,13 @@ export function subscribe(event, cb) {
   socketInstance.on(event, data => cb(data));
 }
 
-["connect", "disconnect", "connect_error", "connect_timeout", "reconnect", "reconnect_error"].map(e => {
+[
+  "connect",
+  "disconnect",
+  "connect_error",
+  "connect_timeout",
+  "reconnect",
+  "reconnect_error"
+].map(e => {
   subscribe(e, () => console.log("WS EVENT: " + e));
-})
+});
