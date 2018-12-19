@@ -1,9 +1,10 @@
 import socketio from "socket.io-client";
 
-const uri = process.env.VUE_APP_API.replace(/^http(s?)/, "ws$1");
+const uri = process.env.VUE_APP_API;
 
 export const socketInstance = socketio(uri, {
-  path: "/gob_management/socket.io"
+  path: "/gob_management/socket.io",
+  transports: ['websocket', 'polling']
 });
 
 export function connect() {
@@ -15,8 +16,10 @@ export function disconnect() {
 }
 
 export function subscribe(event, cb) {
+  console.log("SUBSCRIBE: ", event);
   socketInstance.on(event, data => cb(data));
 }
 
-socketInstance.on("connect", () => console.log("CONNECTED"));
-socketInstance.on("disconnect", () => console.log("DISCONNECTED"));
+["connect", "disconnect", "connect_error", "connect_timeout", "reconnect", "reconnect_error"].map(e => {
+  subscribe(e, () => console.log("WS EVENT: " + e));
+})
