@@ -20,13 +20,6 @@ export function subscribe(event, cb) {
   socketInstance.on(event, data => cb(data));
 }
 
-[
-  "connect",
-  "disconnect",
-  "connect_error",
-  "connect_timeout",
-  "reconnect",
-  "reconnect_error"
-].map(e => {
+["connect_error", "connect_timeout", "reconnect_error"].map(e => {
   subscribe(e, () => console.log("WS EVENT: " + e));
 });
