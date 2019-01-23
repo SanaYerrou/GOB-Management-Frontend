@@ -19,11 +19,8 @@ export default {
     },
     levels() {
       return this.jobs.reduce((level, job) => {
-        job.levels.forEach(l => {
-          if (!level[l.level]) {
-            level[l.level] = 0;
-          }
-          level[l.level] += l.count;
+        ["infos", "warnings", "errors"].forEach(l => {
+          level[l] = (level[l] || 0) + job[l];
         });
         return level;
       }, {});
