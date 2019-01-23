@@ -1,16 +1,20 @@
 <template>
-  <div>
+  <div v-if="job">
     {{ job.name }} {{ job.application || job.source }} {{ job.entity }}
     <b-badge
-      v-for="level in job.levels"
-      :key="level.level"
+      v-for="level in ['infos', 'warnings', 'errors']"
+      :key="`${level}`"
       class="ml-2"
-      :class="level.level"
+      :class="level"
       variant="light"
+      v-if="job[level] > 0"
     >
-      {{ level.level }} {{ level.count }}
+      {{ level }} {{ job[level] }}
     </b-badge>
-    <div>{{ job.starttime | moment("dddd, DD MMMM YYYY, HH:mm:ss") }}</div>
+    <div>
+      {{ job.starttime | moment("dddd, DD MMMM YYYY, HH:mm:ss") }} -
+      {{ job.duration | duration("humanize") }}
+    </div>
   </div>
 </template>
 
