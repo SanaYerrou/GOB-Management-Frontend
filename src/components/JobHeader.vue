@@ -3,7 +3,7 @@
     {{ job.name }} {{ job.application || job.source }} {{ job.entity }}
     <b-badge
       v-for="level in ['infos', 'warnings', 'errors']"
-      :key="`${level}`"
+      :key="level"
       class="ml-2"
       :class="level"
       variant="light"
