@@ -9,6 +9,11 @@ jest.mock("graphql-request", () => ({
         edges: mockServices.map(srv => ({
           node: srv
         }))
+      },
+      tasks: {
+        edges: mockServices.map(srv => ({
+          node: srv
+        }))
       }
     };
   })
