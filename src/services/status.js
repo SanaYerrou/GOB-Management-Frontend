@@ -1,4 +1,4 @@
-import { queryServices } from "../graphql/queries";
+import { queryServices, queryTasks } from "../graphql/queries";
 
 export const SERVICES = ["Workflow", "Import", "Upload", "Export"];
 
@@ -37,12 +37,17 @@ export async function services() {
   var result = {};
   try {
     var allServices = await queryServices();
+    var allTasks = await queryTasks();
+    allTasks = allTasks.tasks.edges.map(edge => edge.node);
     result = allServices.services.edges
       .map(edge => edge.node)
       .map(service => {
         const timestamp = new Date(service.timestamp);
         service.age = (nowUTC - timestamp) / 1000;
         service.isAlive = service.isAlive && service.age <= ALIVE_INTERVAL;
+        service.tasks = allTasks.filter(
+          task => task.serviceName === service.name
+        );
         return service;
       })
       .reduce((obj, service) => {
