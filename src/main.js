@@ -27,6 +27,7 @@ import {
   faLongArrowAltUp,
   faArrowsAltV,
   faCogs,
+  faCog,
   faEye,
   faLink
 } from "@fortawesome/free-solid-svg-icons";
@@ -64,6 +65,7 @@ library.add([
   faLongArrowAltUp,
   faArrowsAltV,
   faCogs,
+  faCog,
   faEye,
   faLink
 ]);
