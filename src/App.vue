@@ -29,4 +29,14 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+
+.infos {
+  @extend .INFO;
+}
+.warnings {
+  @extend .WARNING;
+}
+.errors {
+  @extend .ERROR;
+}
 </style>

@@ -67,8 +67,9 @@ export async function queryJobs(filter = {}) {
       entity,
       starttime,
       endtime,
-      level,
-      count
+      infos,
+      warnings,
+      errors
     }
   }
   `;

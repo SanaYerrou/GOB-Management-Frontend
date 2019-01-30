@@ -64,28 +64,13 @@ export async function logsForJob(process_id) {
 export async function getJobs(filter) {
   var data = await queryJobs(filter);
 
-  // Jobs have an entry per level and count
-  // Group the jobs on processId to get the list of jobs (processIds)
-  var processIds = _.groupBy(data.jobs, "processId");
-
-  // Determine the levels per processId
-  var jobs = Object.entries(processIds).map(([, jobs]) => {
-    // Take the information from the first job
-    const job = jobs[0];
-    // And compute the levels from the complete list of jobs
-    return {
+  var jobs = data.jobs
+    .filter(job => job.processId)
+    .map(job => ({
       ...job,
       date: new Date(moment(job.day).startOf("day")),
-      levels: jobs.map(job => ({ level: job.level, count: job.count }))
-    };
-  });
-
-  // Delete the level and count, they are replaced by levels
-  jobs.forEach(job => {
-    delete job.level;
-    delete job.count;
-  });
-
+      duration: moment.duration(moment(job.endtime).diff(moment(job.starttime)))
+    }));
   return jobs;
 }
 
