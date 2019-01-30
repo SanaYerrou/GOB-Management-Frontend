@@ -46,12 +46,16 @@ export async function services() {
         service.age = (nowUTC - timestamp) / 1000;
         service.isAlive = service.isAlive && service.age <= ALIVE_INTERVAL;
         service.tasks = allTasks.filter(
-          task => task.serviceName === service.name
+          task => task.serviceId === service.serviceId
         );
         return service;
       })
       .reduce((obj, service) => {
-        obj[service.name] = service;
+        if (!obj[service.name]) {
+          obj[service.name] = service;
+          obj[service.name].instances = [];
+        }
+        obj[service.name].instances.push(service);
         return obj;
       }, {});
     if (!(result.Workflow && result.Workflow.isAlive)) {
