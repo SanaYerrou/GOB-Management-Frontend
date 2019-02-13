@@ -108,7 +108,10 @@ export async function queryServices() {
     services {
       edges {
         node {
+          serviceId
           name
+          host
+          pid
           isAlive
           timestamp
         }
@@ -125,6 +128,7 @@ export async function queryTasks() {
     tasks {
       edges {
         node {
+          serviceId
           serviceName
           name
           isAlive
