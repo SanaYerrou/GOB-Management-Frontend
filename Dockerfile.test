@@ -29,5 +29,5 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 
 COPY test.sh test.sh
 
-COPY default.conf /etc/nginx/conf.d/
+COPY default /etc/nginx/conf.d/
 CMD ["nginx", "-g", "daemon off;"]
