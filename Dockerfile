@@ -29,6 +29,6 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 
 COPY default.conf /etc/nginx/conf.d/
 
-COPY default /etc/nginx/sites-available/
+#COPY default /etc/nginx/sites-available/
 
 CMD ["nginx", "-g", "daemon off;"]
