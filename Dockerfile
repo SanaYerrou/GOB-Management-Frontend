@@ -27,5 +27,6 @@ RUN npm run $NPMSCRIPT && cp -r /app/dist/. /var/www/html/
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
  && ln -sf /dev/stderr /var/log/nginx/error.log
 
+RUN rm -f /etc/nginx/sites-enabled/default
 COPY default.conf /etc/nginx/conf.d/
 CMD ["nginx", "-g", "daemon off;"]
