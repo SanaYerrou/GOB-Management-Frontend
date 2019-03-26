@@ -15,6 +15,25 @@
             :onMonthYear="onMonthYear"
             :date="date"
           ></job-calendar>
+          <div v-if="new_logs || loading" class="mt-3">
+            <b-btn
+              class="ERROR refresh-button btn-block"
+              title="Ververs"
+              variant="outline-secondary"
+              @click="loadDays();"
+            >
+              <span v-if="new_logs">
+                Er zijn nieuwe logs beschikbaar.<br />
+                Klik om te verversen
+              </span>
+              <font-awesome-icon
+                v-if="loading"
+                icon="sync"
+                class="fa-xs"
+                :class="{ 'fa-spin': loading }"
+              />
+            </b-btn>
+          </div>
           <div v-if="loading">
             Laden van jobs
             <font-awesome-icon icon="sync" class="fa-xs fa-spin" />
@@ -26,24 +45,6 @@
       </div>
 
       <div class="col" v-if="jobs.length">
-        <div v-if="new_logs || loading">
-          <b-btn
-            class="ERROR refresh-button btn-block"
-            title="Ververs"
-            variant="outline-secondary"
-            @click="loadDays();"
-          >
-            <span v-if="new_logs">
-              Let op: Er zijn nieuwe logs beschikbaar. Klik om te verversen
-            </span>
-            <font-awesome-icon
-              v-if="loading"
-              icon="sync"
-              class="fa-xs"
-              :class="{ 'fa-spin': loading }"
-            />
-          </b-btn>
-        </div>
         <div v-for="job in filteredJobs" :key="job.processId" class="mb-2">
           <div>
             <b-btn
@@ -55,7 +56,11 @@
               <job-header :job="job"></job-header>
             </b-btn>
 
-            <b-collapse :id="job.processId" class="mt-2">
+            <b-collapse
+              :id="job.processId"
+              accordion="job-accordion"
+              class="mt-2"
+            >
               <div v-if="!job.logs">
                 Laden van logs
                 <font-awesome-icon icon="sync" class="fa-xs fa-spin" />
