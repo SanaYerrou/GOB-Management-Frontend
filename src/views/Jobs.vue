@@ -19,6 +19,9 @@
             Laden van jobs
             <font-awesome-icon icon="sync" class="fa-xs fa-spin" />
           </div>
+          <div class="mt-3">
+            <job-filter :filter="filter" :jobs="jobs"></job-filter>
+          </div>
         </div>
       </div>
 
@@ -41,7 +44,7 @@
             />
           </b-btn>
         </div>
-        <div v-for="job in jobs" :key="job.processId" class="mb-2">
+        <div v-for="job in filteredJobs" :key="job.processId" class="mb-2">
           <div>
             <b-btn
               v-b-toggle="job.processId"
@@ -69,6 +72,7 @@
 <script>
 import JobCalendar from "../components/JobCalendar";
 import JobHeader from "../components/JobHeader";
+import JobFilter from "../components/JobFilter";
 import Logs from "../components/Logs";
 import { connect, disconnect, subscribe } from "../services/sockets";
 
@@ -84,6 +88,11 @@ export default {
 
       allJobs: [],
       jobs: [],
+      filter: {
+        registrations: [],
+        processTypes: [],
+        messageTypes: []
+      },
 
       date: null,
       startyear: null,
@@ -96,7 +105,22 @@ export default {
   components: {
     JobCalendar,
     JobHeader,
+    JobFilter,
     Logs
+  },
+  computed: {
+    filteredJobs() {
+      return this.jobs.filter(job => {
+        return (
+          (this.filter.registrations.length === 0 ||
+            this.filter.registrations.includes(job.catalogue)) &&
+          (this.filter.processTypes.length === 0 ||
+            this.filter.processTypes.includes(job.name)) &&
+          (this.filter.messageTypes.length === 0 ||
+            this.filter.messageTypes.reduce((s, t) => s + job[t], 0) > 0)
+        );
+      });
+    }
   },
   methods: {
     getFilter() {
