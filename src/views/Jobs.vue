@@ -15,33 +15,37 @@
             :onMonthYear="onMonthYear"
             :date="date"
           ></job-calendar>
+          <div v-if="new_logs" class="mt-3">
+            <b-btn
+              class="ERROR refresh-button btn-block"
+              title="Ververs"
+              variant="outline-secondary"
+              @click="loadDays();"
+            >
+              <span v-if="new_logs">
+                Er zijn nieuwe logs beschikbaar.<br />
+                Klik om te verversen
+              </span>
+              <font-awesome-icon
+                v-if="loading"
+                icon="sync"
+                class="fa-xs"
+                :class="{ 'fa-spin': loading }"
+              />
+            </b-btn>
+          </div>
           <div v-if="loading">
             Laden van jobs
             <font-awesome-icon icon="sync" class="fa-xs fa-spin" />
+          </div>
+          <div class="mt-3">
+            <job-filter :filter="filter" :jobs="jobs"></job-filter>
           </div>
         </div>
       </div>
 
       <div class="col" v-if="jobs.length">
-        <div v-if="new_logs || loading">
-          <b-btn
-            class="ERROR refresh-button btn-block"
-            title="Ververs"
-            variant="outline-secondary"
-            @click="loadDays();"
-          >
-            <span v-if="new_logs">
-              Let op: Er zijn nieuwe logs beschikbaar. Klik om te verversen
-            </span>
-            <font-awesome-icon
-              v-if="loading"
-              icon="sync"
-              class="fa-xs"
-              :class="{ 'fa-spin': loading }"
-            />
-          </b-btn>
-        </div>
-        <div v-for="job in jobs" :key="job.processId" class="mb-2">
+        <div v-for="job in filteredJobs" :key="job.processId" class="mb-2">
           <div>
             <b-btn
               v-b-toggle="job.processId"
@@ -52,7 +56,11 @@
               <job-header :job="job"></job-header>
             </b-btn>
 
-            <b-collapse :id="job.processId" class="mt-2">
+            <b-collapse
+              :id="job.processId"
+              accordion="job-accordion"
+              class="mt-2"
+            >
               <div v-if="!job.logs">
                 Laden van logs
                 <font-awesome-icon icon="sync" class="fa-xs fa-spin" />
@@ -69,6 +77,7 @@
 <script>
 import JobCalendar from "../components/JobCalendar";
 import JobHeader from "../components/JobHeader";
+import JobFilter from "../components/JobFilter";
 import Logs from "../components/Logs";
 import { connect, disconnect, subscribe } from "../services/sockets";
 
@@ -84,6 +93,14 @@ export default {
 
       allJobs: [],
       jobs: [],
+      filter: {
+        catalogue: [],
+        entity: [],
+        application: [],
+        source: [],
+        name: [],
+        messageTypes: []
+      },
 
       date: null,
       startyear: null,
@@ -96,7 +113,28 @@ export default {
   components: {
     JobCalendar,
     JobHeader,
+    JobFilter,
     Logs
+  },
+  computed: {
+    filteredJobs() {
+      return this.jobs.filter(job => {
+        return (
+          (this.filter.catalogue.length === 0 ||
+            this.filter.catalogue.includes(job.catalogue)) &&
+          (this.filter.entity.length === 0 ||
+            this.filter.entity.includes(job.entity)) &&
+          (this.filter.application.length === 0 ||
+            this.filter.application.includes(job.application)) &&
+          (this.filter.source.length === 0 ||
+            this.filter.source.includes(job.source)) &&
+          (this.filter.name.length === 0 ||
+            this.filter.name.includes(job.name)) &&
+          (this.filter.messageTypes.length === 0 ||
+            this.filter.messageTypes.reduce((s, t) => s + job[t], 0) > 0)
+        );
+      });
+    }
   },
   methods: {
     getFilter() {

@@ -1,4 +1,4 @@
-FROM node:8.9
+FROM node:latest
 
 # Use NPMSCRIPT=builddev for local dockers
 ARG NPMSCRIPT=build
