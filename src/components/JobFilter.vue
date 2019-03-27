@@ -1,22 +1,6 @@
 <template>
   <div>
-    <b-form-group label="Registraties" align="left">
-      <b-form-checkbox-group
-        stacked
-        v-model="filter.registrations"
-        name="flavour2a"
-        :options="registrations"
-      />
-    </b-form-group>
-    <b-form-group label="Type verwerkingen" align="left">
-      <b-form-checkbox-group
-        stacked
-        v-model="filter.processTypes"
-        name="flavour2a"
-        :options="processTypes"
-      />
-    </b-form-group>
-    <b-form-group label="Type meldingen" align="left">
+    <b-form-group label="Type meldingen" class="text-left">
       <b-form-checkbox-group
         stacked
         v-model="filter.messageTypes"
@@ -24,6 +8,16 @@
         :options="messageTypes"
       />
     </b-form-group>
+    <div v-for="filterType in filterTypes" :key="filterType.key">
+      <b-form-group :label="filterType.text" class="text-left">
+        <b-form-checkbox-group
+          stacked
+          v-model="filter[filterType.key]"
+          name="flavour2a"
+          :options="filterOptions(filterType.key)"
+        />
+      </b-form-group>
+    </div>
   </div>
 </template>
 
@@ -35,28 +29,20 @@ export default {
     filter: Object,
     jobs: Array
   },
-  computed: {
-    registrations() {
-      return _.uniq(this.jobs.map(job => job.catalogue).sort());
-    },
-    processTypes() {
-      return _.uniq(this.jobs.map(job => job.name).sort());
-    },
-    filteredJobs() {
-      return this.jobs.filter(job => {
-        return (
-          (this.filter.registrations.length === 0 ||
-            this.filter.registrations.includes(job.catalogue)) &&
-          (this.filter.processTypes.length === 0 ||
-            this.filter.processTypes.includes(job.name)) &&
-          (this.filter.messageTypes.length === 0 ||
-            this.filter.messageTypes.reduce((s, t) => s + job[t], 0) > 0)
-        );
-      });
+  methods: {
+    filterOptions(key) {
+      return _.uniq(this.jobs.map(job => job[key]).sort());
     }
   },
   data() {
     return {
+      filterTypes: [
+        { text: "Bron", key: "source" },
+        { text: "Type verwerking", key: "name" },
+        { text: "Registraties", key: "catalogue" },
+        { text: "Applicatie", key: "application" },
+        { text: "Entiteiten", key: "entity" }
+      ],
       messageTypes: [
         { text: "Info", value: "infos" },
         { text: "Warning", value: "warnings" },

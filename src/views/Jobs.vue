@@ -15,7 +15,7 @@
             :onMonthYear="onMonthYear"
             :date="date"
           ></job-calendar>
-          <div v-if="new_logs || loading" class="mt-3">
+          <div v-if="new_logs" class="mt-3">
             <b-btn
               class="ERROR refresh-button btn-block"
               title="Ververs"
@@ -94,8 +94,11 @@ export default {
       allJobs: [],
       jobs: [],
       filter: {
-        registrations: [],
-        processTypes: [],
+        catalogue: [],
+        entity: [],
+        application: [],
+        source: [],
+        name: [],
         messageTypes: []
       },
 
@@ -117,10 +120,16 @@ export default {
     filteredJobs() {
       return this.jobs.filter(job => {
         return (
-          (this.filter.registrations.length === 0 ||
-            this.filter.registrations.includes(job.catalogue)) &&
-          (this.filter.processTypes.length === 0 ||
-            this.filter.processTypes.includes(job.name)) &&
+          (this.filter.catalogue.length === 0 ||
+            this.filter.catalogue.includes(job.catalogue)) &&
+          (this.filter.entity.length === 0 ||
+            this.filter.entity.includes(job.entity)) &&
+          (this.filter.application.length === 0 ||
+            this.filter.application.includes(job.application)) &&
+          (this.filter.source.length === 0 ||
+            this.filter.source.includes(job.source)) &&
+          (this.filter.name.length === 0 ||
+            this.filter.name.includes(job.name)) &&
           (this.filter.messageTypes.length === 0 ||
             this.filter.messageTypes.reduce((s, t) => s + job[t], 0) > 0)
         );
