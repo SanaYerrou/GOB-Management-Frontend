@@ -1,4 +1,5 @@
 import { querySourceEntities, queryLogs } from "../../src/graphql/queries";
+import { get_api } from "../../src/services/api";
 
 var api, query;
 
@@ -55,7 +56,7 @@ describe("queries service", () => {
     }
   }
   `);
-    expect(api).toBe(process.env.VUE_APP_API + "gob_management/graphql/");
+    expect(api).toBe(get_api() + "gob_management/graphql/");
 
     result = await queryLogs("x", "y");
     expect(query).toBe(`

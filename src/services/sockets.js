@@ -1,6 +1,8 @@
 import socketio from "socket.io-client";
 
-const uri = process.env.VUE_APP_API;
+import { get_api } from "./api";
+
+const uri = get_api();
 
 export const socketInstance = socketio(uri, {
   path: "/gob_management/socket.io",
