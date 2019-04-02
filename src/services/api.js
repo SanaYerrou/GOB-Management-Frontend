@@ -5,5 +5,5 @@ export function get_api() {
   } else {
     base = location.hostname.replace("iris", "api");
   }
-  return `${location.protocol}://${base}/`;
+  return `${location.protocol}//${base}/`;
 }
