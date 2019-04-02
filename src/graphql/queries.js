@@ -1,6 +1,7 @@
+import { get_api } from "../services/api";
 import { request } from "graphql-request";
 
-const api = process.env.VUE_APP_API + "gob_management/graphql/";
+const api = get_api() + "gob_management/graphql/";
 
 async function graphql(query) {
   return request(api, query);
