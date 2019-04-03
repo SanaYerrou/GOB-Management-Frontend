@@ -31,7 +31,12 @@ export default {
   },
   methods: {
     filterOptions(key) {
-      return _.uniq(this.jobs.map(job => job[key]).sort());
+      return _.uniq(
+        this.jobs
+          .map(job => job[key])
+          .filter(k => k)
+          .sort()
+      );
     }
   },
   data() {
