@@ -29,7 +29,8 @@ import {
   faCogs,
   faCog,
   faEye,
-  faLink
+  faLink,
+  faFilter
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -67,7 +68,8 @@ library.add([
   faCogs,
   faCog,
   faEye,
-  faLink
+  faLink,
+  faFilter
 ]);
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 

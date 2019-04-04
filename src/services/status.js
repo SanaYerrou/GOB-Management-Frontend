@@ -1,6 +1,6 @@
 import { queryServices, queryTasks } from "../graphql/queries";
 
-export const SERVICES = ["Workflow", "Import", "Upload", "Export"];
+export const SERVICES = ["Workflow", "Import", "Upload", "Export", "Prepare"];
 
 export const ALIVE_INTERVAL = 60;
 
