@@ -5,14 +5,14 @@
         <div class="col">
           <table align="center">
             <tr>
-              <td style="width:20%"></td>
+              <td style="width:40%" colspan="2"></td>
               <td style="width:40%" colspan="2" class="unitborder">
                 <font-awesome-icon icon="database" />
               </td>
-              <td style="width:40%" colspan="2"></td>
+              <td style="width:20%"></td>
             </tr>
             <tr>
-              <td style="width:20%"></td>
+              <td style="width:40%" colspan="2"></td>
               <td style="width:20%">
                 <font-awesome-icon icon="long-arrow-alt-up" />
               </td>
@@ -20,9 +20,15 @@
                 <font-awesome-icon icon="long-arrow-alt-down" />
               </td>
               <td style="width:20%"></td>
-              <td style="width:20%"></td>
             </tr>
             <tr>
+              <td style="width:20%">
+                <status-indicator
+                  name="Prepare"
+                  icon="filter"
+                  :service="services.Prepare"
+                ></status-indicator>
+              </td>
               <td style="width:20%">
                 <status-indicator
                   name="Import"
@@ -51,7 +57,6 @@
                   :service="services.IRIS"
                 ></status-indicator>
               </td>
-              <td style="width:20%"></td>
             </tr>
             <tr>
               <td colspan="5" class="unitborder">
