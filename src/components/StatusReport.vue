@@ -95,6 +95,7 @@
                   :reversedIcon="true"
                   name="API"
                   icon="plug"
+                  :service="services.API"
                 ></status-indicator>
               </td>
               <td style="width:20%">

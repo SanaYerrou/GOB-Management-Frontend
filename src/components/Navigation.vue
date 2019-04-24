@@ -23,9 +23,14 @@
         <b-nav-item-dropdown right>
           <!-- Using button-content slot -->
           <template slot="button-content">
-            <em>User</em>
+            <em>{{ username || "User" }}</em>
           </template>
-          <b-dropdown-item href="#">Signout</b-dropdown-item>
+          <b-dropdown-item v-if="!username" v-on:click="login();"
+            >Login</b-dropdown-item
+          >
+          <b-dropdown-item v-if="username" v-on:click="logout();"
+            >Logout</b-dropdown-item
+          >
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
@@ -34,8 +39,32 @@
 
 <script>
 import StatusReport from "./StatusReport";
+import auth from "../services/auth";
+
 export default {
   name: "Navigation",
-  components: { StatusReport }
+  components: { StatusReport },
+  data() {
+    return {
+      username: null
+    };
+  },
+  methods: {
+    login() {
+      auth.login();
+    },
+    logout() {
+      auth.logout();
+    }
+  },
+  async mounted() {
+    // Load user info during startup
+    // If a user is logged in the username will be shown and a logout button will be available
+    // If not, then the text "User" is shown and a login button is available
+    const userInfo = await auth.userInfo();
+    if (userInfo) {
+      this.username = userInfo.preferred_username;
+    }
+  }
 };
 </script>
