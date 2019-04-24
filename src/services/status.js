@@ -1,7 +1,5 @@
 import { queryServices, queryTasks } from "../graphql/queries";
 
-export const SERVICES = ["Workflow", "Import", "Upload", "Export", "Prepare"];
-
 export const ALIVE_INTERVAL = 60;
 
 export async function services() {
@@ -55,6 +53,10 @@ export async function services() {
           obj[service.name] = service;
           obj[service.name].instances = [];
         }
+        var state = obj[service.name];
+        // If one service instance is alive, mark it as alive
+        state.isAlive = state.isAlive || service.isAlive;
+        state.age = Math.min(state.age, service.age);
         obj[service.name].instances.push(service);
         return obj;
       }, {});
