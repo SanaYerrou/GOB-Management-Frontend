@@ -94,6 +94,7 @@ export default {
       allJobs: [],
       jobs: [],
       filter: {
+        status: [],
         catalogue: [],
         entity: [],
         application: [],
