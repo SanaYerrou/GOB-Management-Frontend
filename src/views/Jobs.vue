@@ -95,6 +95,7 @@ export default {
       jobs: [],
       filter: {
         status: [],
+        ageCategory: [],
         catalogue: [],
         entity: [],
         application: [],
@@ -133,6 +134,8 @@ export default {
             this.filter.name.includes(job.name)) &&
           (this.filter.status.length === 0 ||
             this.filter.status.includes(job.status)) &&
+          (this.filter.ageCategory.length === 0 ||
+            this.filter.ageCategory.includes(job.ageCategory)) &&
           (this.filter.messageTypes.length === 0 ||
             this.filter.messageTypes.reduce((s, t) => s + job[t], 0) > 0)
         );

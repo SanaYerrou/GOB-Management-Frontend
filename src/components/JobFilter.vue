@@ -48,6 +48,7 @@ export default {
     return {
       filterTypes: [
         { text: "Status", key: "status" },
+        { text: "Leeftijd", key: "ageCategory" },
         { text: "Bron", key: "source" },
         { text: "Type verwerking", key: "name" },
         { text: "Registraties", key: "catalogue" },
