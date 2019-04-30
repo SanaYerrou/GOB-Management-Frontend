@@ -4,7 +4,7 @@
       <font-awesome-icon icon="clock" title="Scheduled" />
     </span>
     <span v-if="job.status === 'started'">
-      {{ job.step }} <img src="../assets/running.gif" width="22px" />
+      {{ job.step }} <img src="../assets/running.gif" height="20px" />
       <!-- <font-awesome-icon icon="running" /> -->
     </span>
     <span v-if="job.status === 'ended'">
