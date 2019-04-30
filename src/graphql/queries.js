@@ -60,6 +60,7 @@ export async function queryJobs(filter = {}) {
   query {
     jobs ${filterExpression} {
       processId,
+      jobId,
       day,
       name,
       source,
@@ -70,7 +71,9 @@ export async function queryJobs(filter = {}) {
       endtime,
       infos,
       warnings,
-      errors
+      errors,
+      step,
+      status
     }
   }
   `;

@@ -9,7 +9,9 @@
         class="mb-2"
       >
         <div
-          v-for="(instance, i) in service.instances"
+          v-for="(instance, i) in service.instances.filter(
+            i => i.tasks.length > 0
+          )"
           :key="instance.serviceId"
           class="mb-2"
         >

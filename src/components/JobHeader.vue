@@ -14,15 +14,21 @@
     <div>
       {{ job.starttime | moment("dddd, DD MMMM YYYY, HH:mm:ss") }} -
       {{ job.duration | duration("humanize") }}
+      <span class="float-right"> <job-status :job="job"></job-status> </span>
     </div>
   </div>
 </template>
 
 <script>
+import JobStatus from "../components/JobStatus";
+
 export default {
   name: "JobHeader",
   props: {
     job: Object
+  },
+  components: {
+    JobStatus
   }
 };
 </script>

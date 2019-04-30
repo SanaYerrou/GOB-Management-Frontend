@@ -8,7 +8,11 @@
         :options="messageTypes"
       />
     </b-form-group>
-    <div v-for="filterType in filterTypes" :key="filterType.key">
+    <div
+      v-for="filterType in filterTypes"
+      :key="filterType.key"
+      v-if="filterOptions(filterType.key).length"
+    >
       <b-form-group :label="filterType.text" class="text-left">
         <b-form-checkbox-group
           stacked
@@ -35,6 +39,7 @@ export default {
         this.jobs
           .map(job => job[key])
           .filter(k => k)
+          .concat(this.filter[key])
           .sort()
       );
     }
@@ -42,6 +47,7 @@ export default {
   data() {
     return {
       filterTypes: [
+        { text: "Status", key: "status" },
         { text: "Bron", key: "source" },
         { text: "Type verwerking", key: "name" },
         { text: "Registraties", key: "catalogue" },
