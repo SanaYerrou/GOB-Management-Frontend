@@ -77,7 +77,6 @@ export async function queryJobs(filter = {}) {
     }
   }
   `;
-  console.log("QUERY", query);
   return graphql(query);
 }
 

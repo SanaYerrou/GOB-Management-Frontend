@@ -39,6 +39,7 @@ export default {
         this.jobs
           .map(job => job[key])
           .filter(k => k)
+          .concat(this.filter[key])
           .sort()
       );
     }
