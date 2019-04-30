@@ -131,6 +131,8 @@ export default {
             this.filter.source.includes(job.source)) &&
           (this.filter.name.length === 0 ||
             this.filter.name.includes(job.name)) &&
+          (this.filter.status.length === 0 ||
+            this.filter.status.includes(job.status)) &&
           (this.filter.messageTypes.length === 0 ||
             this.filter.messageTypes.reduce((s, t) => s + job[t], 0) > 0)
         );

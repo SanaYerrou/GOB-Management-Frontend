@@ -34,7 +34,8 @@ import {
   faCarCrash,
   faClock,
   faRunning,
-  faFlagCheckered
+  faFlagCheckered,
+  faWrench
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -77,7 +78,8 @@ library.add([
   faCarCrash,
   faClock,
   faRunning,
-  faFlagCheckered
+  faFlagCheckered,
+  faWrench
 ]);
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
