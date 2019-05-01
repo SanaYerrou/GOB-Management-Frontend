@@ -61,6 +61,8 @@ export async function queryJobs(filter = {}) {
     jobs ${filterExpression} {
       processId,
       jobId,
+      brutoDuration,
+      nettoDuration,
       ageCategory,
       day,
       name,

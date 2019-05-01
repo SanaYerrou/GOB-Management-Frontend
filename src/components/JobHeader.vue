@@ -12,8 +12,9 @@
       {{ level }} {{ job[level] }}
     </b-badge>
     <div>
-      {{ job.starttime | moment("dddd, DD MMMM YYYY, HH:mm:ss") }} -
-      {{ job.duration | duration("humanize") }}
+      <span>{{ job.starttime | moment("dddd, DD MMMM YYYY, HH:mm:ss") }} (</span>
+      <span v-if="job.brutoDuration">{{ job.brutoDuration }} / </span>
+      <span>{{ job.nettoDuration }}</span>)
       <span class="float-right"> <job-status :job="job"></job-status> </span>
     </div>
   </div>
