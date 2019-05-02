@@ -2,7 +2,7 @@
   <div>
     <div v-if="!loading" class="float-right">
       <span v-if="date">{{ date | moment("dddd, DD MMMM YYYY") }}, </span>
-      {{ filteredJobs.length }}
+      ({{ filteredJobs.length }})
     </div>
     <h1>Jobs</h1>
 
