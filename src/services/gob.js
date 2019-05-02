@@ -76,7 +76,7 @@ export async function getJobs(filter) {
 
 export function jobRunsOnDate(job, date) {
   var startDate = moment(job.starttime).startOf("day");
-  var endDate = moment(job.endtime).endOf("day");
+  var endDate = moment(job.endtime || job.starttime).endOf("day");
   var onDate = new Date(date);
   return startDate <= onDate && onDate <= endDate;
 }
