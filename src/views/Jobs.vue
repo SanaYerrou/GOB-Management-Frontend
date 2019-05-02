@@ -1,12 +1,12 @@
 <template>
   <div>
-    <h1>Jobs</h1>
-    <div>
-      <b-badge v-if="source">Bron: {{ source }}</b-badge>
-      <b-badge v-if="catalogue">Catalogus: {{ catalogue }}</b-badge>
-      <b-badge v-if="entity">Entiteit: {{ entity }}</b-badge>
+    <div v-if="!loading" class="float-right">
+      <span v-if="date">{{ date | moment("dddd, DD MMMM YYYY") }}, </span>
+      {{ filteredJobs.length }}
     </div>
-    <div class="row justify-content-center">
+    <h1>Jobs</h1>
+
+    <div v-if="!loading" class="row justify-content-center">
       <div class="col col-xs-12 col-lg-auto mb-2">
         <div class="align-center">
           <job-calendar
@@ -14,6 +14,8 @@
             :onDay="onDay"
             :onMonthYear="onMonthYear"
             :date="date"
+            :year="filter.year[0]"
+            :month="filter.month[0]"
           ></job-calendar>
           <div v-if="new_logs" class="mt-3">
             <b-btn
@@ -44,30 +46,38 @@
         </div>
       </div>
 
-      <div class="col" v-if="jobs.length">
-        <div v-for="job in filteredJobs" :key="job.processId" class="mb-2">
-          <div>
-            <b-btn
-              v-b-toggle="job.processId"
-              @click="getLogs(job);"
-              block
-              variant="outline-secondary"
-            >
-              <job-header :job="job"></job-header>
-            </b-btn>
+      <div class="col">
+        <div v-if="filteredJobs.length">
+          <div v-for="job in filteredJobs" :key="job.processId" class="mb-2">
+            <div>
+              <b-btn
+                v-b-toggle="job.processId"
+                @click="loadLogs(job);"
+                block
+                variant="outline-secondary"
+              >
+                <job-header :job="job"></job-header>
+              </b-btn>
 
-            <b-collapse
-              :id="job.processId"
-              accordion="job-accordion"
-              class="mt-2"
-            >
-              <div v-if="!job.logs">
-                Laden van logs
-                <font-awesome-icon icon="sync" class="fa-xs fa-spin" />
-              </div>
-              <b-card v-if="job.logs"> <logs :logs="job.logs"></logs> </b-card>
-            </b-collapse>
+              <b-collapse
+                :id="job.processId"
+                accordion="job-accordion"
+                class="mt-2"
+              >
+                <div v-if="!job.logs">
+                  Laden van logs
+                  <font-awesome-icon icon="sync" class="fa-xs fa-spin" />
+                </div>
+                <b-card v-if="job.logs">
+                  <logs :logs="job.logs"></logs>
+                </b-card>
+              </b-collapse>
+            </div>
           </div>
+        </div>
+        <div v-else-if="!loading">
+          <h3>Geen resultaten gevonden</h3>
+          <p>Pas eventueel de filters en/of de datum aan</p>
         </div>
       </div>
     </div>
@@ -94,6 +104,9 @@ export default {
       allJobs: [],
       jobs: [],
       filter: {
+        year: [],
+        month: [],
+        day: [],
         status: [],
         ageCategory: [],
         catalogue: [],
@@ -105,10 +118,8 @@ export default {
       },
 
       date: null,
-      startyear: null,
-      startmonth: null,
 
-      loading: false,
+      loading: true,
       new_logs: false
     };
   },
@@ -121,7 +132,14 @@ export default {
   computed: {
     filteredJobs() {
       return this.jobs.filter(job => {
+        // default filter is on current year month
+        const year = this.filter.year[0] || new Date().getFullYear();
+        const month = this.filter.month[0] || new Date().getMonth() + 1;
+        const jobStart = new Date(job.starttime);
+
         return (
+          jobStart.getFullYear() === year &&
+          jobStart.getMonth() + 1 === month &&
           (this.filter.catalogue.length === 0 ||
             this.filter.catalogue.includes(job.catalogue)) &&
           (this.filter.entity.length === 0 ||
@@ -143,90 +161,138 @@ export default {
     }
   },
   methods: {
-    getFilter() {
-      return [
-        "source",
-        "catalogue",
-        "entity",
-        "startyear",
-        "startmonth"
-      ].reduce((q, attr) => {
-        q[attr] = this[attr];
-        return q;
-      }, {});
-    },
     async loadDays() {
+      // This method is called on mount and on refresh
       this.loading = true;
       this.new_logs = false;
 
-      this.source = this.$route.query.source;
-      this.catalogue = this.$route.query.catalogue;
-      this.entity = this.$route.query.entity;
-      this.startyear = this.startyear || new Date().getFullYear();
-      this.startmonth = this.startmonth || new Date().getMonth() + 1;
+      // Read filter from URL parameters
+      for (let key in this.filter) {
+        let val = this.$route.query[key];
+        for (let intKey in ["year", "month", "day"]) {
+          val = key == intKey && val ? parseInt(val) : val;
+        }
+        this.filter[key] = Array.isArray(val) ? val : val ? [val] : [];
+      }
 
-      this.allJobs = [];
-      this.jobs = [];
-
-      const filter = this.getFilter();
-      this.allJobs = await getJobs(filter);
-
-      const date = this.date; // save any current set date
-      this.date = null; // set this.date to null => select all dates
-      this.getJobs(date);
+      this.filterJobs(this.getDate());
 
       this.loading = false;
     },
+
+    onFilterChange() {
+      // Store filter in URL
+      for (let key in this.filter) {
+        let val = this.filter[key];
+        this.$router.push({
+          query: { ...this.$route.query, [key]: val.length ? val : undefined }
+        });
+      }
+    },
+
+    clearDate() {
+      // Default year - month, no specific day
+      this.filter.year = [];
+      this.filter.month = [];
+      this.filter.day = [];
+    },
+
+    setDate() {
+      // Clears the date if all points to the default month - year without a specific day
+      let yearNow = new Date().getFullYear();
+      let monthNow = new Date().getMonth() + 1;
+      let yearFilter = parseInt(this.filter.year[0] || yearNow);
+      let monthFilter = parseInt(this.filter.month[0] || monthNow);
+      let dayFilter = this.filter.day[0];
+      if (yearFilter === yearNow && monthFilter === monthNow && !dayFilter) {
+        // Current year - month without day => clear all
+        this.clearDate();
+      } else {
+        this.filter.year = [yearFilter];
+        this.filter.month = [monthFilter];
+      }
+    },
+
+    getDate() {
+      let year = this.filter.year[0] || new Date().getFullYear();
+      let month = this.filter.month[0] || new Date().getMonth() + 1;
+      let day = this.filter.day[0];
+      return day ? new Date(year, month - 1, day) : null;
+    },
+
     async onDay(data) {
-      this.getJobs(data.date);
+      // User has selected a date in the calendar
+      this.filterJobs(data.date);
     },
+
     async onMonthYear(month, year) {
-      this.startyear = year;
-      this.startmonth = month;
-      this.$router.push({ name: this.$route.name, query: this.getFilter() });
+      // User has changed year-month in the calendar
+      this.filter.year = [year];
+      this.filter.month = [month];
+      // Update date filter
+      this.setDate();
     },
-    async getLogs(job) {
+
+    async loadLogs(job) {
       // Load logs on demand
       if (!job.logs) {
         job.logs = await logsForJob(job.processId);
         this.$forceUpdate();
       }
     },
-    getJobs(date = null) {
-      this.jobs = this.allJobs;
-      if (this.date === date) {
-        this.date = null;
-      } else {
+
+    async loadJobs() {
+      // Load jobs from API, default is load last 10 days
+      const filter = { daysAgo: 10 };
+      this.allJobs = await getJobs(filter);
+    },
+
+    filterJobs(date = null) {
+      // Possibly filter on a specific date
+      if (date && (!this.date || this.date.getTime() !== date.getTime())) {
+        // date is a date and not equal to current date
         this.date = date;
+      } else {
+        // deselect date on date = null or selected twice the same date
+        this.date = null;
       }
+
       if (this.date) {
-        this.jobs = this.jobs.filter(job => jobRunsOnDate(job, this.date));
+        this.jobs = this.allJobs.filter(job => jobRunsOnDate(job, this.date));
+        this.filter.year = [this.date.getFullYear()];
+        this.filter.month = [this.date.getMonth() + 1];
+        this.filter.day = [this.date.getDate()];
+      } else {
+        // Leave full month overview, deselect any selected day
+        this.jobs = this.allJobs;
+        this.filter.day = [];
       }
+
+      // Update date filter
+      this.setDate();
     }
   },
+
   async mounted() {
+    // Start loading jobs from API
+    await this.loadJobs();
+    // Then filter the logging for selected year-month-day
     this.loadDays();
+    // Watch any new logs
     connect();
     subscribe("new_logs", () => (this.new_logs = true));
   },
+
   async beforeDestroy() {
     disconnect();
   },
+
   watch: {
-    "$route.query.startyear"() {
-      this.loadDays();
-    },
-    "$route.query.startmonth"() {
-      this.loadDays();
-    },
-    "$route.query.source"() {
-      this.loadDays();
-    },
-    "$route.query.catalogue"() {
-      this.loadDays();
-    },
-    "$route.query.entity"() {
-      this.loadDays();
+    filter: {
+      handler() {
+        this.onFilterChange();
+      },
+      deep: true
     }
   }
 };
