@@ -1,10 +1,12 @@
 <template>
   <div>
     <div v-if="!loading" class="float-right">
-      <span v-if="date">{{ date | moment("dddd, DD MMMM YYYY") }}, </span>
-      ({{ filteredJobs.length }})
+      <span v-if="date">{{ date | moment("dddd, DD MMMM YYYY") }}, </span> ({{
+        filteredJobs.length
+      }})
     </div>
     <h1>Jobs</h1>
+    <filter-overview :filter="filter"></filter-overview>
 
     <div v-if="!loading" class="row justify-content-center">
       <div class="col col-xs-12 col-lg-auto mb-2">
@@ -92,6 +94,7 @@ import Logs from "../components/Logs";
 import { connect, disconnect, subscribe } from "../services/sockets";
 
 import { getJobs, logsForJob, jobRunsOnDate } from "../services/gob";
+import FilterOverview from "../components/FilterOverview";
 
 export default {
   name: "entities",
@@ -124,6 +127,7 @@ export default {
     };
   },
   components: {
+    FilterOverview,
     JobCalendar,
     JobHeader,
     JobFilter,
