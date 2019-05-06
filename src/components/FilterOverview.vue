@@ -4,7 +4,7 @@
       <b-button
         v-for="item in items"
         v-if="hideKeys.indexOf(key) === -1"
-        class="mr-2"
+        class="mr-2 mb-2"
         :key="item"
         size="sm"
         @click="closeItem(items, key, item);"
