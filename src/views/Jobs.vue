@@ -70,9 +70,19 @@
                   Laden van logs
                   <font-awesome-icon icon="sync" class="fa-xs fa-spin" />
                 </div>
-                <b-card v-if="job.logs">
-                  <logs :logs="job.logs"></logs>
-                </b-card>
+                <div v-if="job.logs">
+                  <div class="text-right">
+                    <b-button
+                      size="sm"
+                      class="mb-1"
+                      :to="`/job?id=${job.jobid}`"
+                      >Details</b-button
+                    >
+                  </div>
+                  <b-card v-if="job.logs">
+                    <logs :logs="job.logs"></logs>
+                  </b-card>
+                </div>
               </b-collapse>
             </div>
           </div>

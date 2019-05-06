@@ -47,6 +47,32 @@ export async function queryLogDays(source, catalogue, entity) {
   return graphql(query);
 }
 
+export async function queryJob(id) {
+  const query = `
+  query {
+    jobinfo (jobid:${id}) {
+      jobid
+      name
+      type
+      args
+      start
+      end
+      duration
+      status
+      steps {
+        stepid
+        name
+        start
+        end
+        duration
+        status
+      }
+    }
+  }
+  `;
+  return graphql(query);
+}
+
 export async function queryJobs(filter = {}) {
   var filters = Object.entries(filter).filter(([, v]) => v);
 
@@ -60,7 +86,7 @@ export async function queryJobs(filter = {}) {
   query {
     jobs ${filterExpression} {
       processId,
-      jobId,
+      jobid,
       brutoDuration,
       nettoDuration,
       ageCategory,
@@ -145,6 +171,11 @@ export async function queryTasks() {
   }
   `;
   return graphql(query);
+}
+
+export async function queryLogsForJobStep(jobid, stepid) {
+  const select = `(jobid: ${jobid} stepid: ${stepid})`;
+  return _queryLogs(select);
 }
 
 export async function queryLogsForJob(process_id) {
