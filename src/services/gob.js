@@ -5,8 +5,10 @@ import {
   querySourceEntities,
   queryLogDays,
   queryLogs,
+  queryJob,
   queryJobs,
-  queryLogsForJob
+  queryLogsForJob,
+  queryLogsForJobStep
 } from "../graphql/queries";
 
 export async function sources() {
@@ -59,6 +61,18 @@ export async function logs(source, catalogue, entity) {
 export async function logsForJob(process_id) {
   var data = await queryLogsForJob(process_id);
   return _logs(data);
+}
+
+export async function logsForJobStep(jobid, stepid) {
+  var data = await queryLogsForJobStep(jobid, stepid);
+  return _logs(data);
+}
+
+export async function getJob(id) {
+  var data = await queryJob(id);
+
+  var jobinfos = data.jobinfo;
+  return jobinfos ? jobinfos[0] : null;
 }
 
 export async function getJobs(filter) {

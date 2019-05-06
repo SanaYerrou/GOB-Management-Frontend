@@ -8,7 +8,7 @@
       <!-- <font-awesome-icon icon="running" /> -->
     </span>
     <span v-if="job.status === 'ended'">
-      <span v-if="job.endtime">
+      <span v-if="job.endtime || job.end">
         <font-awesome-icon icon="flag-checkered" />
       </span>
       <span v-else> <font-awesome-icon icon="wrench" class="error" /> </span>
