@@ -1,5 +1,5 @@
 <template>
-  <div v-if="hasActiveFilters" class="mb-2">
+  <div v-if="hasActiveFilters">
     <span v-for="(items, key) in filter" :key="key">
       <b-button
         v-for="item in items"
