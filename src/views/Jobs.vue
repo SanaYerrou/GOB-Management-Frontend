@@ -116,6 +116,7 @@ export default {
 
       allJobs: [],
       jobs: [],
+      filteredJobs: [],
       filter: {
         year: [],
         month: [],
@@ -143,9 +144,10 @@ export default {
     JobFilter,
     Logs
   },
-  computed: {
-    filteredJobs() {
-      return this.jobs.filter(job => {
+  computed: {},
+  methods: {
+    applyFilter() {
+      this.filteredJobs = this.jobs.filter(job => {
         // default filter is on current year month
         const year = this.filter.year[0] || new Date().getFullYear();
         const month = this.filter.month[0] || new Date().getMonth() + 1;
@@ -172,9 +174,8 @@ export default {
             this.filter.messageTypes.reduce((s, t) => s + job[t], 0) > 0)
         );
       });
-    }
-  },
-  methods: {
+    },
+
     async loadDays() {
       // This method is called on mount and on refresh
       this.loading = true;
@@ -190,6 +191,7 @@ export default {
       }
 
       this.filterJobs(this.getDate());
+      this.applyFilter();
 
       this.loading = false;
     },
@@ -202,6 +204,7 @@ export default {
           query: { ...this.$route.query, [key]: val.length ? val : undefined }
         });
       }
+      this.applyFilter();
     },
 
     clearDate() {
