@@ -8,7 +8,10 @@
     <h1>Jobs</h1>
     <filter-overview :filter="filter"></filter-overview>
 
-    <div v-if="!loading" class="row justify-content-center">
+    <div v-if="loading">
+      Loading <img src="../assets/running.gif" height="20px" />
+    </div>
+    <div v-else class="row justify-content-center">
       <div class="col col-xs-12 col-lg-auto mb-2">
         <div class="align-center">
           <job-calendar
@@ -50,7 +53,7 @@
 
       <div class="col">
         <div v-if="filteredJobs.length">
-          <div v-for="job in filteredJobs" :key="job.processId" class="mb-2">
+          <div v-for="job in filteredJobs" :key="job.jobid" class="mb-2">
             <div>
               <b-btn
                 v-b-toggle="job.processId"
@@ -181,6 +184,9 @@ export default {
       this.loading = true;
       this.new_logs = false;
 
+      // Start loading jobs from API
+      await this.loadJobs();
+
       // Read filter from URL parameters
       for (let key in this.filter) {
         let val = this.$route.query[key];
@@ -291,10 +297,8 @@ export default {
   },
 
   async mounted() {
-    // Start loading jobs from API
-    await this.loadJobs();
-    // Then filter the logging for selected year-month-day
     this.loadDays();
+
     // Watch any new logs
     connect();
     subscribe("new_logs", () => (this.new_logs = true));
