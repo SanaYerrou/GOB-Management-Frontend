@@ -8,7 +8,10 @@
     <h1>Jobs</h1>
     <filter-overview :filter="filter"></filter-overview>
 
-    <div v-if="!loading" class="row justify-content-center">
+    <div v-if="loading">
+      Loading <img src="../assets/running.gif" height="20px" />
+    </div>
+    <div v-else class="row justify-content-center">
       <div class="col col-xs-12 col-lg-auto mb-2">
         <div class="align-center">
           <job-calendar
