@@ -11,11 +11,11 @@
           </tr>
           <tr>
             <td class="id">Start</td>
-            <td>{{ jobinfo.start | moment(dateFormat) }}</td>
+            <td>{{ jobinfo.start | formatdate }}</td>
           </tr>
           <tr>
             <td class="id">Eind</td>
-            <td>{{ jobinfo.end | moment(dateFormat) }}</td>
+            <td>{{ jobinfo.end | formatdate }}</td>
           </tr>
           <tr>
             <td class="id">Duur</td>
@@ -32,11 +32,11 @@
           <table>
             <tr>
               <td class="id">Start</td>
-              <td>{{ step.start | moment(dateFormat) }}</td>
+              <td>{{ step.start | formatdate }}</td>
             </tr>
             <tr>
               <td class="id">Eind</td>
-              <td>{{ step.end | moment(dateFormat) }}</td>
+              <td>{{ step.end | formatdate }}</td>
             </tr>
             <tr>
               <td class="id">Duur</td>
@@ -78,8 +78,7 @@ export default {
       jobid: null,
       job: null,
       jobinfo: null,
-      loading: true,
-      dateFormat: "dddd DD MMM YYYY HH:mm:ss"
+      loading: true
     };
   },
   components: {

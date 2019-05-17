@@ -8,7 +8,7 @@
       small
     >
       <template slot="timestamp" slot-scope="data">
-        {{ data.item.timestamp | moment("HH:mm:ss") }}
+        {{ data.item.timestamp | formatdate("HH:mm:ss") }}
       </template>
 
       <template slot="msg" slot-scope="data">

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="!loading" class="float-right">
-      <span v-if="date">{{ date | moment("dddd, DD MMMM YYYY") }}, </span> ({{
+      <span v-if="date">{{ date | formatdate("dddd, DD MMMM YYYY") }}, </span> ({{
         filteredJobs.length
       }})
     </div>

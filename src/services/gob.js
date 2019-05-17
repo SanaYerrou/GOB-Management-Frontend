@@ -78,19 +78,20 @@ export async function getJob(id) {
 export async function getJobs(filter) {
   var data = await queryJobs(filter);
 
+  // Interpret any UTC date time that is received from the backend in the CET timezone
   var jobs = data.jobs
     .filter(job => job.processId)
     .map(job => ({
       ...job,
-      date: new Date(moment(job.day).startOf("day")),
+      date: new Date(moment(job.day).tz('CET').startOf("day")),
       duration: moment.duration(moment(job.endtime).diff(moment(job.starttime)))
     }));
   return jobs;
 }
 
 export function jobRunsOnDate(job, date) {
-  var startDate = moment(job.starttime).startOf("day");
-  var endDate = moment(job.endtime || job.starttime).endOf("day");
-  var onDate = new Date(date);
-  return startDate <= onDate && onDate <= endDate;
+  // Interpret any UTC date time that is received from the backend in the CET timezone
+  const startDate = moment(job.starttime).tz('CET').startOf("day")
+  const endDate = moment(job.endtime || job.starttime).tz('CET').endOf("day")
+  return startDate <= date && date <= endDate;
 }

@@ -56,6 +56,17 @@ Vue.use(require("vue-moment"), {
   moment
 });
 
+// Use moment-tz to show UTC datetimes from the backend in the CET timezone
+const momentTz = require("moment-timezone");
+momentTz.tz.setDefault('UTC');
+Vue.filter("formatdate", function(value, format) {
+  if (!value) {
+    return "";
+  }
+  format = format || "dddd DD MMM YYYY HH:mm:ss";
+  return moment(value).tz('CET').format(format)
+});
+
 library.add([
   faSync,
   faDownload,
