@@ -83,7 +83,11 @@ export async function getJobs(filter) {
     .filter(job => job.processId)
     .map(job => ({
       ...job,
-      date: new Date(moment(job.day).tz('CET').startOf("day")),
+      date: new Date(
+        moment(job.day)
+          .tz("CET")
+          .startOf("day")
+      ),
       duration: moment.duration(moment(job.endtime).diff(moment(job.starttime)))
     }));
   return jobs;
@@ -91,7 +95,11 @@ export async function getJobs(filter) {
 
 export function jobRunsOnDate(job, date) {
   // Interpret any UTC date time that is received from the backend in the CET timezone
-  const startDate = moment(job.starttime).tz('CET').startOf("day")
-  const endDate = moment(job.endtime || job.starttime).tz('CET').endOf("day")
+  const startDate = moment(job.starttime)
+    .tz("CET")
+    .startOf("day");
+  const endDate = moment(job.endtime || job.starttime)
+    .tz("CET")
+    .endOf("day");
   return startDate <= date && date <= endDate;
 }

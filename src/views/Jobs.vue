@@ -1,9 +1,8 @@
 <template>
   <div>
     <div v-if="!loading" class="float-right">
-      <span v-if="date">{{ date | formatdate("dddd, DD MMMM YYYY") }}, </span> ({{
-        filteredJobs.length
-      }})
+      <span v-if="date">{{ date | formatdate("dddd, DD MMMM YYYY") }}, </span>
+      ({{ filteredJobs.length }})
     </div>
     <h1>Jobs</h1>
     <filter-overview :filter="filter"></filter-overview>
