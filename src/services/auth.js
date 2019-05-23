@@ -1,15 +1,15 @@
 export function runsOnProduction() {
   return !(
-    window.location.hostname.includes('acc') ||
-    window.location.hostname.includes('localhost')
+    window.location.hostname.includes("acc") ||
+    window.location.hostname.includes("localhost")
   );
 }
 
 const setupKeycloack = () => {
   const config = {
-    realm: runsOnProduction() ? 'datapunt' : 'datapunt-acc',
-    url: 'https://iam.amsterdam.nl/auth',
-    clientId: 'iris',
+    realm: runsOnProduction() ? "datapunt" : "datapunt-acc",
+    url: "https://iam.amsterdam.nl/auth",
+    clientId: "iris"
   };
 
   const keycloak = window.Keycloak(config);
