@@ -1,9 +1,22 @@
-const setupKeycloack = () => {
-  const keycloak = window.Keycloak();
+export function runsOnProduction() {
+  return !(
+    window.location.hostname.includes('acc') ||
+    window.location.hostname.includes('localhost')
+  );
+}
 
-  const init = async (loginRequired = false) => {
+const setupKeycloack = () => {
+  const config = {
+    realm: runsOnProduction() ? 'datapunt' : 'datapunt-acc',
+    url: 'https://iam.amsterdam.nl/auth',
+    clientId: 'iris',
+  };
+
+  const keycloak = window.Keycloak(config);
+
+  const init = async () => {
     const options = {
-      onLoad: loginRequired ? "login-required" : null,
+      onLoad: runsOnProduction() ? "login-required" : null,
       "check-sso": true,
       promiseType: "native" // To enable async/await
     };
