@@ -1,5 +1,6 @@
 import _ from "lodash";
 import moment from "moment-timezone";
+import { get } from "./request";
 
 import {
   querySourceEntities,
@@ -105,13 +106,5 @@ export function jobRunsOnDate(job, date) {
 }
 
 export function getSecure() {
-  var xhr = new XMLHttpRequest();
-  xhr.open(
-    "GET",
-    "https://acc.api.data.amsterdam.nl/gob_management/secure/",
-    true
-  );
-  xhr.send();
-  xhr.onreadystatechange = () =>
-    console.log("Received", xhr.readyState, xhr.status, xhr.response);
+  get("https://acc.api.data.amsterdam.nl/gob_management/secure/");
 }
