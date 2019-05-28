@@ -1,5 +1,5 @@
 import { get_api } from "../services/api";
-import { request } from "graphql-request";
+import { request } from "../services/request";
 
 const api = get_api() + "gob_management/graphql/";
 

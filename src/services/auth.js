@@ -25,15 +25,12 @@ const setupKeycloack = () => {
 
   const login = async () => {
     await isReady;
-    const options = {
-      prompt: "GOB Login" // Currently this option seems to get ignored
-    };
-    keycloak.login(options);
+    return keycloak.login();
   };
 
   const logout = async () => {
     await isReady;
-    keycloak.logout();
+    return keycloak.logout();
   };
 
   const userInfo = async () => {
@@ -43,6 +40,11 @@ const setupKeycloack = () => {
     } else {
       return null;
     }
+  };
+
+  const token = async () => {
+    await isReady;
+    return keycloak.token;
   };
 
   const isReady = new Promise(async (resolve, reject) => {
@@ -86,6 +88,7 @@ const setupKeycloack = () => {
 
   return {
     login,
+    token,
     userInfo,
     logout
   };

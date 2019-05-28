@@ -103,3 +103,15 @@ export function jobRunsOnDate(job, date) {
     .endOf("day");
   return startDate <= date && date <= endDate;
 }
+
+export function getSecure() {
+  var xhr = new XMLHttpRequest();
+  xhr.open(
+    "GET",
+    "https://acc.api.data.amsterdam.nl/gob_management/secure/",
+    true
+  );
+  xhr.send();
+  xhr.onreadystatechange = () =>
+    console.log("Received", xhr.readyState, xhr.status, xhr.response);
+}
