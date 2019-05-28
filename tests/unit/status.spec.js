@@ -2,7 +2,7 @@ import { services, isAlive, ALIVE_INTERVAL } from "../../src/services/status";
 
 const mockServices = [];
 
-jest.mock("graphql-request", () => ({
+jest.mock("../../src/services/request", () => ({
   request: jest.fn(async () => {
     return {
       services: {

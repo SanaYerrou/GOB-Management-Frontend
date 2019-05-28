@@ -3,7 +3,7 @@ import { get_api } from "../../src/services/api";
 
 var api, query;
 
-jest.mock("graphql-request", () => ({
+jest.mock("../../src/services/request", () => ({
   request: jest.fn(async (_api, _query) => {
     api = _api;
     query = _query;

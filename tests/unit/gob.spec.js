@@ -80,7 +80,7 @@ const LOGS = {
 var mockSources = SOURCES.EMPTY;
 var mockLogs = LOGS.EMPTY;
 
-jest.mock("graphql-request", () => ({
+jest.mock("../../src/services/request", () => ({
   request: jest.fn(async (api, query) => {
     if (query.includes("logs")) {
       return {

@@ -1,18 +1,10 @@
 import { get_api } from "../services/api";
-import { GraphQLClient } from "graphql-request";
-import auth from "../services/auth";
+import { request } from "../services/request";
 
 const api = get_api() + "gob_management/graphql/";
 
 async function graphql(query) {
-  const token = await auth.token();
-  const headers = token
-    ? {
-        Authorization: "Bearer " + token
-      }
-    : {};
-  const client = new GraphQLClient(api, { headers });
-  return client.request(query);
+  return request(api, query);
 }
 
 export async function querySourceEntities() {
