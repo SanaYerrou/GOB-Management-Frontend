@@ -15,7 +15,7 @@ const setupKeycloack = () => {
 
   const init = async () => {
     const options = {
-      onLoad: "login-required", // Re-login on application start and browser refresh
+      onLoad: "login-required", // Login on application start and browser refresh
       promiseType: "native", // To enable async/await
       "check-sso": false, // To enable refresh token
       checkLoginIframe: false // To enable refresh token
@@ -68,7 +68,11 @@ const setupKeycloack = () => {
     if (turnOn) {
       // Start a token updater, if not yet running
       keepAlive =
-        keepAlive || setInterval(() => keycloak.updateToken(minValidity), updateInterval * 1000);
+        keepAlive ||
+        setInterval(
+          () => keycloak.updateToken(minValidity),
+          updateInterval * 1000
+        );
     } else {
       keepAlive && clearInterval(keepAlive);
       keepAlive = null;
@@ -104,8 +108,9 @@ const setupKeycloack = () => {
   };
 
   keycloak.onTokenExpired = function() {
-    console.log("Unexpected: Token expired");
     // This should never happen
+    console.log("Unexpected: Token expired");
+    autoRefreshToken(false);
   };
 
   return {
