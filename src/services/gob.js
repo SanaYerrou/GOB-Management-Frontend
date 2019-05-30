@@ -106,5 +106,5 @@ export function jobRunsOnDate(job, date) {
 }
 
 export function getSecure() {
-  get("https://acc.api.data.amsterdam.nl/gob_management/secure/");
+  get("gob_management/secure/");
 }

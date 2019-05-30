@@ -11,17 +11,28 @@ const setupKeycloack = () => {
     url: "https://iam.amsterdam.nl/auth",
     clientId: "iris"
   };
-
   const keycloak = window.Keycloak(config);
 
   const init = async () => {
     const options = {
-      onLoad: runsOnProduction() ? "login-required" : null,
-      "check-sso": true,
-      promiseType: "native" // To enable async/await
+      onLoad: "login-required", // Re-login on application start and browser refresh
+      promiseType: "native", // To enable async/await
+      "check-sso": false, // To enable refresh token
+      checkLoginIframe: false // To enable refresh token
     };
     return keycloak.init(options);
   };
+
+  const isReady = new Promise(async (resolve, reject) => {
+    // This is executed during load of this module
+    // The promise is awaited in the other methods to be sure that keycloak has been initialised
+    try {
+      await init();
+      resolve();
+    } catch (e) {
+      reject();
+    }
+  });
 
   const login = async () => {
     await isReady;
@@ -47,43 +58,54 @@ const setupKeycloack = () => {
     return keycloak.token;
   };
 
-  const isReady = new Promise(async (resolve, reject) => {
-    // This is executed during load of this module
-    // The promise is awaited in the other methods
-    try {
-      await init();
-      resolve();
-    } catch (e) {
-      reject();
+  var keepAlive = null;
+
+  const autoRefreshToken = turnOn => {
+    // Refresh the token automatically once the user has been authenticated
+    // Turn off when the user has logged out
+    const minValidity = 30; // Token should be valid for at least the next 30 seconds
+    const updateInterval = minValidity * 0.75; // Keep token valid by checking regularly
+    if (turnOn) {
+      // Start a token updater, if not yet running
+      keepAlive =
+        keepAlive || setInterval(() => keycloak.updateToken(minValidity), updateInterval * 1000);
+    } else {
+      keepAlive && clearInterval(keepAlive);
+      keepAlive = null;
     }
-  });
+  };
 
   keycloak.onReady = authenticated => {
-    console.debug("Keycloak ready, authenticated", authenticated);
+    console.log("Keycloak ready, authenticated", authenticated);
   };
 
   keycloak.onAuthSuccess = function() {
-    console.debug("Auth success");
+    console.log("Auth success");
+    autoRefreshToken(true);
   };
 
   keycloak.onAuthError = function() {
-    console.debug("Auth error");
+    console.log("Auth error");
+    autoRefreshToken(false);
   };
 
   keycloak.onAuthRefreshSuccess = function() {
-    console.debug("Auth refresh success");
+    console.log("Auth refresh success");
   };
 
   keycloak.onAuthRefreshError = function() {
-    console.debug("Auth refresh error");
+    console.log("Auth refresh error");
+    autoRefreshToken(false);
   };
 
   keycloak.onAuthLogout = function() {
-    console.debug("Auth.debugout");
+    console.log("Auth logout");
+    autoRefreshToken(false);
   };
 
   keycloak.onTokenExpired = function() {
-    console.debug("Token expired");
+    console.log("Unexpected: Token expired");
+    // This should never happen
   };
 
   return {

@@ -1,5 +1,6 @@
 import { GraphQLClient } from "graphql-request";
 import auth from "./auth";
+import { get_api } from "./api";
 
 export async function request(api, query) {
   const token = await auth.token();
@@ -15,6 +16,7 @@ export async function request(api, query) {
 export async function get(url) {
   var xhr = new XMLHttpRequest();
   const token = await auth.token();
+  url = get_api() + url;
   xhr.open("GET", url, true);
   xhr.setRequestHeader("Authorization", "Bearer " + token);
   xhr.send();
