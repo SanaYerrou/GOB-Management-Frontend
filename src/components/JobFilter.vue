@@ -18,7 +18,9 @@
           stacked
           v-model="filter[filterType.key]"
           name="flavour2a"
-          :options="filterOptions(filterType.key)"
+          :options="
+            filterOptions(filterType.key).map(o => o.replace(/_/g, ' '))
+          "
         />
       </b-form-group>
     </div>
