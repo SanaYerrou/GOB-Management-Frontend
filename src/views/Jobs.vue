@@ -1,5 +1,11 @@
 <template>
   <div>
+    <div class="float-left mt-2">
+      <b-button v-b-toggle.collapse-filters variant="primary">
+        <span class="when-opened">Hide</span>
+        <span class="when-closed">Show</span> Filters
+      </b-button>
+    </div>
     <div v-if="!loading" class="float-right">
       <span v-if="date">{{ date | formatdate("dddd, DD MMMM YYYY") }}, </span>
       ({{ filteredJobs.length }})
@@ -11,7 +17,7 @@
       Loading <img src="../assets/running.gif" height="20px" />
     </div>
     <div v-else class="row justify-content-center">
-      <div class="col col-xs-12 col-lg-auto mb-2">
+      <b-collapse id="collapse-filters" visible class="col col-3">
         <div class="align-center">
           <job-calendar
             :jobs="allJobs"
@@ -48,7 +54,7 @@
             <job-filter :filter="filter" :jobs="jobs"></job-filter>
           </div>
         </div>
-      </div>
+      </b-collapse>
 
       <div class="col">
         <div v-if="filteredJobs.length">
@@ -322,6 +328,10 @@ export default {
 .badge {
   margin-left: 5px;
   margin-bottom: 10px;
+}
+.collapsed > .when-opened,
+:not(.collapsed) > .when-closed {
+  display: none;
 }
 .refresh-button {
   margin-bottom: 10px;
