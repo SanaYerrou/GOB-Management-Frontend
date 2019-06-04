@@ -17,7 +17,7 @@
       Loading <img src="../assets/running.gif" height="20px" />
     </div>
     <div v-else class="row justify-content-center">
-      <b-collapse id="collapse-filters" visible class="col col-3">
+      <b-collapse id="collapse-filters" visible class="col col-xs-12 col-lg-3">
         <div class="align-center">
           <job-calendar
             :jobs="allJobs"
@@ -56,7 +56,7 @@
         </div>
       </b-collapse>
 
-      <div class="col">
+      <div class="col col-lg-9">
         <div v-if="filteredJobs.length">
           <div v-for="job in filteredJobs" :key="job.jobid" class="mb-2">
             <div>
