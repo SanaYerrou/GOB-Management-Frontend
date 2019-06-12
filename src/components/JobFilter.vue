@@ -39,6 +39,8 @@ export default {
     filterOptions(key) {
       return _.uniq(
         this.jobs
+          // Filter out relation entities
+          .filter(job => (key === "entity" ? job.catalogue !== "rel" : true))
           .map(job => job[key])
           .filter(k => k)
           .concat(this.filter[key])
