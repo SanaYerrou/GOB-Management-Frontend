@@ -10,13 +10,15 @@
       <span v-if="date">{{ date | formatdate("dddd, DD MMMM YYYY") }}, </span>
       ({{ filteredJobs.length }})
     </div>
-    <h1>Jobs</h1>
+    <h1>
+      Jobs
+      <span v-if="loading">
+        <img src="../assets/running.gif" height="20px" />
+      </span>
+    </h1>
     <filter-overview :filter="filter"></filter-overview>
 
-    <div v-if="loading">
-      Loading <img src="../assets/running.gif" height="20px" />
-    </div>
-    <div v-else class="row justify-content-center">
+    <div class="row justify-content-center">
       <b-collapse id="collapse-filters" visible class="col col-xs-12 col-lg-3">
         <div class="align-center">
           <job-calendar
@@ -45,10 +47,6 @@
                 :class="{ 'fa-spin': loading }"
               />
             </b-btn>
-          </div>
-          <div v-if="loading">
-            Laden van jobs
-            <font-awesome-icon icon="sync" class="fa-xs fa-spin" />
           </div>
           <div class="mt-3">
             <job-filter :filter="filter" :jobs="jobs"></job-filter>
