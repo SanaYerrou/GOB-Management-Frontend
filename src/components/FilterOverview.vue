@@ -7,7 +7,7 @@
         class="mr-2 mb-2"
         :key="item"
         size="sm"
-        @click="closeItem(items, key, item);"
+        @click="closeItem(items, key, item)"
       >
         {{ item }} <span aria-hidden="true">&times;</span>
       </b-button>

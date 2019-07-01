@@ -25,10 +25,10 @@
           <template slot="button-content">
             <em>{{ username || "User" }}</em>
           </template>
-          <b-dropdown-item v-if="!username" v-on:click="login();"
+          <b-dropdown-item v-if="!username" v-on:click="login()"
             >Login</b-dropdown-item
           >
-          <b-dropdown-item v-if="username" v-on:click="logout();"
+          <b-dropdown-item v-if="username" v-on:click="logout()"
             >Logout</b-dropdown-item
           >
         </b-nav-item-dropdown>

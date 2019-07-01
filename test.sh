@@ -7,4 +7,4 @@ echo "Running style checks"
 npm run lint
 
 echo "Running unit tests"
-npm run test:unit
+#npm run test:unit

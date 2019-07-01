@@ -34,7 +34,7 @@
               class="ERROR refresh-button btn-block"
               title="Ververs"
               variant="outline-secondary"
-              @click="loadDays();"
+              @click="loadDays()"
             >
               <span v-if="new_logs">
                 Er zijn nieuwe logs beschikbaar.<br />
@@ -60,7 +60,7 @@
             <div>
               <b-btn
                 v-b-toggle="job.processId"
-                @click="loadLogs(job);"
+                @click="loadLogs(job)"
                 block
                 variant="outline-secondary"
               >
