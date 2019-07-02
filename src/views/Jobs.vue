@@ -138,6 +138,7 @@ export default {
       },
 
       date: null,
+      activeCollapseId: null,
 
       loading: true,
       new_logs: false
@@ -186,6 +187,11 @@ export default {
       // This method is called on mount and on refresh
       this.loading = true;
       this.new_logs = false;
+
+      if (this.activeCollapseId) {
+        this.$root.$emit("bv::toggle::collapse", this.activeCollapseId);
+        this.activeCollapseId = null;
+      }
 
       // Start loading jobs from API
       await this.loadJobs();
@@ -305,6 +311,9 @@ export default {
     // Watch any new logs
     connect();
     subscribe("new_logs", () => (this.new_logs = true));
+    this.$root.$on("bv::collapse::state", (collapseId, isJustShown) => {
+      this.activeCollapseId = isJustShown ? collapseId : null;
+    });
   },
 
   async beforeDestroy() {
