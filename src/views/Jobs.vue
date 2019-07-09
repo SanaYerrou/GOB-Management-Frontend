@@ -153,6 +153,13 @@ export default {
   },
   computed: {},
   methods: {
+    matchFilter(job, key) {
+      const jobKey = j => j[key].toLowerCase().replace(/_/g, " ");
+      return (
+        this.filter[key].length === 0 || this.filter[key].includes(jobKey(job))
+      );
+    },
+
     applyFilter() {
       this.filteredJobs = this.jobs.filter(job => {
         // default filter is on current year month
@@ -160,23 +167,18 @@ export default {
         const month = this.filter.month[0] || new Date().getMonth() + 1;
         const jobStart = new Date(job.starttime);
 
+        const match = key => this.matchFilter(job, key);
+
         return (
           jobStart.getFullYear() === year &&
           jobStart.getMonth() + 1 === month &&
-          (this.filter.catalogue.length === 0 ||
-            this.filter.catalogue.includes(job.catalogue)) &&
-          (this.filter.entity.length === 0 ||
-            this.filter.entity.includes(job.entity)) &&
-          (this.filter.application.length === 0 ||
-            this.filter.application.includes(job.application)) &&
-          (this.filter.source.length === 0 ||
-            this.filter.source.includes(job.source)) &&
-          (this.filter.name.length === 0 ||
-            this.filter.name.includes(job.name)) &&
-          (this.filter.status.length === 0 ||
-            this.filter.status.includes(job.status)) &&
-          (this.filter.ageCategory.length === 0 ||
-            this.filter.ageCategory.includes(job.ageCategory)) &&
+          match("catalogue") &&
+          match("entity") &&
+          match("application") &&
+          match("source") &&
+          match("name") &&
+          match("status") &&
+          match("ageCategory") &&
           (this.filter.messageTypes.length === 0 ||
             this.filter.messageTypes.reduce((s, t) => s + job[t], 0) > 0)
         );

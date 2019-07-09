@@ -18,9 +18,7 @@
           stacked
           v-model="filter[filterType.key]"
           name="flavour2a"
-          :options="
-            filterOptions(filterType.key).map(o => o.replace(/_/g, ' '))
-          "
+          :options="filterOptions(filterType.key)"
         />
       </b-form-group>
     </div>
@@ -42,8 +40,10 @@ export default {
           // Filter out relation entities
           .filter(job => (key === "entity" ? job.catalogue !== "rel" : true))
           .map(job => job[key])
-          .filter(k => k)
           .concat(this.filter[key])
+          .filter(k => k)
+          .map(k => k.toLowerCase())
+          .map(k => k.replace(/_/g, " "))
           .sort()
       );
     }
