@@ -7,6 +7,7 @@ import Entities from "./views/Entities";
 import Jobs from "./views/Jobs";
 import Status from "./views/Status";
 import Job from "./views/Job";
+import Management from "./views/Management";
 
 Vue.use(Router);
 
@@ -43,6 +44,11 @@ export default new Router({
       path: "/job",
       name: "job",
       component: Job
+    },
+    {
+      path: "/management",
+      name: "management",
+      component: Management
     },
     {
       path: "/status",

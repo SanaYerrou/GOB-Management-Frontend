@@ -76,6 +76,48 @@ export async function getJob(id) {
   return jobinfos ? jobinfos[0] : null;
 }
 
+export async function createJob(action, catalogue, collection) {
+  const application = {
+    bouwblokken: "DGDialog",
+    buurten: "DGDialog",
+    wijken: "DGDialog",
+    stadsdelen: "DGDialog"
+  };
+
+  action = action.toLowerCase().replace(" ", "_");
+  catalogue = catalogue.toLowerCase();
+  collection = collection.toLowerCase();
+
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      action,
+      catalogue,
+      collection,
+      application: application[collection],
+      destination: "Objectstore"
+    })
+  };
+  const result = await get("gob_management/job/", requestOptions);
+  return {
+    ok: result.ok,
+    text: await result.text()
+  };
+}
+
+function isZombie(job) {
+  if (job.status === "started") {
+    const runtime = moment
+      .duration(moment(Date.now()).diff(moment(job.starttime)))
+      .asHours();
+    return runtime > 12;
+  }
+  return false;
+}
+
 export async function getJobs(filter) {
   var data = await queryJobs(filter);
 
@@ -90,6 +132,10 @@ export async function getJobs(filter) {
           .startOf("day")
       ),
       duration: moment.duration(moment(job.endtime).diff(moment(job.starttime)))
+    }))
+    .map(job => ({
+      ...job,
+      status: job.status === "started" && isZombie(job) ? "zombie" : job.status
     }));
   return jobs;
 }
