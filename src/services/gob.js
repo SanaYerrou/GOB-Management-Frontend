@@ -12,6 +12,8 @@ import {
   queryLogsForJobStep
 } from "../graphql/queries";
 
+export const catalogOnlyJobs = ["Prepare", "Export Test"];
+
 export async function sources() {
   var data = await querySourceEntities();
   return _.uniq(

@@ -43,20 +43,12 @@
               </b-form-radio-group>
             </b-form-group>
 
-            <div class="result">
-              <b-button
-                :disabled="!canStart(action[catalog], collection[catalog])"
-                @click="start(catalog, action[catalog], collection[catalog])"
-                >Start {{ action[catalog] }}</b-button
-              >
-              <div
-                v-if="result[catalog]"
-                class="mt-2"
-                :class="result[catalog].ok ? 'INFO' : 'ERROR'"
-              >
-                {{ result[catalog].text }}
-              </div>
-            </div>
+            <job-start
+              title="Start"
+              :action="action[catalog]"
+              :catalog="catalog"
+              :collection="collection[catalog]"
+            ></job-start>
           </b-card-body>
         </b-collapse>
       </b-card>
@@ -65,18 +57,17 @@
 </template>
 
 <script>
-import { createJob } from "../services/gob";
-
-const catalogOnly = ["Prepare", "Export Test"];
+import { catalogOnlyJobs } from "../services/gob";
+import JobStart from "../components/JobStart";
 
 export default {
   name: "Management",
+  components: { JobStart },
   data() {
     return {
       action: {},
       collection: {},
       collectionDisabled: {},
-      result: {},
       catalogCollections: {
         BAG: [
           "Brondocumenten",
@@ -121,50 +112,22 @@ export default {
         text: action === "Prepare" ? `${action} (Includes import)` : action
       }));
     },
-    onCatalog(catalog) {
-      this.clearResult(catalog);
-      this.$forceUpdate();
-    },
+    onCatalog() {},
     onAction(catalog, action) {
-      this.clearResult(catalog);
-      if (catalogOnly.includes(action)) {
+      if (catalogOnlyJobs.includes(action)) {
         delete this.collection[catalog];
         this.collectionDisabled[catalog] = true;
       } else {
         this.collectionDisabled[catalog] = false;
       }
       this.$forceUpdate();
-    },
-    canStart(action, collection) {
-      return catalogOnly.includes(action) || (action && collection);
-    },
-    clearResult(catalog) {
-      this.result[catalog] = {};
-    },
-    async start(catalog, action, collection) {
-      this.clearResult(catalog);
-      const result = await createJob(action, catalog, collection);
-      if (result.ok) {
-        const info = JSON.parse(result.text);
-        const values = Object.values(info).join(" ");
-        result.text = `${this.action[catalog]} ${values} started`;
-      }
-      this.result[catalog] = result;
-      delete this.action[catalog];
-      delete this.collection[catalog];
-      this.$forceUpdate();
     }
-  },
-  mounted() {},
-  watch: {}
+  }
 };
 </script>
 
 <style scoped>
 .jobcard {
   text-align: left !important;
-}
-.result {
-  text-align: center !important;
 }
 </style>
