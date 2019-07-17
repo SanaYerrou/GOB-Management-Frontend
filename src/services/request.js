@@ -13,13 +13,13 @@ export async function request(api, query) {
   return client.request(query);
 }
 
-export async function get(url) {
-  var xhr = new XMLHttpRequest();
+export async function get(url, options = {}) {
   const token = await auth.token();
-  url = get_api() + url;
-  xhr.open("GET", url, true);
-  xhr.setRequestHeader("Authorization", "Bearer " + token);
-  xhr.send();
-  xhr.onreadystatechange = () =>
-    console.log("Received", xhr.readyState, xhr.status, xhr.response);
+  return fetch(get_api() + url, {
+    ...options,
+    headers: {
+      Authorization: "Bearer " + token,
+      ...options.headers
+    }
+  });
 }

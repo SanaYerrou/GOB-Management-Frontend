@@ -27,6 +27,15 @@
           </tr>
         </table>
 
+        <div>
+          <job-start
+            title="Herstart"
+            :action="job.name"
+            :catalog="job.catalogue"
+            :collection="job.entity"
+          ></job-start>
+        </div>
+
         <div v-for="step in jobinfo.steps" :key="step.stepid" class="mt-2">
           <h2>{{ step.name }}</h2>
           <table>
@@ -70,6 +79,7 @@ import JobHeader from "../components/JobHeader";
 
 import { getJob, getJobs, logsForJobStep } from "../services/gob";
 import JobStatus from "../components/JobStatus";
+import JobStart from "../components/JobStart";
 
 export default {
   name: "job",
@@ -82,6 +92,7 @@ export default {
     };
   },
   components: {
+    JobStart,
     JobStatus,
     Logs,
     JobHeader
