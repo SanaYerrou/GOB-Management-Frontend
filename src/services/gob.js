@@ -78,6 +78,15 @@ export async function getJob(id) {
   return jobinfos ? jobinfos[0] : null;
 }
 
+export async function catalogCollections() {
+  const result = await get("gob_management/catalogs/");
+  if (result.ok) {
+    return result.json();
+  } else {
+    return [];
+  }
+}
+
 export async function createJob(action, catalogue, collection) {
   const application = {
     bouwblokken: "DGDialog",

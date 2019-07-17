@@ -6,17 +6,13 @@
         no-body
         class="mb-1"
         v-for="(collections, catalog) in catalogCollections"
+        v-if="!['rel', 'test_catalogue'].includes(catalog)"
         :key="catalog"
       >
         <b-card-header header-tag="header" class="p-1" role="tab">
-          <b-button
-            block
-            href="#"
-            v-b-toggle="catalog"
-            variant="info"
-            @click="onCatalog(catalog)"
-            >{{ catalog }}</b-button
-          >
+          <b-button block href="#" v-b-toggle="catalog" variant="info">{{
+            catalog
+          }}</b-button>
         </b-card-header>
 
         <b-collapse :id="catalog" accordion="my-accordion" role="tabpanel">
@@ -57,7 +53,7 @@
 </template>
 
 <script>
-import { catalogOnlyJobs } from "../services/gob";
+import { catalogOnlyJobs, catalogCollections } from "../services/gob";
 import JobStart from "../components/JobStart";
 
 export default {
@@ -68,51 +64,22 @@ export default {
       action: {},
       collection: {},
       collectionDisabled: {},
-      catalogCollections: {
-        BAG: [
-          "Brondocumenten",
-          "Dossiers",
-          "Ligplaatsen",
-          "Nummeraanduidingen",
-          "Openbareruimtes",
-          "Panden",
-          "Standplaatsen",
-          "Verblijfsobjecten",
-          "Woonplaatsen"
-        ],
-        BRK: [
-          "aantekeningenkadastraleobjecten",
-          "aantekeningenrechten",
-          "aardzakelijkerechten",
-          "kadastraleobjecten",
-          "stukdelen",
-          "tenaamstellingen",
-          "zakelijkerechten"
-        ],
-        Gebieden: [
-          "Bouwblokken",
-          "Buurten",
-          "Wijken",
-          "Stadsdelen",
-          "GGWGebieden",
-          "GGPGebieden"
-        ],
-        Meetbouten: ["Meetbouten", "Metingen", "Referentiepunten", "Rollagen"],
-        NAP: ["Peilmerken"]
-      },
+      catalogCollections: {},
       actions: ["Import", "Relate", "Export", "Export Test"]
     };
+  },
+  async mounted() {
+    this.catalogCollections = await catalogCollections();
   },
   methods: {
     catalogActions(catalog) {
       const actions =
-        catalog === "BRK" ? ["Prepare", ...this.actions] : this.actions;
+        catalog === "brk" ? ["Prepare", ...this.actions] : this.actions;
       return actions.map(action => ({
         value: action,
         text: action === "Prepare" ? `${action} (Includes import)` : action
       }));
     },
-    onCatalog() {},
     onAction(catalog, action) {
       if (catalogOnlyJobs.includes(action)) {
         delete this.collection[catalog];
