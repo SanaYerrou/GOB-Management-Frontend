@@ -11,6 +11,9 @@
       {{ job.step }}
       <img src="../assets/running.gif" height="20px" />
     </span>
+    <span v-if="job.status === 'rejected'">
+      <img src="../assets/rejected.gif" height="20px" />
+    </span>
     <span v-if="job.status === 'ended'">
       <span v-if="job.endtime || job.end">
         <font-awesome-icon icon="flag-checkered" />
