@@ -97,7 +97,7 @@ export async function createJob(action, catalogue, collection) {
 
   action = action.toLowerCase().replace(" ", "_");
   catalogue = catalogue.toLowerCase();
-  collection = collection.toLowerCase();
+  collection = (collection || "").toLowerCase();
 
   const requestOptions = {
     method: "POST",

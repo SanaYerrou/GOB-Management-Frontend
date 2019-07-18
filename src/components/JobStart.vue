@@ -4,7 +4,7 @@
       ><font-awesome-icon icon="play" class="error" /> {{ title }}
       {{ action }}</b-button
     >
-    <div v-if="result" :class="result.ok ? 'INFO' : 'ERROR'">
+    <div class="mt-2" v-if="result" :class="result.ok ? 'INFO' : 'ERROR'">
       {{ result.text }}
     </div>
   </div>
