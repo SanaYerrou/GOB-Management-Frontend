@@ -22,10 +22,18 @@
 
     <title>GOB</title>
   </head>
-  <body>
+  <body onload="checkKeycloak()">
     <noscript>
       <strong>We're sorry but mngmt doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
+    <div id="keycloak"></div>
+    <script>
+      function checkKeycloak() {
+        if (!window.Keycloak) {
+          document.getElementById("keycloak").innerHTML = "Keycloak load has failed";
+        }
+      }
+    </script>
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
