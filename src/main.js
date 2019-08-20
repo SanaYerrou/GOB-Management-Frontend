@@ -70,6 +70,16 @@ Vue.filter("formatdate", function(value, format) {
     .format(format);
 });
 
+Vue.filter("formatduration", function(value) {
+  if (!value) {
+    return "";
+  }
+  return (
+    Math.floor(moment.duration(value).asHours()) +
+    moment(value).format(":mm:ss")
+  );
+});
+
 library.add([
   faSync,
   faDownload,
