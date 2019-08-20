@@ -142,6 +142,7 @@ export async function getJobs(filter) {
           .tz("CET")
           .startOf("day")
       ),
+      ago: moment(Date.now()).diff(moment(job.starttime)),
       duration: moment.duration(moment(job.endtime).diff(moment(job.starttime)))
     }))
     .map(job => ({
