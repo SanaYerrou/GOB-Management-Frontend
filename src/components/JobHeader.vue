@@ -13,7 +13,7 @@
     </b-badge>
     <div>
       <span>{{ job.starttime | formatdate }} (</span>
-      <span v-if="!job.brutoDuration"
+      <span v-if="job.brutoDuration"
         >{{ job.brutoDuration }} / {{ job.nettoDuration }}</span
       >
       <span v-else>{{ job.ago | formatduration }}...</span>)
