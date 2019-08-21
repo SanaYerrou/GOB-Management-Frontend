@@ -25,12 +25,13 @@
             />
           </div>
           <div
-            v-for="task in instance.tasks"
+            v-for="task in tasks(instance)"
             :key="task.name"
             class="small"
             :class="task.isAlive ? 'INFO' : 'ERROR'"
           >
             {{ taskname(task) }}
+            <span v-if="task.count > 1">({{ task.count }})</span>
           </div>
         </div>
       </div>
@@ -39,6 +40,14 @@
 </template>
 
 <script>
+const names = {
+  Eventloop: "Waiting for messages",
+  MessageHandler: "Processing message",
+  MainThread: "Active",
+  QueueHandler: "Queue handler"
+};
+const ANONYMOUS_THREAD = "Anonymous";
+
 export default {
   name: "ServiceDetail",
   props: {
@@ -46,16 +55,34 @@ export default {
   },
   methods: {
     taskname(task) {
-      const names = {
-        Eventloop: "Waiting for messages",
-        MessageHandler: "Processing message",
-        MainThread: "Active"
-      };
-      return names[task.name] || task.name;
+      return names[task.name] || ANONYMOUS_THREAD;
+    },
+    tasks(instance) {
+      return Object.values(
+        instance.tasks
+          .map(t => {
+            t.taskname = this.taskname(t);
+            return t;
+          })
+          .filter(t => t.taskname !== ANONYMOUS_THREAD)
+          .reduce((r, t) => {
+            const name = t.taskname;
+            if (!r[name]) {
+              r[name] = t;
+              r[name].count = 0;
+            }
+            r[name].isAlive = r[name].isAlive && t.isAlive;
+            r[name].count += 1;
+            return r;
+          }, {})
+      );
     },
     isRunning(service) {
       if (service && service.tasks) {
-        return service.tasks.length > 2;
+        return (
+          service.tasks.filter(t => this.taskname(t) === names.MessageHandler)
+            .length > 0
+        );
       } else {
         return false;
       }
