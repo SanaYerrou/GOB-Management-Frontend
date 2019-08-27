@@ -15,11 +15,13 @@ const setupKeycloack = () => {
 
   const init = async () => {
     const options = {
-      onLoad: "login-required", // Login on application start and browser refresh
       promiseType: "native", // To enable async/await
       "check-sso": false, // To enable refresh token
       checkLoginIframe: false // To enable refresh token
     };
+    if (runsOnProduction()) {
+      options.onLoad = "login-required"; // Login on application start and browser refresh
+    }
     return keycloak.init(options);
   };
 

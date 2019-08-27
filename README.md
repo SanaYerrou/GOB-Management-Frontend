@@ -11,9 +11,9 @@ Written in Vue.js
 
 ## Configuration
 
-The configuration variables are stored in .env* files in the root directory of the project.
+Any configuration variables are stored in .env* files in the root directory of the project.
 
-- VUE_APP_API: The address of the GOB Management API
+Currently no configuration variables are used.
 
 ## Dependencies
 
@@ -39,13 +39,25 @@ npm run build
 npm run lint
 ```
 
+or using a shell script
+```
+sh test.sh
+```
+
+
 ### Run your unit tests
 
-Tests have been made for all services with a coverage of 100%.
+unit tests are currently not used.
 
-All component logic is implemented by means of services.
-Because components do not contain any logic they are not tested. 
+See issue https://github.com/Amsterdam/GOB-Management-Frontend/issues/125
+
+_Tests have been made for all services with a coverage of 100%._
+
+_All component logic is implemented by means of services._
+_Because components do not contain any logic they are not tested._
+_ 
 
 ```
 npm run test:unit
 ```
+
