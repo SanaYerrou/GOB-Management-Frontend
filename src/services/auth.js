@@ -1,8 +1,5 @@
 export function runsOnProduction() {
-  return !(
-    window.location.hostname.includes("acc") ||
-    window.location.hostname.includes("localhost")
-  );
+  return !window.location.hostname.includes("localhost");
 }
 
 const setupKeycloack = () => {
@@ -21,6 +18,8 @@ const setupKeycloack = () => {
     };
     if (runsOnProduction()) {
       options.onLoad = "login-required"; // Login on application start and browser refresh
+    } else {
+      console.warn("localhost detected, no login required");
     }
     return keycloak.init(options);
   };
