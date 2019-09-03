@@ -1,5 +1,23 @@
 <template>
   <div>
+    <b-form-group label="Shortcuts" class="text-left">
+      <div class="mb-1">
+        <b-btn variant="primary" @click="filterOnFailed()">Jobs gefaald</b-btn>
+      </div>
+      <div class="mb-1">
+        <b-btn variant="primary" @click="filterOnErrors()"
+          >Jobs met fouten</b-btn
+        >
+      </div>
+      <div class="mb-1">
+        <b-btn variant="primary" @click="filterOnWarnings()"
+          >Jobs met waarschuwingen</b-btn
+        >
+      </div>
+      <div>
+        <b-btn variant="primary" @click="clearFilter()">Reset filters</b-btn>
+      </div>
+    </b-form-group>
     <b-form-group label="Type meldingen" class="text-left">
       <b-form-checkbox-group
         stacked
@@ -34,6 +52,26 @@ export default {
     jobs: Array
   },
   methods: {
+    clearFilter() {
+      Object.keys(this.filter).map(key => {
+        this.filter[key] = [];
+      });
+    },
+    filterOnFailed() {
+      this.clearFilter();
+      this.filter.ageCategory = [" 0 - 24 uur"];
+      this.filter.status = ["zombie", "failed"];
+    },
+    filterOnErrors() {
+      this.clearFilter();
+      this.filter.ageCategory = [" 0 - 24 uur"];
+      this.filter.messageTypes = ["errors"];
+    },
+    filterOnWarnings() {
+      this.clearFilter();
+      this.filter.ageCategory = [" 0 - 24 uur"];
+      this.filter.messageTypes = ["warnings"];
+    },
     filterOptions(key) {
       return _.uniq(
         this.jobs

@@ -1,8 +1,18 @@
 <template>
   <div>
+    <b-form-group class="text-left">
+      <b-form-checkbox
+        v-model="filter[level]"
+        v-for="(n, level) in levels()"
+        :key="level"
+        inline
+        >{{ level }} ({{ n }})</b-form-checkbox
+      >
+    </b-form-group>
+
     <b-table
       :fields="FIELDS"
-      :items="logs.filter(l => !l.msgid)"
+      :items="logs.filter(l => !l.msgid).filter(l => filter[l.level])"
       class="log"
       hover
       small
@@ -20,7 +30,7 @@
     </b-table>
 
     <div v-for="id in msgids" :key="id.msgid">
-      <div>
+      <div v-if="filter[id.level]">
         <div>
           <div class="text-left">
             {{ id.level }} ({{
@@ -66,11 +76,25 @@ export default {
   name: "Logs",
   data() {
     return {
-      FIELDS
+      FIELDS,
+      filter: {
+        INFO: true,
+        WARNING: true,
+        ERROR: true
+      }
     };
   },
   props: {
     logs: Array
+  },
+  methods: {
+    levels() {
+      return this.logs.reduce((r, l) => {
+        r[l.level] = r[l.level] || 0;
+        r[l.level] += 1;
+        return r;
+      }, {});
+    }
   },
   computed: {
     msgids() {
