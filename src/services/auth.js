@@ -11,6 +11,10 @@ export function runsOnProduction() {
 }
 
 const setupKeycloack = () => {
+  console.log("Runs local ", runsLocally());
+  console.log("Runs acc   ", runsOnAcceptance());
+  console.log("Runs prod  ", runsOnProduction());
+
   const config = {
     realm: runsOnProduction() ? "datapunt" : "datapunt-acc",
     url: "https://iam.amsterdam.nl/auth",
@@ -30,6 +34,8 @@ const setupKeycloack = () => {
     } else {
       options.onLoad = "login-required"; // Login on application start and browser refresh
     }
+
+    console.log("Config", options);
     return keycloak.init(options);
   };
 
