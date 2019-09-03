@@ -1,5 +1,13 @@
+export function runsLocally() {
+  return window.location.hostname.includes("localhost");
+}
+
+export function runsOnAcceptance() {
+  return window.location.hostname.includes("acc");
+}
+
 export function runsOnProduction() {
-  return !window.location.hostname.includes("localhost");
+  return !(runsLocally() || runsOnAcceptance());
 }
 
 const setupKeycloack = () => {
@@ -16,10 +24,11 @@ const setupKeycloack = () => {
       "check-sso": false, // To enable refresh token
       checkLoginIframe: false // To enable refresh token
     };
-    if (runsOnProduction()) {
-      options.onLoad = "login-required"; // Login on application start and browser refresh
+    if (runsLocally()) {
+      // Note that login may be activated if needed, localhost is an accepted host for the -acc realm
+      console.warn("Local execution, no login required");
     } else {
-      console.warn("localhost detected, no login required");
+      options.onLoad = "login-required"; // Login on application start and browser refresh
     }
     return keycloak.init(options);
   };
