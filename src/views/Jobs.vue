@@ -269,10 +269,15 @@ export default {
 
     async loadLogs(job) {
       // Load logs on demand
-      if (!job.logs) {
-        job.logs = await logsForJob(job.processId);
-        this.$forceUpdate();
+      job.logs = null;
+      let n = 0;
+      let logs = [];
+      while (n < 10 && !logs.length) {
+        logs = await logsForJob(job.processId);
+        n += 1;
       }
+      job.logs = logs;
+      this.$forceUpdate();
     },
 
     async loadJobs() {
