@@ -8,6 +8,7 @@ import Jobs from "./views/Jobs";
 import Status from "./views/Status";
 import Job from "./views/Job";
 import Management from "./views/Management";
+import JobExceptions from "./views/JobExceptions";
 
 Vue.use(Router);
 
@@ -34,6 +35,11 @@ export default new Router({
       path: "/entities",
       name: "entities",
       component: Entities
+    },
+    {
+      path: "/exceptions",
+      name: "exceptions",
+      component: JobExceptions
     },
     {
       path: "/jobs",

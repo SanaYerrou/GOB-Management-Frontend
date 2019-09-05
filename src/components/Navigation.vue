@@ -17,6 +17,7 @@
         <b-nav-item to="/entities">Entiteiten</b-nav-item>
         <b-nav-item to="/management">Management</b-nav-item>
         <b-nav-item to="/jobs">Jobs</b-nav-item>
+        <b-nav-item to="/exceptions">Exceptions</b-nav-item>
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->
