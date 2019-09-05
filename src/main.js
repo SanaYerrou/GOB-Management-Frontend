@@ -36,7 +36,9 @@ import {
   faRunning,
   faFlagCheckered,
   faWrench,
-  faPlay
+  faPlay,
+  faExclamationTriangle,
+  faCheck
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -104,7 +106,9 @@ library.add([
   faRunning,
   faFlagCheckered,
   faWrench,
-  faPlay
+  faPlay,
+  faExclamationTriangle,
+  faCheck
 ]);
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
