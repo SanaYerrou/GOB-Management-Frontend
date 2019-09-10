@@ -61,8 +61,8 @@ export async function logs(source, catalogue, entity) {
   return _logs(data);
 }
 
-export async function logsForJob(process_id) {
-  var data = await queryLogsForJob(process_id);
+export async function logsForJob(jobid) {
+  var data = await queryLogsForJob(jobid);
   return _logs(data);
 }
 
