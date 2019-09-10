@@ -79,4 +79,3 @@ export const allJobs = [
   "RELATE nap nap",
   "RELATE wkpb wkpb"
 ];
-
