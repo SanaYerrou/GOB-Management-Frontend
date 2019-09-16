@@ -59,7 +59,7 @@
           <div v-for="job in filteredJobs" :key="job.jobid" class="mb-2">
             <div>
               <b-btn
-                v-b-toggle="job.processId"
+                v-b-toggle="job.jobid.toString()"
                 @click="loadLogs(job)"
                 block
                 variant="outline-secondary"
@@ -68,7 +68,7 @@
               </b-btn>
 
               <b-collapse
-                :id="job.processId"
+                :id="job.jobid.toString()"
                 accordion="job-accordion"
                 class="mt-2"
               >
@@ -273,7 +273,7 @@ export default {
       let n = 0;
       let logs = [];
       while (n < 10 && !logs.length) {
-        logs = await logsForJob(job.processId);
+        logs = await logsForJob(job.jobid);
         n += 1;
       }
       job.logs = logs;

@@ -178,8 +178,8 @@ export async function queryLogsForJobStep(jobid, stepid) {
   return _queryLogs(select);
 }
 
-export async function queryLogsForJob(process_id) {
-  const select = `(processId: "${process_id}")`;
+export async function queryLogsForJob(jobid) {
+  const select = `(jobid: ${jobid})`;
   return _queryLogs(select);
 }
 
