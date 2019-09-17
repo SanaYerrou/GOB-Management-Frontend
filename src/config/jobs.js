@@ -17,7 +17,6 @@ export const allJobs = [
   "EXPORT brk kadastraleobjecten",
   "EXPORT brk kadastralesubjecten",
   "EXPORT brk perceelnummer",
-  "EXPORT brk stukdelen",
   "EXPORT brk zakelijkerechten",
   "EXPORT gebieden bouwblokken",
   "EXPORT gebieden buurten",
