@@ -34,7 +34,7 @@ node {
     stage("Build image") {
         tryStep "build", {
             docker.withRegistry('https://repo.data.amsterdam.nl','docker-registry') {
-                def image = docker.build("datapunt/gob_admin:${env.BUILD_NUMBER}", "--no-cache")
+                def image = docker.build("datapunt/gob_admin:${env.BUILD_NUMBER}")
                 image.push()
             }
         }
