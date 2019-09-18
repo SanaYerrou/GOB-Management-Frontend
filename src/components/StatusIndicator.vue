@@ -7,7 +7,14 @@
           :class="reversedIcon ? 'fa-rotate-180' : ''"
         />
       </div>
-      <div v-if="i === 2">{{ name }}</div>
+      <div v-if="i === 2">
+        <div>{{ name }}</div>
+        <div>
+          {{
+            service && service.instances ? service.instances.length : "&nbsp;"
+          }}
+        </div>
+      </div>
       <div v-if="i === 3">
         <b-progress
           :value="value"
