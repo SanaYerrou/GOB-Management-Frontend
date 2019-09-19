@@ -2,20 +2,24 @@
   <div>
     <b-form-group label="Shortcuts" class="text-left">
       <div class="mb-1">
-        <b-btn variant="primary" @click="filterOnFailed()">Jobs gefaald</b-btn>
+        <b-btn block variant="primary" @click="filterOnFailed()"
+          >Jobs gefaald</b-btn
+        >
       </div>
       <div class="mb-1">
-        <b-btn variant="primary" @click="filterOnErrors()"
+        <b-btn block variant="primary" @click="filterOnErrors()"
           >Jobs met fouten</b-btn
         >
       </div>
       <div class="mb-1">
-        <b-btn variant="primary" @click="filterOnWarnings()"
+        <b-btn block variant="primary" @click="filterOnWarnings()"
           >Jobs met waarschuwingen</b-btn
         >
       </div>
       <div>
-        <b-btn variant="primary" @click="clearFilter()">Reset filters</b-btn>
+        <b-btn block variant="primary" @click="clearFilter()"
+          >Reset filters</b-btn
+        >
       </div>
     </b-form-group>
     <b-form-group label="Type meldingen" class="text-left">

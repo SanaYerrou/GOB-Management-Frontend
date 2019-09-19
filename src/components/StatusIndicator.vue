@@ -11,7 +11,9 @@
         <div>{{ name }}</div>
         <div>
           {{
-            service && service.instances ? service.instances.length : "&nbsp;"
+            service && service.instances
+              ? service.instances.filter(i => i.isAlive).length
+              : "&nbsp;"
           }}
         </div>
       </div>
