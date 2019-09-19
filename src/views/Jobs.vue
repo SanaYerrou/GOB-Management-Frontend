@@ -57,7 +57,7 @@
       <div class="col col-lg-9">
         <div v-if="filteredJobs.length">
           <div v-for="job in filteredJobs" :key="job.jobid" class="mb-2">
-            <div>
+            <div v-if="job.jobid">
               <b-btn
                 v-b-toggle="job.jobid.toString()"
                 @click="loadLogs(job)"

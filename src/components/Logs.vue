@@ -10,24 +10,30 @@
       >
     </b-form-group>
 
-    <b-table
-      :fields="FIELDS"
-      :items="logs.filter(l => !l.msgid).filter(l => filter[l.level])"
-      class="log"
-      hover
-      small
-    >
-      <template slot="timestamp" slot-scope="data">
-        {{ data.item.timestamp | formatdate("HH:mm:ss") }}
-      </template>
-
-      <template slot="msg" slot-scope="data">
-        {{ data.item.msg }}
-        <div v-for="(item, key) in data.item.data" :key="key" class="logdata">
-          {{ key }}: {{ item }}
-        </div>
-      </template>
-    </b-table>
+    <table>
+      <tbody>
+        <tr>
+          <th>Tijdstip</th>
+          <th></th>
+          <th>Bericht</th>
+        </tr>
+        <tr
+          v-for="log in logs.filter(l => !l.msgid).filter(l => filter[l.level])"
+          :key="log.logid"
+        >
+          <td :class="log.level">
+            {{ log.timestamp | formatdate("HH:mm:ss") }}
+          </td>
+          <td :class="log.level">{{ log.level }}</td>
+          <td>
+            {{ log.msg }}
+            <div v-for="(item, key) in log.data" :key="key" class="logdata">
+              {{ key }}: {{ item }}
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
     <div v-for="id in msgids" :key="id.msgid">
       <div v-if="filter[id.level]">
@@ -110,5 +116,23 @@ export default {
 }
 .logdata {
   text-align: right;
+}
+
+table {
+  border-spacing: 15px;
+}
+table,
+th,
+td {
+  text-align: left;
+  vertical-align: top;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+th {
+  font-weight: bold;
+}
+tr:hover {
+  background-color: lightgray;
 }
 </style>
