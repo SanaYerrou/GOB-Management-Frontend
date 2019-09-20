@@ -21,10 +21,10 @@
           v-for="log in logs.filter(l => !l.msgid).filter(l => filter[l.level])"
           :key="log.logid"
         >
-          <td :class="log.level">
+          <td :class="log.level + '_TEXT'">
             {{ log.timestamp | formatdate("HH:mm:ss") }}
           </td>
-          <td :class="log.level">{{ log.level }}</td>
+          <td :class="log.level + '_TEXT'">{{ log.level }}</td>
           <td>
             {{ log.msg }}
             <div v-for="(item, key) in log.data" :key="key" class="logdata">
