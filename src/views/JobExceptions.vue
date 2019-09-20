@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="col-lg-8 offset-lg-2">
     <h1>Job Exceptions</h1>
     <div v-if="!jobs">loading...</div>
     <div v-else>
@@ -29,33 +29,16 @@
           :set="(job = getJob(jobId))"
           class="mb-1"
         >
-          <span v-if="job">
-            <!-- Link to job -->
-            <b-link :to="`/job?id=${job.jobid}`" target="_blank">
-              {{ jobId }}</b-link
-            >
+          <b-btn
+            block
+            variant="outline-secondary"
+            :to="`/job?id=${job.jobid}`"
+            target="_blank"
+          >
+            <job-header :job="job"></job-header>
+          </b-btn>
 
-            <!-- Warnings and errors -->
-            <b-badge
-              v-for="level in ['warnings', 'errors']"
-              :key="level"
-              class="ml-2"
-              :class="level"
-              variant="light"
-              v-if="job[level] > 0"
-            >
-              {{ level }} {{ job[level] }}
-            </b-badge>
-
-            <!-- Status -->
-            <job-status
-              class="ml-1"
-              v-if="job.status !== 'ended'"
-              :job="job"
-            ></job-status>
-          </span>
-
-          <span v-else>
+          <span v-if="!job">
             <!-- Missing job execution -->
             {{ jobId }}
             <font-awesome-icon
@@ -74,6 +57,7 @@
 import { getJobs } from "../services/gob";
 import JobStatus from "../components/JobStatus";
 import { allJobs } from "../config/jobs";
+import JobHeader from "../components/JobHeader";
 
 const jobTypes = ["PREPARE", "IMPORT", "RELATE", "EXPORT", "EXPORT_TEST"];
 
@@ -86,7 +70,7 @@ export default {
       jobTypes: jobTypes // possible fob types (Import, Export, etc)
     };
   },
-  components: { JobStatus },
+  components: { JobHeader, JobStatus },
   computed: {},
   methods: {
     signalJob(jobId) {

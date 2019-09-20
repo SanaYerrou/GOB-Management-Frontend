@@ -31,10 +31,7 @@
           ></job-calendar>
           <div class="mt-2">
             <b-badge v-if="new_logs" class="ERROR mb-2">
-            <font-awesome-icon
-                    icon="exclamation-triangle"
-                    class="fa-xs"
-            />
+              <font-awesome-icon icon="exclamation-triangle" class="fa-xs" />
               Er zijn nieuwe logs beschikbaar
             </b-badge>
             <b-btn

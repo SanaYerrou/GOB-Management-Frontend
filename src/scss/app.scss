@@ -9,3 +9,14 @@
 .ERROR {
   background-color: $danger;
 }
+
+.INFO_TEXT {
+}
+
+.WARNING_TEXT {
+  color: $warning;
+}
+.ERROR_TEXT {
+  color: $danger;
+  font-weight: bold;
+}
