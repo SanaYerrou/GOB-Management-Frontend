@@ -40,13 +40,7 @@
 </template>
 
 <script>
-const names = {
-  Eventloop: "Waiting for messages",
-  MessageHandler: "Processing message",
-  MainThread: "Active",
-  QueueHandler: "Queue handler"
-};
-const ANONYMOUS_THREAD = "Anonymous";
+import { isRunning, taskName, ANONYMOUS_THREAD } from "../services/status";
 
 export default {
   name: "ServiceDetail",
@@ -55,7 +49,7 @@ export default {
   },
   methods: {
     taskname(task) {
-      return names[task.name] || ANONYMOUS_THREAD;
+      return taskName(task);
     },
     tasks(instance) {
       return Object.values(
@@ -78,14 +72,7 @@ export default {
       );
     },
     isRunning(service) {
-      if (service && service.tasks) {
-        return (
-          service.tasks.filter(t => this.taskname(t) === names.MessageHandler)
-            .length > 0
-        );
-      } else {
-        return false;
-      }
+      return isRunning(service);
     }
   }
 };

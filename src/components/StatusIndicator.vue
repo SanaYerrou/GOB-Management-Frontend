@@ -9,12 +9,21 @@
       </div>
       <div v-if="i === 2">
         <div>{{ name }}</div>
-        <div>
-          {{
-            service && service.instances
-              ? service.instances.filter(i => i.isAlive).length
-              : "&nbsp;"
-          }}
+        <div
+          v-if="service && service.instances"
+          :set="
+            ((running = service.instances.filter(i => isRunning(i)).length),
+            (alive = service.instances.filter(i => i.isAlive).length))
+          "
+        >
+          <span :class="running > 0 ? 'ERROR_TEXT' : 'INFO_TEXT'">{{
+            running
+          }}</span>
+          /
+          {{ alive }}
+        </div>
+        <div v-else>
+          &nbsp;
         </div>
       </div>
       <div v-if="i === 3">
@@ -30,7 +39,7 @@
 </template>
 
 <script>
-import { isAlive, ALIVE_INTERVAL } from "../services/status";
+import { isAlive, ALIVE_INTERVAL, isRunning } from "../services/status";
 
 export default {
   name: "StatusIndicator",
@@ -61,7 +70,11 @@ export default {
       return isAlive(this.service) ? "success" : "danger";
     }
   },
-  methods: {},
+  methods: {
+    isRunning(service) {
+      return isRunning(service);
+    }
+  },
   mounted() {
     if (this.reversed) {
       this.order = this.order.reverse();

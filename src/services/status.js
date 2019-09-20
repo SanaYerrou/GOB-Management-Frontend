@@ -2,6 +2,14 @@ import { queryServices, queryTasks } from "../graphql/queries";
 
 export const ALIVE_INTERVAL = 60;
 
+const threadNames = {
+  Eventloop: "Waiting for messages",
+  MessageHandler: "Processing message",
+  MainThread: "Active",
+  QueueHandler: "Queue handler"
+};
+export const ANONYMOUS_THREAD = "Anonymous";
+
 export async function services() {
   const now = new Date();
   const nowUTC = new Date(
@@ -75,6 +83,20 @@ export async function services() {
     BeheerAPI,
     IRIS
   };
+}
+
+export function taskName(task) {
+  return threadNames[task.name] || ANONYMOUS_THREAD;
+}
+
+export function isRunning(service) {
+  if (service && service.tasks) {
+    return (
+      service.tasks.filter(t => taskName(t) === threadNames.MessageHandler)
+        .length > 0
+    );
+  }
+  return false;
 }
 
 export function isAlive(service) {
