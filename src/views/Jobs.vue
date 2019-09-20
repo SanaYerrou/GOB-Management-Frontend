@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="float-left mt-2">
-      <b-button v-b-toggle.collapse-filters variant="primary">
+      <b-btn v-b-toggle.collapse-filters variant="primary">
         <span class="when-opened">Hide</span>
         <span class="when-closed">Show</span> Filters
-      </b-button>
+      </b-btn>
     </div>
     <div v-if="!loading" class="float-right">
       <span v-if="date">{{ date | formatdate("dddd, DD MMMM YYYY") }}, </span>
@@ -29,22 +29,28 @@
             :year="filter.year[0]"
             :month="filter.month[0]"
           ></job-calendar>
-          <div v-if="new_logs" class="mt-3">
+          <div class="mt-2">
+            <b-badge v-if="new_logs" class="ERROR mb-2">
+            <font-awesome-icon
+                    icon="exclamation-triangle"
+                    class="fa-xs"
+            />
+              Er zijn nieuwe logs beschikbaar
+            </b-badge>
             <b-btn
-              class="ERROR refresh-button btn-block"
+              class="refresh-button btn-block"
               title="Ververs"
-              variant="outline-secondary"
+              variant="primary"
+              :disabled="loading"
               @click="loadDays()"
             >
-              <span v-if="new_logs">
-                Er zijn nieuwe logs beschikbaar.<br />
-                Klik om te verversen
+              <span>
+                Refresh
               </span>
               <font-awesome-icon
                 v-if="loading"
                 icon="sync"
-                class="fa-xs"
-                :class="{ 'fa-spin': loading }"
+                class="fa-xs fa-spin"
               />
             </b-btn>
           </div>
