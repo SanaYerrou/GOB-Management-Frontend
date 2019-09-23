@@ -30,6 +30,7 @@
           class="mb-1"
         >
           <b-btn
+            v-if="job"
             block
             variant="outline-secondary"
             :to="`/job?id=${job.jobid}`"
