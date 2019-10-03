@@ -1,6 +1,9 @@
 <template>
   <div v-if="job">
-    {{ job.name }} {{ job.application || job.source }} {{ job.entity }}
+    {{ job.name }}
+    {{ job.application || job.source }}
+    {{ job.catalogue }}
+    {{ job.entity }}
     <b-badge
       v-for="level in ['infos', 'warnings', 'errors']"
       :key="level"
