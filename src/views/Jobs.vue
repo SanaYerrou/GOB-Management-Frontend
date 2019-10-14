@@ -157,7 +157,7 @@ export default {
   computed: {},
   methods: {
     matchFilter(job, key) {
-      const jobKey = j => j[key].toLowerCase().replace(/_/g, " ");
+      const jobKey = j => (j[key] || "").toLowerCase().replace(/_/g, " ");
       return (
         this.filter[key].length === 0 || this.filter[key].includes(jobKey(job))
       );
