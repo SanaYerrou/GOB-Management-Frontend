@@ -82,7 +82,7 @@ export default {
         return true;
       } else {
         // Job has finished with errors
-        return job.errors > 0;
+        return job.errors > 0 || job.status != "ended" || !job.endtime;
       }
     },
 
@@ -99,7 +99,6 @@ export default {
         .map(id => this.getJob(id))
         .filter(j => j)
         .reduce((stats, job) => {
-          console.log(job[attr]);
           stats[job[attr]] = stats[job[attr]] || {
             [attr]: job[attr],
             n: 0
@@ -119,10 +118,9 @@ export default {
       let jobs = await getJobs(filter);
       jobs = jobs.map(job => ({
         ...job,
-        _id: `${job.name} ${job.catalogue} ${job.entity}`
+        _id: `${job.name} ${job.catalogue || ""} ${job.entity || ""}`.trim()
       }));
       this.jobs = jobs;
-      console.log(jobs);
       this.$forceUpdate();
     }
   },

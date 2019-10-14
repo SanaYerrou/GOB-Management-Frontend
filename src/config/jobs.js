@@ -70,7 +70,7 @@ export const allJobs = [
   "IMPORT wkpb beperkingen",
   "IMPORT wkpb brondocumenten",
   "IMPORT wkpb dossiers",
-  "PREPARE brk brk",
+  "PREPARE brk",
   "RELATE bag bag",
   "RELATE brk brk",
   "RELATE gebieden gebieden",
