@@ -166,3 +166,12 @@ export function jobRunsOnDate(job, date) {
 export function getSecure() {
   get("gob_management/secure/");
 }
+
+export async function getQueues() {
+  const result = await get("gob_management/queues/");
+  if (result.ok) {
+    return result.json();
+  } else {
+    return [];
+  }
+}
