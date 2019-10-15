@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="queues">
     <h3>Queues</h3>
     <table align="center">
       <tr align="left">
@@ -21,7 +21,7 @@
           <img
             v-for="n in queue.messages_unacknowledged"
             :key="n"
-            src="../assets/running.gif"
+            src="../assets/processing.gif"
             height="20px"
           />
         </td>
@@ -38,7 +38,7 @@ export default {
   name: "Queues",
   data() {
     return {
-      queues: {},
+      queues: null,
       interval: null
     };
   },
