@@ -76,10 +76,8 @@ export default {
         .filter(q => !q.name.includes(".complete"))
         .filter(q => !q.name.includes(".result"))
         .map(q => this.std_queue(q))
-        .filter(q => ORDER.indexOf(q.name) >= 0);
-      this.queues.sort(
-        (q1, q2) => ORDER.indexOf(q1.name) - ORDER.indexOf(q2.name)
-      );
+        .filter(q => ORDER.indexOf(q.name) >= 0)
+        .sort((q1, q2) => ORDER.indexOf(q1.name) - ORDER.indexOf(q2.name));
     }
   },
   async mounted() {
