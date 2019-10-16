@@ -11,12 +11,16 @@
         <td align="left">{{ queue.name }}</td>
         <td>
           <img
-            v-if="queue.messages_ready"
+            v-for="n in Math.min(queue.messages_ready, MAX_READY)"
+            :key="n"
             src="../assets/waiting.gif"
             height="20px"
           />
+          <span v-if="queue.messages_ready > MAX_READY">...</span>
         </td>
-        <td align="right">{{ queue.messages_ready }}</td>
+        <td align="right">
+          {{ queue.messages_ready }}
+        </td>
         <td>
           <img
             v-for="n in queue.messages_unacknowledged"
@@ -39,7 +43,8 @@ export default {
   data() {
     return {
       queues: null,
-      interval: null
+      interval: null,
+      MAX_READY: 4
     };
   },
   methods: {
