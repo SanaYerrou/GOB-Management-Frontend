@@ -45,6 +45,8 @@ export const allJobs = [
   "IMPORT bag standplaatsen",
   "IMPORT bag verblijfsobjecten",
   "IMPORT bag woonplaatsen",
+  "IMPORT bgt onderbouw",
+  "IMPORT bgt overbouw",
   "IMPORT brk aantekeningenkadastraleobjecten",
   "IMPORT brk aantekeningenrechten",
   "IMPORT brk aardzakelijkerechten",
