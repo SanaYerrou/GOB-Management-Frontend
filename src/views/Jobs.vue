@@ -84,6 +84,7 @@
                     <b-button
                       size="sm"
                       class="mb-1"
+                      target="_blank"
                       :to="`/job?id=${job.jobid}`"
                       >Details</b-button
                     >
