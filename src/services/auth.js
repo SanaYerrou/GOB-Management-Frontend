@@ -1,3 +1,7 @@
+import VueJwtDecode from "vue-jwt-decode";
+
+const REQUIRED_ROLES = ["gob_adm", "gob_adm_r"];
+
 export function runsLocally() {
   return window.location.hostname.includes("localhost");
 }
@@ -95,8 +99,14 @@ const setupKeycloack = () => {
   };
 
   keycloak.onAuthSuccess = function() {
-    console.log("Auth success");
-    autoRefreshToken(true);
+    const jwt = VueJwtDecode.decode(keycloak.token);
+    const userRoles = jwt.realm_access.roles || [];
+    if (!REQUIRED_ROLES.some(requiredRole => userRoles.includes(requiredRole))) {
+      console.error(`Insufficient rights: ${userRoles.join(", ")}`);
+      keycloak.logout();
+    } else {
+      autoRefreshToken(true);
+    }
   };
 
   keycloak.onAuthError = function() {
