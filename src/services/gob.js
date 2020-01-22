@@ -12,7 +12,8 @@ import {
   queryLogsForJobStep
 } from "../graphql/queries";
 
-export const catalogOnlyJobs = ["Prepare", "Export Test"];
+export const catalogOnlyJobs = ["prepare", "export test"];
+export const collectionOptionalJobs = ["relate"];
 
 export async function sources() {
   var data = await querySourceEntities();
@@ -97,7 +98,7 @@ export async function createJob(action, catalogue, collection) {
 
   action = action.toLowerCase().replace(" ", "_");
   catalogue = catalogue.toLowerCase();
-  collection = (collection || "").toLowerCase();
+  collection = collection ? collection.toLowerCase() : null;
 
   const requestOptions = {
     method: "POST",
