@@ -11,7 +11,11 @@
 </template>
 
 <script>
-import { createJob, catalogOnlyJobs } from "../services/gob";
+import {
+  createJob,
+  catalogOnlyJobs,
+  collectionOptionalJobs
+} from "../services/gob";
 
 export default {
   name: "JobStart",
@@ -30,7 +34,8 @@ export default {
     canStart() {
       return (
         !this.result &&
-        (catalogOnlyJobs.includes(this.action) ||
+        (catalogOnlyJobs.includes(this.action.toLowerCase()) ||
+          collectionOptionalJobs.includes(this.action.toLowerCase()) ||
           (this.catalog && this.collection))
       );
     },

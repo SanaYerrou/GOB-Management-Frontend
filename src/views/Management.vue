@@ -81,7 +81,7 @@ export default {
       }));
     },
     onAction(catalog, action) {
-      if (catalogOnlyJobs.includes(action)) {
+      if (catalogOnlyJobs.includes(action.toLowerCase())) {
         delete this.collection[catalog];
         this.collectionDisabled[catalog] = true;
       } else {
