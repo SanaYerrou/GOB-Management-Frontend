@@ -90,7 +90,7 @@
                     >
                   </div>
                   <b-card v-if="job.logs">
-                    <logs :logs="job.logs"></logs>
+                    <logs :logs="job.logs" :job="job"></logs>
                   </b-card>
                 </div>
               </b-collapse>
