@@ -101,7 +101,9 @@ const setupKeycloack = () => {
   keycloak.onAuthSuccess = function() {
     const jwt = VueJwtDecode.decode(keycloak.token);
     const userRoles = jwt.realm_access.roles || [];
-    if (!REQUIRED_ROLES.some(requiredRole => userRoles.includes(requiredRole))) {
+    if (
+      !REQUIRED_ROLES.some(requiredRole => userRoles.includes(requiredRole))
+    ) {
       console.error(`Insufficient rights: ${userRoles.join(", ")}`);
       keycloak.logout();
     } else {

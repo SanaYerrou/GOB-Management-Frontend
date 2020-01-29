@@ -1,8 +1,16 @@
 <template>
   <div class="jobstart">
+    <b-form-input
+      class="mb-2"
+      v-if="action === 'Export'"
+      v-model="product"
+      placeholder="Optionally enter the name of the export file"
+    ></b-form-input>
     <b-button :disabled="!canStart()" @click="start()"
-      ><font-awesome-icon icon="play" class="error" /> {{ title }}
-      {{ action }}</b-button
+      ><font-awesome-icon icon="play" class="error" />
+      {{ title }}
+      {{ action }}
+      {{ product }}</b-button
     >
     <div class="mt-2" v-if="result" :class="result.ok ? 'INFO' : 'ERROR'">
       {{ result.text }}
@@ -27,7 +35,8 @@ export default {
   },
   data() {
     return {
-      result: null
+      result: null,
+      product: null
     };
   },
   methods: {
@@ -41,7 +50,12 @@ export default {
     },
     async start() {
       this.result = null;
-      this.result = await createJob(this.action, this.catalog, this.collection);
+      this.result = await createJob(
+        this.action,
+        this.catalog,
+        this.collection,
+        this.product
+      );
       if (this.result.ok) {
         const info = JSON.parse(this.result.text);
         const values = Object.values(info).join(" ");
@@ -51,6 +65,7 @@ export default {
     },
     clearResult() {
       this.result = null;
+      this.product = null;
     }
   },
   watch: {
