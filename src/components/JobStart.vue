@@ -24,6 +24,7 @@ import {
   catalogOnlyJobs,
   collectionOptionalJobs
 } from "../services/gob";
+import auth from "../services/auth";
 
 export default {
   name: "JobStart",
@@ -50,11 +51,19 @@ export default {
     },
     async start() {
       this.result = null;
+
+      let user = null;
+      const userInfo = await auth.userInfo();
+      if (userInfo) {
+        user = userInfo.preferred_username;
+      }
+
       this.result = await createJob(
         this.action,
         this.catalog,
         this.collection,
-        this.product
+        this.product,
+        user
       );
       if (this.result.ok) {
         const info = JSON.parse(this.result.text);

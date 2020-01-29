@@ -88,7 +88,7 @@ export async function catalogCollections() {
   }
 }
 
-export async function createJob(action, catalogue, collection, product) {
+export async function createJob(action, catalogue, collection, product, user) {
   const application = {
     bouwblokken: "DGDialog",
     buurten: "DGDialog",
@@ -100,6 +100,7 @@ export async function createJob(action, catalogue, collection, product) {
   catalogue = catalogue.toLowerCase();
   collection = collection ? collection.toLowerCase() : null;
   product = product || null;
+  user = user || null;
 
   const requestOptions = {
     method: "POST",
@@ -112,7 +113,8 @@ export async function createJob(action, catalogue, collection, product) {
       collection,
       application: application[collection],
       destination: "Objectstore",
-      product
+      product,
+      user
     })
   };
   const result = await get("gob_management/job/", requestOptions);
