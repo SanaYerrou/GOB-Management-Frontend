@@ -10,6 +10,10 @@
             <td>{{ jobinfo.type }}</td>
           </tr>
           <tr>
+            <td class="id">Gestart door</td>
+            <td>{{ jobinfo.user || "onbekend" }}</td>
+          </tr>
+          <tr>
             <td class="id">Start</td>
             <td>{{ jobinfo.start | formatdate }}</td>
           </tr>

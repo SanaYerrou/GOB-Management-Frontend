@@ -59,6 +59,7 @@ export async function queryJob(id) {
       end
       duration
       status
+      user
       steps {
         stepid
         name
@@ -102,7 +103,8 @@ export async function queryJobs(filter = {}) {
       warnings,
       errors,
       step,
-      status
+      status,
+      user
     }
   }
   `;

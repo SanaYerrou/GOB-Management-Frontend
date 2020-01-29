@@ -1,5 +1,9 @@
 <template>
   <div>
+    <div v-if="job && job.user" class="text-left">
+      Gestart door: {{ job.user }}
+    </div>
+
     <b-form-group class="text-left">
       <b-form-checkbox
         v-model="filter[level]"
@@ -91,7 +95,8 @@ export default {
     };
   },
   props: {
-    logs: Array
+    logs: Array,
+    job: Object
   },
   methods: {
     levels() {
