@@ -12,7 +12,7 @@
         <td align="left">{{ queue.display }}</td>
         <td>
           <b-btn
-            v-if="queue.messages_ready > 0"
+            v-if="isAdmin && queue.messages_ready > 0"
             size="sm"
             @click="purgeQueue(queue)"
           >
@@ -48,6 +48,7 @@
 
 <script>
 import { getQueues, purgeQueue } from "../services/gob";
+import auth from "../services/auth";
 
 const ORDER = [
   "prepare",
@@ -71,6 +72,11 @@ export default {
       interval: null,
       MAX_READY: 4
     };
+  },
+  computed: {
+    isAdmin() {
+      return auth.isAdmin();
+    }
   },
   methods: {
     std_queue(queue) {

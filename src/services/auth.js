@@ -1,6 +1,8 @@
 import VueJwtDecode from "vue-jwt-decode";
 
-const REQUIRED_ROLES = ["gob_adm", "gob_adm_r"];
+const GOB_ADMIN = "gob_adm";
+const GOB_USER = "gob_adm_r";
+const REQUIRED_ROLES = [GOB_ADMIN, GOB_USER];
 
 export function runsLocally() {
   return window.location.hostname.includes("localhost");
@@ -68,6 +70,24 @@ const setupKeycloack = () => {
     }
   };
 
+  const getUserRoles = () => {
+    try {
+      const jwt = VueJwtDecode.decode(keycloak.token);
+      return jwt.realm_access.roles || [];
+    } catch (e) {
+      return [];
+    }
+  };
+
+  const isAdmin = () => {
+    if (runsLocally()) {
+      return true;
+    } else {
+      const userRoles = getUserRoles();
+      return userRoles.includes(GOB_ADMIN);
+    }
+  };
+
   const token = async () => {
     await isReady;
     return keycloak.token;
@@ -99,8 +119,7 @@ const setupKeycloack = () => {
   };
 
   keycloak.onAuthSuccess = function() {
-    const jwt = VueJwtDecode.decode(keycloak.token);
-    const userRoles = jwt.realm_access.roles || [];
+    const userRoles = getUserRoles();
     if (
       !REQUIRED_ROLES.some(requiredRole => userRoles.includes(requiredRole))
     ) {
@@ -140,6 +159,7 @@ const setupKeycloack = () => {
     login,
     token,
     userInfo,
+    isAdmin,
     logout
   };
 };
