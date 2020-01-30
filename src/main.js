@@ -38,7 +38,8 @@ import {
   faWrench,
   faPlay,
   faExclamationTriangle,
-  faCheck
+  faCheck,
+  faTrashAlt
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -108,7 +109,8 @@ library.add([
   faWrench,
   faPlay,
   faExclamationTriangle,
-  faCheck
+  faCheck,
+  faTrashAlt
 ]);
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 

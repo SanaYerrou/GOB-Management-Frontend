@@ -42,10 +42,11 @@ export default {
   },
   methods: {
     canStart() {
+      const action = this.action && this.action.toLowerCase();
       return (
         !this.result &&
-        (catalogOnlyJobs.includes(this.action.toLowerCase()) ||
-          collectionOptionalJobs.includes(this.action.toLowerCase()) ||
+        (catalogOnlyJobs.includes(action) ||
+          collectionOptionalJobs.includes(action) ||
           (this.catalog && this.collection))
       );
     },

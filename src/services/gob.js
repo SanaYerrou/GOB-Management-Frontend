@@ -88,6 +88,25 @@ export async function catalogCollections() {
   }
 }
 
+export async function purgeQueue(queue) {
+  const requestOptions = {
+    method: "DELETE"
+  };
+  const result = await get(
+    `gob_management/queue/${queue.name}`,
+    requestOptions
+  );
+  return result.ok;
+}
+
+export async function deleteJob(job) {
+  const requestOptions = {
+    method: "DELETE"
+  };
+  const result = await get(`gob_management/job/${job.jobid}`, requestOptions);
+  return result.ok;
+}
+
 export async function createJob(action, catalogue, collection, product, user) {
   const application = {
     bouwblokken: "DGDialog",

@@ -71,6 +71,12 @@
           </div>
         </div>
       </div>
+      <div class="mt-2 mb-5" align="right">
+        <b-btn size="sm" @click="deleteJob(job)">
+          <font-awesome-icon icon="trash-alt" class="fa-xs"></font-awesome-icon>
+          Delete job {{ job.jobid }}
+        </b-btn>
+      </div>
     </div>
     <div v-else-if="!loading">Job not found</div>
     <div v-else>loading...</div>
@@ -81,7 +87,7 @@
 import Logs from "../components/Logs";
 import JobHeader from "../components/JobHeader";
 
-import { getJob, getJobs, logsForJobStep } from "../services/gob";
+import { getJob, getJobs, deleteJob, logsForJobStep } from "../services/gob";
 import JobStatus from "../components/JobStatus";
 import JobStart from "../components/JobStart";
 
@@ -102,7 +108,14 @@ export default {
     JobHeader
   },
   computed: {},
-  methods: {},
+  methods: {
+    async deleteJob(job) {
+      const result = deleteJob(job);
+      if (result) {
+        this.$router.push("jobs");
+      }
+    }
+  },
 
   async mounted() {
     this.jobid = this.$route.query.id;
