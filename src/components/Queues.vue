@@ -4,11 +4,21 @@
     <table align="center">
       <tr align="left">
         <th>Process</th>
+        <th></th>
         <th colspan="2">Waiting</th>
         <th colspan="2">Processing</th>
       </tr>
       <tr v-for="queue in queues" :key="queue.name">
-        <td align="left">{{ queue.name }}</td>
+        <td align="left">{{ queue.display }}</td>
+        <td>
+          <b-btn
+            v-if="queue.messages_ready > 0"
+            size="sm"
+            @click="purgeQueue(queue)"
+          >
+            <font-awesome-icon icon="trash-alt" class="fa-xs" />
+          </b-btn>
+        </td>
         <td>
           <img
             v-for="n in Math.min(queue.messages_ready, MAX_READY)"
@@ -23,11 +33,12 @@
         </td>
         <td>
           <img
-            v-for="n in queue.messages_unacknowledged"
+            v-for="n in Math.min(queue.messages_unacknowledged, MAX_READY)"
             :key="n"
             src="../assets/processing.gif"
             height="20px"
           />
+          <span v-if="queue.messages_unacknowledged > MAX_READY">...</span>
         </td>
         <td align="right">{{ queue.messages_unacknowledged }}</td>
       </tr>
@@ -36,7 +47,7 @@
 </template>
 
 <script>
-import { getQueues } from "../services/gob";
+import { getQueues, purgeQueue } from "../services/gob";
 
 const ORDER = [
   "prepare",
@@ -47,7 +58,9 @@ const ORDER = [
   "relate",
   "check_relation",
   "export",
-  "export_test"
+  "export_test",
+  "heartbeat",
+  "logs"
 ];
 
 export default {
@@ -61,23 +74,28 @@ export default {
   },
   methods: {
     std_queue(queue) {
-      queue.name = queue.name
+      queue.display = queue.name
         .replace(".queue", "")
-        .replace("gob.workflow.", "");
+        .replace("gob.workflow.", "")
+        .replace("gob.status.", "")
+        .replace("gob.log.", "");
       return queue;
     },
-
+    async purgeQueue(queue) {
+      purgeQueue(queue);
+    },
     async update() {
       // .filter(q => q.messages_ready > 0)
       let queues = await getQueues();
       this.queues = queues
-        .filter(q => q.name.startsWith("gob.workflow"))
-        .filter(q => !q.name.includes("task"))
+        .filter(q => !q.name.includes(".task"))
         .filter(q => !q.name.includes(".complete"))
         .filter(q => !q.name.includes(".result"))
         .map(q => this.std_queue(q))
-        .filter(q => ORDER.indexOf(q.name) >= 0)
-        .sort((q1, q2) => ORDER.indexOf(q1.name) - ORDER.indexOf(q2.name));
+        .filter(q => ORDER.indexOf(q.display) >= 0)
+        .sort(
+          (q1, q2) => ORDER.indexOf(q1.display) - ORDER.indexOf(q2.display)
+        );
     }
   },
   async mounted() {
