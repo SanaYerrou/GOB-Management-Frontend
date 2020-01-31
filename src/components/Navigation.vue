@@ -15,7 +15,7 @@
         <b-nav-item to="/sources">Bronnen</b-nav-item>
         <b-nav-item to="/catalogues">Catalogi</b-nav-item>
         <b-nav-item to="/entities">Entiteiten</b-nav-item>
-        <b-nav-item to="/management">Management</b-nav-item>
+        <b-nav-item v-if="isAdmin" to="/management">Management</b-nav-item>
         <b-nav-item to="/jobs">Jobs</b-nav-item>
         <b-nav-item to="/exceptions">Exceptions</b-nav-item>
       </b-navbar-nav>
@@ -50,6 +50,11 @@ export default {
     return {
       username: null
     };
+  },
+  computed: {
+    isAdmin() {
+      return auth.isAdmin();
+    }
   },
   methods: {
     login() {

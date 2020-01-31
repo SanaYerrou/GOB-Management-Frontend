@@ -71,7 +71,7 @@
           </div>
         </div>
       </div>
-      <div class="mt-2 mb-5" align="right">
+      <div v-if="isAdmin" class="mt-2 mb-5" align="right">
         <b-btn size="sm" @click="deleteJob(job)">
           <font-awesome-icon icon="trash-alt" class="fa-xs"></font-awesome-icon>
           Delete job {{ job.jobid }}
@@ -88,6 +88,7 @@ import Logs from "../components/Logs";
 import JobHeader from "../components/JobHeader";
 
 import { getJob, getJobs, deleteJob, logsForJobStep } from "../services/gob";
+import auth from "../services/auth";
 import JobStatus from "../components/JobStatus";
 import JobStart from "../components/JobStart";
 
@@ -107,7 +108,11 @@ export default {
     Logs,
     JobHeader
   },
-  computed: {},
+  computed: {
+    isAdmin() {
+      return auth.isAdmin();
+    }
+  },
   methods: {
     async deleteJob(job) {
       const result = deleteJob(job);
