@@ -12,7 +12,7 @@
         <td align="left">{{ queue.display }}</td>
         <td>
           <b-btn
-            v-if="isAdmin && queue.messages_ready > 0"
+            v-if="isAdmin() && queue.messages_ready > 0"
             size="sm"
             @click="purgeQueue(queue)"
           >
@@ -73,12 +73,10 @@ export default {
       MAX_READY: 4
     };
   },
-  computed: {
+  methods: {
     isAdmin() {
       return auth.isAdmin();
-    }
-  },
-  methods: {
+    },
     std_queue(queue) {
       queue.display = queue.name
         .replace(".queue", "")

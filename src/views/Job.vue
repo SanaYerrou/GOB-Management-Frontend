@@ -71,7 +71,7 @@
           </div>
         </div>
       </div>
-      <div v-if="isAdmin" class="mt-2 mb-5" align="right">
+      <div v-if="isAdmin()" class="mt-2 mb-5" align="right">
         <b-btn size="sm" @click="deleteJob(job)">
           <font-awesome-icon icon="trash-alt" class="fa-xs"></font-awesome-icon>
           Delete job {{ job.jobid }}
@@ -108,12 +108,10 @@ export default {
     Logs,
     JobHeader
   },
-  computed: {
+  methods: {
     isAdmin() {
       return auth.isAdmin();
-    }
-  },
-  methods: {
+    },
     async deleteJob(job) {
       const result = deleteJob(job);
       if (result) {
