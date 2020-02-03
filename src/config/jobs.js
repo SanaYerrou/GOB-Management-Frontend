@@ -29,6 +29,8 @@ export const allJobs = [
   "EXPORT meetbouten referentiepunten",
   "EXPORT meetbouten rollagen",
   "EXPORT nap peilmerken",
+  "EXPORT bgt onderbouw",
+  "EXPORT bgt overbouw",
   "EXPORT wkpb beperkingen",
   "EXPORT wkpb brondocumenten",
   "EXPORT_TEST bag bag",
@@ -38,6 +40,7 @@ export const allJobs = [
   "EXPORT_TEST nap nap",
   "EXPORT_TEST test_catalogue test_catalogue",
   "EXPORT_TEST wkpb wkpb",
+  "EXPORT_TEST bgt bgt",
   "IMPORT bag brondocumenten",
   "IMPORT bag dossiers",
   "IMPORT bag ligplaatsen",
@@ -80,5 +83,6 @@ export const allJobs = [
   "RELATE gebieden gebieden",
   "RELATE meetbouten meetbouten",
   "RELATE nap nap",
+  "RELATE bgt bgt",
   "RELATE wkpb wkpb"
 ];
